@@ -1,0 +1,7 @@
+# Constitution Requirements
+
+1. Use Cases and Acceptance Tests: All the required features for this project are in a folder called Use Cases; inside the folder there is a Markdown file for each use case labelled “[UC-XX.md](http://UC-XX.md)”, where “XX” designates the number of the use case. Similarly, there is a folder for use case acceptance tests called Acceptance Tests; in this folder you will find an acceptance test suite for each use case in their own separate Markdown files labelled “”[UC-XX-AS.md](http://UC-XX-AS.md)”, where “XX” again designates the use case number.  
+2. Languages: Use HTML/CSS/JS for this project, and use SQLite for a database.  
+3. Software Structure: Use Model-View-Controller (MVC) architecture for the project. The database should store account information, and course information.  
+4. No Use Case Edits: You are not allowed to edit or otherwise alter the “UC-XX” files without explicit permission from me to do so. These use cases are foundational to the project, and edits to them may fail to capture the scope of the project. The same applies to the “[UC-XX-AS.md](http://UC-XX-AS.md)” files.  
+5. Style: There are two style guides provided in the Style Guides folder: one for HTML/CSS, and one for Javascript. These must be followed when writing code in these languages. Ideally, this should make the code more readable for validations and debugging purposes.
