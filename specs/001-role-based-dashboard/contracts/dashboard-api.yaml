@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Role-Based Dashboard API Contract
+  version: 1.0.0
+  description: Contract for loading and retrying role-scoped dashboard sections.
+servers:
+  - url: http://localhost:3000
+paths:
+  /dashboard:
+    get:
+      summary: Render dashboard view model for authenticated actor
+      operationId: getDashboard
+      responses:
+        '200':
+          description: Dashboard loaded (full or partial)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardResponse'
+        '401':
+          description: Session expired or invalid; re-authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthRedirectResponse'
+  /dashboard/retry:
+    post:
+      summary: Retry unavailable dashboard sections only
+      operationId: retryDashboardSections
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryRequest'
+      responses:
+        '200':
+          description: Retry processed with updated section states
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardResponse'
+        '400':
+          description: Invalid retry payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Session expired or invalid; re-authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthRedirectResponse'
+components:
+  schemas:
+    DashboardResponse:
+      type: object
+      required:
+        - actorId
+        - status
+        - modules
+        - sections
+        - retryAvailable
+      properties:
+        actorId:
+          type: integer
+        status:
+          type: string
+          enum: [success, partial, failure, auth_error, empty_access, role_data_error]
+        message:
+          type: string
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModuleSummary'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SectionState'
+        retryAvailable:
+          type: boolean
+        unavailableSectionIds:
+          type: array
+          items:
+            type: integer
+    ModuleSummary:
+      type: object
+      required:
+        - moduleId
+        - moduleKey
+        - displayName
+        - routePath
+        - navigationState
+      properties:
+        moduleId:
+          type: integer
+        moduleKey:
+          type: string
+        displayName:
+          type: string
+        routePath:
+          type: string
+        navigationState:
+          type: string
+          enum: [enabled, disabled_unavailable]
+    SectionState:
+      type: object
+      required:
+        - sectionId
+        - sectionKey
+        - title
+        - availabilityStatus
+      properties:
+        sectionId:
+          type: integer
+        sectionKey:
+          type: string
+        title:
+          type: string
+        availabilityStatus:
+          type: string
+          enum: [available, unavailable]
+        unavailableLabel:
+          type: string
+          description: Must be present when availabilityStatus is unavailable.
+        content:
+          type: object
+          additionalProperties: true
+    RetryRequest:
+      type: object
+      required:
+        - sectionIds
+      properties:
+        sectionIds:
+          type: array
+          minItems: 1
+          items:
+            type: integer
+      description: Must include only currently unavailable section IDs.
+    AuthRedirectResponse:
+      type: object
+      required:
+        - status
+        - loginUrl
+        - returnTo
+      properties:
+        status:
+          type: string
+          enum: [auth_error]
+        loginUrl:
+          type: string
+          example: /login
+        returnTo:
+          type: string
+          example: /dashboard
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - errorCode
+        - message
+      properties:
+        status:
+          type: string
+          enum: [error]
+        errorCode:
+          type: string
+        message:
+          type: string
