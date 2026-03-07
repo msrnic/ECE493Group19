@@ -2824,3 +2824,430 @@
 2026-03-07T00:04:44.010793Z  INFO session_loop{thread_id=019cc591-cc9c-74a3-ac94-0389a2c1de7f}:submission_dispatch{submission.id="019cc59c-596a-7af2-b7be-b6a8c3e036c2"}: codex_core::codex: close time.busy=233µs time.idle=35.1µs
 2026-03-07T00:04:44.010835Z  INFO session_loop{thread_id=019cc591-cc9c-74a3-ac94-0389a2c1de7f}: codex_core::codex: close time.busy=7.89ms time.idle=691s
 2026-03-07T00:04:44.021231Z  WARN codex_core::file_watcher: failed to unwatch /home/m_srnic/ece493/group_project/ECE493Group19/.codex/skills/.system: No watch was found. about ["/home/m_srnic/ece493/group_project/ECE493Group19/.codex/skills/.system"]
+2026-03-07T01:13:14.671493Z  INFO codex_core::models_manager::manager: models cache: evaluating cache eligibility client_version="0.111.0"
+2026-03-07T01:13:14.671538Z  INFO codex_core::models_manager::cache: models cache: attempting load_fresh cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json expected_version="0.111.0"
+2026-03-07T01:13:14.672459Z  INFO codex_core::models_manager::cache: models cache: loaded cache file cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json cached_version=Some("0.111.0") fetched_at=2026-03-07 00:04:30.616339598 UTC
+2026-03-07T01:13:14.672508Z  INFO codex_core::models_manager::cache: models cache: cache is stale cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json cache_ttl_secs=300 fetched_at=2026-03-07 00:04:30.616339598 UTC
+2026-03-07T01:13:14.672567Z  INFO codex_core::models_manager::manager: models cache: no usable cache entry
+2026-03-07T01:13:14.672835Z  INFO codex_core::models_manager::manager: models cache: evaluating cache eligibility client_version="0.111.0"
+2026-03-07T01:13:14.672870Z  INFO codex_core::models_manager::cache: models cache: attempting load_fresh cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json expected_version="0.111.0"
+2026-03-07T01:13:14.673390Z  INFO codex_core::models_manager::cache: models cache: loaded cache file cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json cached_version=Some("0.111.0") fetched_at=2026-03-07 00:04:30.616339598 UTC
+2026-03-07T01:13:14.673435Z  INFO codex_core::models_manager::cache: models cache: cache is stale cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json cache_ttl_secs=300 fetched_at=2026-03-07 00:04:30.616339598 UTC
+2026-03-07T01:13:14.673492Z  INFO codex_core::models_manager::manager: models cache: no usable cache entry
+2026-03-07T01:13:14.685027Z  INFO codex_core::models_manager::manager: models cache: evaluating cache eligibility client_version="0.111.0"
+2026-03-07T01:13:14.685051Z  INFO codex_core::models_manager::cache: models cache: attempting load_fresh cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json expected_version="0.111.0"
+2026-03-07T01:13:14.685595Z  INFO codex_core::models_manager::cache: models cache: loaded cache file cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json cached_version=Some("0.111.0") fetched_at=2026-03-07 00:04:30.616339598 UTC
+2026-03-07T01:13:14.685623Z  INFO codex_core::models_manager::cache: models cache: cache is stale cache_path=/home/m_srnic/ece493/group_project/ECE493Group19/.codex/models_cache.json cache_ttl_secs=300 fetched_at=2026-03-07 00:04:30.616339598 UTC
+2026-03-07T01:13:14.685676Z  INFO codex_core::models_manager::manager: models cache: no usable cache entry
+2026-03-07T01:13:14.685709Z  INFO codex_core::models_manager::manager: models cache: cache miss, fetching remote models
+2026-03-07T01:13:16.648085Z  INFO session_init: codex_core::codex: new
+2026-03-07T01:13:16.652269Z  INFO session_init:shell_snapshot{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}: codex_core::shell_snapshot: new
+2026-03-07T01:13:16.654610Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}: codex_core::codex: new
+2026-03-07T01:13:16.655762Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-1a6f-7493-b1ac-41faa34f0fb8"}: codex_core::codex: new
+2026-03-07T01:13:16.660172Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-1a6f-7493-b1ac-41faa34f0fb8"}: codex_core::codex: close time.busy=575µs time.idle=3.83ms
+2026-03-07T01:13:16.660216Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-1a6f-7493-b1ac-420a4afbd3de"}: codex_core::codex: new
+2026-03-07T01:13:16.664166Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-1a6f-7493-b1ac-420a4afbd3de"}: codex_core::codex: close time.busy=3.59ms time.idle=358µs
+2026-03-07T01:13:16.685160Z  INFO session_init:shell_snapshot{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}: codex_core::shell_snapshot: Shell snapshot successfully created: /home/m_srnic/ece493/group_project/ECE493Group19/.codex/shell_snapshots/019cc5db-1a68-73f3-b74a-bec356f84078.tmp-1772845996652416528
+2026-03-07T01:13:16.687572Z  WARN session_init:shell_snapshot{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}: codex_core::shell_snapshot: Failed to delete shell snapshot at "/home/m_srnic/ece493/group_project/ECE493Group19/.codex/shell_snapshots/019cc5db-1a68-73f3-b74a-bec356f84078.tmp-1772845996652416528": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-03-07T01:13:16.687708Z  INFO session_init:shell_snapshot{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}: codex_core::shell_snapshot: close time.busy=2.80ms time.idle=32.6ms
+2026-03-07T01:13:16.687728Z  INFO session_init: codex_core::codex: close time.busy=4.75ms time.idle=34.9ms
+2026-03-07T01:13:25.667093Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}: codex_core::codex: new
+2026-03-07T01:13:25.667748Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::tasks: new
+2026-03-07T01:13:25.667848Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a18ef4fd7a7"}: codex_core::codex: new
+2026-03-07T01:13:25.667905Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a18ef4fd7a7"}: codex_core::codex: close time.busy=33.8µs time.idle=22.9µs
+2026-03-07T01:13:34.629877Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"pwd && ls -la"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:34.633950Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' .specify/scripts/bash/create-new-feature.sh"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:34.697835Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' .specify/templates/spec-template.md"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:38.404359Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git fetch --all --prune"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:42.277575Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git ls-remote --heads origin | grep -E 'refs/heads/[0-9]+-update-course-capacity$' || true"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:42.279696Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git branch | grep -E '^[* ]*[0-9]+-update-course-capacity$' || true"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:42.342947Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"find specs -maxdepth 1 -type d | grep -E 'specs/[0-9]+-update-course-capacity$' || true"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:47.833937Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":".specify/scripts/bash/create-new-feature.sh --json --number 1 --short-name \"update-course-capacity\" \"1. Administrator opens a course offering. 2. Administrator edits the capacity value and submits. 3. System validates the new capacity against current enrollment. 4. System updates capacity and recalculates remaining seats. 5. System confirms the update. * **3a**: New capacity is below current enrollment. * 3a1: System rejects the change or requires a special override per policy. * **4a**: Update fails. * 4a1: System leaves capacity unchanged and reports failure.\""} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:54.102092Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"ls -1 \"Use Cases\" && ls -1 \"Acceptance Tests\""} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:13:55.789789Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n \"capacity|enrollment|offering|seat\" \"Use Cases\""} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:14:04.108932Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"cat /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:14:59.243118Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Update File: /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md
+@@
+-# Feature Specification: [FEATURE NAME]
+-
+-**Feature Branch**: `[###-feature-name]`  
+-**Created**: [DATE]  
+-**Status**: Draft  
+-**Input**: User description: "$ARGUMENTS"
+-
+-## User Scenarios & Testing *(mandatory)*
+-
+-<!--
+-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
+-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
+-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
+-  
+-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
+-  Think of each story as a standalone slice of functionality that can be:
+-  - Developed independently
+-  - Tested independently
+-  - Deployed independently
+-  - Demonstrated to users independently
+--->
+-
+-### User Story 1 - [Brief Title] (Priority: P1)
+-
+-[Describe this user journey in plain language]
+-
+-**Why this priority**: [Explain the value and why it has this priority level]
+-
+-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
+-
+-**Acceptance Scenarios**:
+-
+-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
+-
+----
+-
+-### User Story 2 - [Brief Title] (Priority: P2)
+-
+-[Describe this user journey in plain language]
+-
+-**Why this priority**: [Explain the value and why it has this priority level]
+-
+-**Independent Test**: [Describe how this can be tested independently]
+-
+-**Acceptance Scenarios**:
+-
+-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+-
+----
+-
+-### User Story 3 - [Brief Title] (Priority: P3)
+-
+-[Describe this user journey in plain language]
+-
+-**Why this priority**: [Explain the value and why it has this priority level]
+-
+-**Independent Test**: [Describe how this can be tested independently]
+-
+-**Acceptance Scenarios**:
+-
+-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+-
+----
+-
+-[Add more user stories as needed, each with an assigned priority]
+-
+-### Edge Cases
+-
+-<!--
+-  ACTION REQUIRED: The content in this section represents placeholders.
+-  Fill them out with the right edge cases.
+--->
+-
+-- What happens when [boundary condition]?
+-- How does system handle [error scenario]?
+-- How does this story remain compliant with its mapped `UC-XX` and
+-  `UC-XX-AS` artifacts when requirements evolve?
+-
+-## Requirements *(mandatory)*
+-
+-<!--
+-  ACTION REQUIRED: The content in this section represents placeholders.
+-  Fill them out with the right functional requirements.
+--->
+-
+-### Functional Requirements
+-
+-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
+-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
+-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
+-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+-- **FR-006**: Every user story MUST reference one or more source use cases in
+-  `Use Cases/UC-XX.md` and matching acceptance tests in
+-  `Acceptance Tests/UC-XX-AS.md`.
+-- **FR-007**: The solution MUST use HTML/CSS/JavaScript with SQLite and MUST
+-  preserve MVC architecture across model, view, and controller layers.
+-- **FR-008**: Feature work MUST NOT edit `Use Cases/UC-*.md` or
+-  `Acceptance Tests/UC-*-AS.md` without explicit project authorization.
+-- **FR-009**: HTML/CSS and JavaScript implementation MUST comply with the
+-  applicable style guides in the `Style Guides/` directory.
+-
+-*Example of marking unclear requirements:*
+-
+-- **FR-010**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
+-- **FR-011**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+-
+-### Key Entities *(include if feature involves data)*
+-
+-- **[Entity 1]**: [What it represents, key attributes without implementation]
+-- **[Entity 2]**: [What it represents, relationships to other entities]
+-
+-## Success Criteria *(mandatory)*
+-
+-<!--
+-  ACTION REQUIRED: Define measurable success criteria.
+-  These must be technology-agnostic and measurable.
+--->
+-
+-### Measurable Outcomes
+-
+-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
+-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
+-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
+-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
++# Feature Specification: Update Course Capacity
++
++**Feature Branch**: `001-update-course-capacity`  
++**Created**: 2026-03-06  
++**Status**: Draft  
++**Input**: User description: "1. Administrator opens a course offering. 2. Administrator edits the capacity value and submits. 3. System validates the new capacity against current enrollment. 4. System updates capacity and recalculates remaining seats. 5. System confirms the update. * **3a**: New capacity is below current enrollment. * 3a1: System rejects the change or requires a special override per policy. * **4a**: Update fails. * 4a1: System leaves capacity unchanged and reports failure."
++
++## User Scenarios & Testing *(mandatory)*
++
++### User Story 1 - Update Capacity Successfully (Priority: P1)
++
++An administrator updates the enrollment capacity of an existing course offering and receives confirmation when the change is valid.
++
++**Why this priority**: Accurate capacity drives enrollment availability and must work for normal administrative operations.
++
++**Independent Test**: Can be fully tested by opening an offering with active enrollment, submitting a valid higher capacity, and verifying that capacity and remaining seats update correctly.
++
++**Source Mapping**: `Use Cases/UC-40.md`, `Acceptance Tests/UC-40-AS.md`
++
++**Acceptance Scenarios**:
++
++1. **Given** an administrator is viewing a course offering with capacity 40 and enrollment 35, **When** the administrator submits a new capacity of 50, **Then** the system saves 50 as capacity, recalculates remaining seats to 15, and shows a success confirmation.
++2. **Given** an administrator has permission to edit offerings, **When** the administrator submits a valid capacity change, **Then** the updated capacity is reflected when the offering is re-opened.
++
++---
++
++### User Story 2 - Prevent Invalid Capacity Reduction (Priority: P2)
++
++An administrator is prevented from setting capacity below current enrollment unless policy allows an approved override.
++
++**Why this priority**: Prevents inconsistent enrollment states and enforces institutional policy.
++
++**Independent Test**: Can be fully tested by submitting a capacity below enrollment and verifying either rejection or an override path based on policy.
++
++**Source Mapping**: `Use Cases/UC-40.md`, `Acceptance Tests/UC-40-AS.md`
++
++**Acceptance Scenarios**:
++
++1. **Given** a course offering has 35 enrolled students, **When** an administrator submits a new capacity of 30 without override authority, **Then** the system rejects the update and keeps capacity unchanged.
++2. **Given** a course offering has 35 enrolled students and policy allows a privileged override, **When** an authorized administrator submits a new capacity of 30 with override approval, **Then** the system records the approved exception and applies the update.
++
++---
++
++### User Story 3 - Handle Update Failures Safely (Priority: P3)
++
++An administrator receives a clear failure result if the capacity update process cannot be completed, and the original capacity remains intact.
++
++**Why this priority**: Preserves data integrity and reduces administrative confusion during system or transaction failures.
++
++**Independent Test**: Can be fully tested by simulating an update failure after submission and verifying that no partial update is saved.
++
++**Source Mapping**: `Use Cases/UC-40.md`, `Acceptance Tests/UC-40-AS.md`
++
++**Acceptance Scenarios**:
++
++1. **Given** an administrator submits a valid capacity update, **When** the update operation fails before completion, **Then** the system keeps the original capacity and shows a failure message.
++2. **Given** a failed update attempt, **When** the administrator reloads the offering, **Then** the original capacity and remaining seats are unchanged.
++
++### Edge Cases
++
++- New capacity equals current enrollment, resulting in zero remaining seats.
++- New capacity is unchanged from the current value, resulting in no effective update.
++- Submitted capacity is blank, non-numeric, zero, or negative.
++- Two administrators edit the same offering at nearly the same time.
++- Policy requires override approval but no eligible approver is available at submission time.
++- The system detects a failure after validation but before final save confirmation.
++- Any requirement change must maintain alignment with `Use Cases/UC-40.md` and `Acceptance Tests/UC-40-AS.md`.
++
++## Requirements *(mandatory)*
++
++### Functional Requirements
++
++- **FR-001**: System MUST allow an administrator to open an existing course offering and view current capacity, current enrollment, and remaining seats before editing.
++- **FR-002**: System MUST allow an administrator to submit a new capacity value for a selected course offering.
++- **FR-003**: System MUST validate that submitted capacity is a positive whole number before applying any update.
++- **FR-004**: System MUST validate submitted capacity against current enrollment at submission time.
++- **FR-005**: If submitted capacity is less than current enrollment and no policy-compliant override is provided, the system MUST reject the change and keep existing capacity unchanged.
++- **FR-006**: If submitted capacity is less than current enrollment and a policy-compliant override is provided by an authorized administrator, the system MUST allow the change and record that an override was used.
++- **FR-007**: On any accepted change, system MUST recalculate remaining seats as `capacity - current enrollment` and persist both updated capacity and recalculated remaining seats as one completed update.
++- **FR-008**: On update failure, system MUST leave capacity and remaining seats unchanged and present a failure message to the administrator.
++- **FR-009**: On successful update, system MUST present a success confirmation that includes the updated capacity and remaining seats.
++- **FR-010**: The feature specification and acceptance coverage MUST remain aligned with `Use Cases/UC-40.md` and `Acceptance Tests/UC-40-AS.md`.
++- **FR-011**: Feature work MUST NOT edit `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit project authorization.
++- **FR-012**: Feature implementation MUST comply with applicable standards in the `Style Guides/` directory.
++
++### Key Entities *(include if feature involves data)*
++
++- **Course Offering**: A scheduled class instance with attributes including offering identifier, capacity, current enrollment count, and remaining seats.
++- **Capacity Update Request**: A submitted change containing target offering, proposed capacity, submitting administrator, submission timestamp, and optional override reference.
++- **Override Authorization**: A policy-governed approval record indicating who approved an exception, when it was approved, and why it was allowed.
++- **Update Result**: An outcome record that indicates success or failure and includes the message shown to the administrator.
++
++### Assumptions
++
++- Current enrollment count is authoritative at the moment validation occurs.
++- Override behavior is policy-driven and available only to authorized administrators.
++- Remaining seats cannot be negative after a completed update.
++- Administrators are already authenticated and authorized to access offering management.
++
++### Dependencies
++
++- Availability of policy rules that define when overrides are permitted.
++- Availability of current enrollment data for the selected offering.
++- Existing administrator offering-management workflow where capacity edits are initiated.
++
++## Success Criteria *(mandatory)*
++
++### Measurable Outcomes
++
++- **SC-001**: 95% of valid capacity updates are completed and confirmed to administrators within 10 seconds.
++- **SC-002**: 100% of rejected below-enrollment updates without approved override leave stored capacity unchanged.
++- **SC-003**: 100% of failed update attempts preserve the pre-update capacity and remaining seats.
++- **SC-004**: In user acceptance testing, at least 90% of administrators complete a capacity update on first attempt without assistance.
+*** End Patch
+ thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:15:11.981331Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"mkdir -p /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/checklists && cat > /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/checklists/requirements.md <<'EOF'\n# Specification Quality Checklist: Update Course Capacity\n\n**Purpose**: Validate specification completeness and quality before proceeding to planning\n**Created**: 2026-03-06\n**Feature**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md)\n\n## Content Quality\n\n- [x] No implementation details (languages, frameworks, APIs)\n- [x] Focused on user value and business needs\n- [x] Written for non-technical stakeholders\n- [x] All mandatory sections completed\n\n## Requirement Completeness\n\n- [x] No [NEEDS CLARIFICATION] markers remain\n- [x] Requirements are testable and unambiguous\n- [x] Success criteria are measurable\n- [x] Success criteria are technology-agnostic (no implementation details)\n- [x] All acceptance scenarios are defined\n- [x] Edge cases are identified\n- [x] Scope is clearly bounded\n- [x] Dependencies and assumptions identified\n\n## Feature Readiness\n\n- [x] All functional requirements have clear acceptance criteria\n- [x] User scenarios cover primary flows\n- [x] Feature meets measurable outcomes defined in Success Criteria\n- [x] No implementation details leak into specification\n\n## Notes\n\n- Validation result (iteration 1): all checklist items passed.\n- No spec revisions were required after validation.\nEOF"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:15:17.293080Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n \"NEEDS CLARIFICATION|\\[Brief Title\\]|\\[FEATURE NAME\\]|\\[DATE\\]|\\[###-feature-name\\]|\\[Describe\" /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md || true"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:15:17.302960Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git branch --show-current"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:15:17.363524Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"cat /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/checklists/requirements.md"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:15:22.701986Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5db-3da2-7290-8861-9a07f20f61c7 model=gpt-5.3-codex}: codex_core::tasks: close time.busy=73.1ms time.idle=117s
+2026-03-07T01:15:22.702019Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5db-3da2-7290-8861-9a07f20f61c7"}: codex_core::codex: close time.busy=684µs time.idle=117s
+2026-03-07T01:15:45.639700Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6a29c212387"}: codex_core::codex: new
+2026-03-07T01:15:45.640101Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6a29c212387"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5dd-6067-7ef1-9352-d6a29c212387 model=gpt-5.3-codex}: codex_core::tasks: new
+2026-03-07T01:15:45.640274Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6b2b5348c44"}: codex_core::codex: new
+2026-03-07T01:15:45.640328Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6b2b5348c44"}: codex_core::codex: close time.busy=20.6µs time.idle=33.6µs
+2026-03-07T01:15:49.366223Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6a29c212387"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5dd-6067-7ef1-9352-d6a29c212387 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":".specify/scripts/bash/check-prerequisites.sh --json --paths-only"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:15:52.690558Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6a29c212387"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5dd-6067-7ef1-9352-d6a29c212387 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"cat /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:16:05.476736Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6a29c212387"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5dd-6067-7ef1-9352-d6a29c212387 model=gpt-5.3-codex}: codex_core::tasks: close time.busy=21.8ms time.idle=19.8s
+2026-03-07T01:16:05.476770Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5dd-6067-7ef1-9352-d6a29c212387"}: codex_core::codex: close time.busy=426µs time.idle=19.8s
+2026-03-07T01:17:59.007207Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-658086c7d456"}: codex_core::codex: new
+2026-03-07T01:17:59.007618Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-658086c7d456"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5df-695f-7761-814c-658086c7d456 model=gpt-5.3-codex}: codex_core::tasks: new
+2026-03-07T01:17:59.007668Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-659b82009c9f"}: codex_core::codex: new
+2026-03-07T01:17:59.007673Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-659b82009c9f"}: codex_core::codex: close time.busy=1.99µs time.idle=3.13µs
+2026-03-07T01:18:10.768179Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-658086c7d456"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5df-695f-7761-814c-658086c7d456 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Update File: /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md
+@@
+ **Status**: Draft  
+ **Input**: User description: "1. Administrator opens a course offering. 2. Administrator edits the capacity value and submits. 3. System validates the new capacity against current enrollment. 4. System updates capacity and recalculates remaining seats. 5. System confirms the update. * **3a**: New capacity is below current enrollment. * 3a1: System rejects the change or requires a special override per policy. * **4a**: Update fails. * 4a1: System leaves capacity unchanged and reports failure."
+ 
++## Clarifications
++
++### Session 2026-03-06
++
++- Q: How should the system handle concurrent capacity edits by multiple administrators? → A: Reject stale submissions and require reload/resubmit.
++
+ ## User Scenarios & Testing *(mandatory)*
+@@
+ - Two administrators edit the same offering at nearly the same time.
++- If the offering changes after an administrator opens it, a stale submission must be rejected and the administrator must reload before resubmitting.
+ - Policy requires override approval but no eligible approver is available at submission time.
+ - The system detects a failure after validation but before final save confirmation.
+ - Any requirement change must maintain alignment with `Use Cases/UC-40.md` and `Acceptance Tests/UC-40-AS.md`.
+@@
+ - **FR-009**: On successful update, system MUST present a success confirmation that includes the updated capacity and remaining seats.
++- **FR-013**: If the course offering has changed since the administrator opened it, system MUST reject the stale submission, preserve current stored values, and require the administrator to reload before resubmitting.
+ - **FR-010**: The feature specification and acceptance coverage MUST remain aligned with `Use Cases/UC-40.md` and `Acceptance Tests/UC-40-AS.md`.
+ - **FR-011**: Feature work MUST NOT edit `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit project authorization.
+ - **FR-012**: Feature implementation MUST comply with applicable standards in the `Style Guides/` directory.
+*** End Patch
+ thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:18:17.663153Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-658086c7d456"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5df-695f-7761-814c-658086c7d456 model=gpt-5.3-codex}: codex_core::tasks: close time.busy=23.7ms time.idle=18.6s
+2026-03-07T01:18:17.663177Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5df-695f-7761-814c-658086c7d456"}: codex_core::codex: close time.busy=431µs time.idle=18.7s
+2026-03-07T01:19:54.525668Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f81fb61d0c7"}: codex_core::codex: new
+2026-03-07T01:19:54.526031Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f81fb61d0c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e1-2c9d-7323-b704-0f81fb61d0c7 model=gpt-5.3-codex}: codex_core::tasks: new
+2026-03-07T01:19:54.526091Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f9b05e092ae"}: codex_core::codex: new
+2026-03-07T01:19:54.526096Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f9b05e092ae"}: codex_core::codex: close time.busy=2.56µs time.idle=3.10µs
+2026-03-07T01:20:06.728306Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f81fb61d0c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e1-2c9d-7323-b704-0f81fb61d0c7 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Update File: /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md
+@@
+ ### Session 2026-03-06
+ 
+ - Q: How should the system handle concurrent capacity edits by multiple administrators? → A: Reject stale submissions and require reload/resubmit.
++- Q: Should override approval be handled inside this feature or externally? → A: This feature includes requesting and approving overrides end-to-end.
+@@
+ 2. **Given** a course offering has 35 enrolled students and policy allows a privileged override, **When** an authorized administrator submits a new capacity of 30 with override approval, **Then** the system records the approved exception and applies the update.
++3. **Given** a course offering has 35 enrolled students and no prior override approval exists, **When** the administrator requests an override during submission and an authorized approver grants it, **Then** the system applies the new capacity and records request and approval details.
+@@
+-- **FR-006**: If submitted capacity is less than current enrollment and a policy-compliant override is provided by an authorized administrator, the system MUST allow the change and record that an override was used.
++- **FR-006**: If submitted capacity is less than current enrollment and a policy-compliant override is approved within this feature workflow, the system MUST allow the change and record that an override was used.
++- **FR-014**: System MUST provide an in-feature override workflow for below-enrollment capacity changes, including override request submission, approver decision capture, and final decision notification.
+@@
+ ### Assumptions
+ 
+ - Current enrollment count is authoritative at the moment validation occurs.
+-- Override behavior is policy-driven and available only to authorized administrators.
++- Override behavior is policy-driven and executed through this feature's request/approval workflow.
+ - Remaining seats cannot be negative after a completed update.
+ - Administrators are already authenticated and authorized to access offering management.
+@@
+ ### Dependencies
+ 
+-- Availability of policy rules that define when overrides are permitted.
++- Availability of policy rules that define when overrides are permitted and who may approve.
+ - Availability of current enrollment data for the selected offering.
+ - Existing administrator offering-management workflow where capacity edits are initiated.
+*** End Patch
+ thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:20:10.064591Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f81fb61d0c7"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e1-2c9d-7323-b704-0f81fb61d0c7 model=gpt-5.3-codex}: codex_core::tasks: close time.busy=24.4ms time.idle=15.5s
+2026-03-07T01:20:10.064640Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e1-2c9d-7323-b704-0f81fb61d0c7"}: codex_core::codex: close time.busy=375µs time.idle=15.5s
+2026-03-07T01:21:04.859682Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e4983ed525a"}: codex_core::codex: new
+2026-03-07T01:21:04.859999Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e4983ed525a"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e2-3f5b-7063-b044-7e4983ed525a model=gpt-5.3-codex}: codex_core::tasks: new
+2026-03-07T01:21:04.860062Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e54163814c9"}: codex_core::codex: new
+2026-03-07T01:21:04.860095Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e54163814c9"}: codex_core::codex: close time.busy=5.32µs time.idle=27.5µs
+2026-03-07T01:21:25.092409Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e4983ed525a"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e2-3f5b-7063-b044-7e4983ed525a model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Update File: /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md
+@@
+ ### Session 2026-03-06
+ 
+ - Q: How should the system handle concurrent capacity edits by multiple administrators? → A: Reject stale submissions and require reload/resubmit.
+ - Q: Should override approval be handled inside this feature or externally? → A: This feature includes requesting and approving overrides end-to-end.
++- Q: Who can approve a below-enrollment override? → A: The requesting administrator can self-approve.
+@@
+-3. **Given** a course offering has 35 enrolled students and no prior override approval exists, **When** the administrator requests an override during submission and an authorized approver grants it, **Then** the system applies the new capacity and records request and approval details.
++3. **Given** a course offering has 35 enrolled students and no prior override approval exists, **When** the administrator requests an override during submission and self-approves per policy, **Then** the system applies the new capacity and records request and approval details.
+@@
+-- Policy requires override approval but no eligible approver is available at submission time.
++- Policy disallows self-approval for the submitting administrator.
+@@
+ - **FR-014**: System MUST provide an in-feature override workflow for below-enrollment capacity changes, including override request submission, approver decision capture, and final decision notification.
++- **FR-015**: System MUST permit the requesting administrator to approve their own below-enrollment override request when policy allows and MUST record requester and approver identities.
+@@
+-- Override behavior is policy-driven and executed through this feature's request/approval workflow.
++- Override behavior is policy-driven and executed through this feature's request/approval workflow, including self-approval where permitted.
+@@
+-- Availability of policy rules that define when overrides are permitted and who may approve.
++- Availability of policy rules that define when self-approval is permitted.
+*** End Patch
+ thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:21:28.424934Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e4983ed525a"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e2-3f5b-7063-b044-7e4983ed525a model=gpt-5.3-codex}: codex_core::tasks: close time.busy=21.8ms time.idle=23.5s
+2026-03-07T01:21:28.424969Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e2-3f5b-7063-b044-7e4983ed525a"}: codex_core::codex: close time.busy=345µs time.idle=23.6s
+2026-03-07T01:22:12.049942Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90c36765d6b8"}: codex_core::codex: new
+2026-03-07T01:22:12.050347Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90c36765d6b8"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e3-45d1-7fc0-9aef-90c36765d6b8 model=gpt-5.3-codex}: codex_core::tasks: new
+2026-03-07T01:22:12.050413Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90d709f28118"}: codex_core::codex: new
+2026-03-07T01:22:12.050418Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90d709f28118"}: codex_core::codex: close time.busy=2.55µs time.idle=3.05µs
+2026-03-07T01:22:20.041036Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90c36765d6b8"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e3-45d1-7fc0-9aef-90c36765d6b8 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Update File: /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md
+@@
+ ### Session 2026-03-06
+ 
+ - Q: How should the system handle concurrent capacity edits by multiple administrators? → A: Reject stale submissions and require reload/resubmit.
+ - Q: Should override approval be handled inside this feature or externally? → A: This feature includes requesting and approving overrides end-to-end.
+ - Q: Who can approve a below-enrollment override? → A: The requesting administrator can self-approve.
++- Q: How long should override audit records be retained? → A: Retain override audit records for 7 years.
+@@
+ - **FR-015**: System MUST permit the requesting administrator to approve their own below-enrollment override request when policy allows and MUST record requester and approver identities.
++- **FR-016**: System MUST retain override request and approval audit records for 7 years from approval date.
+*** End Patch
+ thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:22:28.359407Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90c36765d6b8"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e3-45d1-7fc0-9aef-90c36765d6b8 model=gpt-5.3-codex}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n \"## Clarifications|### Session|Q:|FR-013|FR-014|FR-015|FR-016|authorized approver|self-approve|retain\" /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md && sed -n '1,260p' /home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-course-capacity/spec.md"} thread_id=019cc5db-1a68-73f3-b74a-bec356f84078
+2026-03-07T01:22:36.093050Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90c36765d6b8"}:turn{otel.name="session_task.turn" thread.id=019cc5db-1a68-73f3-b74a-bec356f84078 turn.id=019cc5e3-45d1-7fc0-9aef-90c36765d6b8 model=gpt-5.3-codex}: codex_core::tasks: close time.busy=36.9ms time.idle=24.0s
+2026-03-07T01:22:36.093089Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5e3-45d1-7fc0-9aef-90c36765d6b8"}: codex_core::codex: close time.busy=429µs time.idle=24.0s
+2026-03-07T01:36:57.245318Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5f0-c79d-76b0-aff3-5796f93a5af9"}: codex_core::codex: new
+2026-03-07T01:36:57.245538Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5f0-c79d-76b0-aff3-5796f93a5af9"}: codex_core::codex::handlers: Shutting down Codex instance
+2026-03-07T01:36:57.252631Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}:submission_dispatch{submission.id="019cc5f0-c79d-76b0-aff3-5796f93a5af9"}: codex_core::codex: close time.busy=7.25ms time.idle=57.7µs
+2026-03-07T01:36:57.252816Z  INFO session_loop{thread_id=019cc5db-1a68-73f3-b74a-bec356f84078}: codex_core::codex: close time.busy=15.6ms time.idle=1421s
+2026-03-07T01:36:57.257635Z  WARN codex_core::file_watcher: failed to unwatch /home/m_srnic/ece493/group_project/ECE493Group19/.codex/skills/.system: No watch was found. about ["/home/m_srnic/ece493/group_project/ECE493Group19/.codex/skills/.system"]
