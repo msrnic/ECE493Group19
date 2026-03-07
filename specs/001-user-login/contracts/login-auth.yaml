@@ -1,0 +1,107 @@
+openapi: 3.1.0
+info:
+  title: User Login Authentication Contract
+  version: 1.0.0
+  description: Contract for UC-02 login behavior in MVC web application.
+servers:
+  - url: https://example.local
+paths:
+  /login:
+    get:
+      summary: Render login page for unauthenticated users
+      responses:
+        '200':
+          description: Login view rendered
+        '302':
+          description: Already authenticated; redirected to dashboard
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /dashboard
+    post:
+      summary: Submit credentials and attempt authentication
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [identifier, password]
+              properties:
+                identifier:
+                  type: string
+                  description: Username or email
+                password:
+                  type: string
+      responses:
+        '302':
+          description: Login success redirect to dashboard
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /dashboard
+            Set-Cookie:
+              schema:
+                type: string
+                description: Authenticated session cookie
+        '401':
+          description: Invalid credentials
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                invalid:
+                  value: Invalid username/email or password.
+        '423':
+          description: Account temporarily locked
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                locked:
+                  value: Your account is temporarily locked. Try again later or contact support.
+        '403':
+          description: Account disabled
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                disabled:
+                  value: Your account is disabled. Please contact support.
+        '503':
+          description: Authentication service unavailable
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                unavailable:
+                  value: Login service is unavailable. Please try again shortly.
+  /dashboard:
+    get:
+      summary: Render authenticated dashboard
+      responses:
+        '200':
+          description: Dashboard for authenticated session
+        '302':
+          description: Unauthenticated; redirected to login
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /login
+components:
+  schemas:
+    LoginOutcome:
+      type: string
+      enum:
+        - success
+        - invalid_credentials
+        - locked
+        - disabled
+        - service_unavailable
