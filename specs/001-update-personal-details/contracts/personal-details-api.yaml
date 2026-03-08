@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: Personal Details API Contract
+  version: 1.0.0
+  description: Contract for UC-05 edit personal details flow.
+servers:
+  - url: /api
+paths:
+  /personal-details:
+    get:
+      summary: Get authenticated user's personal details
+      operationId: getPersonalDetails
+      tags: [PersonalDetails]
+      responses:
+        '200':
+          description: Current personal details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonalDetailsResponse'
+        '401':
+          description: Not authenticated
+    put:
+      summary: Update authenticated user's editable personal details
+      operationId: updatePersonalDetails
+      tags: [PersonalDetails]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonalDetailsUpdateRequest'
+      responses:
+        '200':
+          description: Update saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateSuccessResponse'
+        '400':
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '401':
+          description: Not authenticated
+        '500':
+          description: Save failed; no partial updates applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveErrorResponse'
+components:
+  schemas:
+    PersonalDetailsResponse:
+      type: object
+      required:
+        - legalFirstName
+        - legalLastName
+        - dateOfBirth
+        - countryOfOrigin
+      properties:
+        legalFirstName:
+          type: string
+          maxLength: 100
+        legalLastName:
+          type: string
+          maxLength: 100
+        dateOfBirth:
+          type: string
+          format: date
+        countryOfOrigin:
+          type: string
+          maxLength: 100
+        phoneNumber:
+          type: string
+          maxLength: 30
+          nullable: true
+        addressLine1:
+          type: string
+          maxLength: 200
+          nullable: true
+        addressLine2:
+          type: string
+          maxLength: 200
+          nullable: true
+        city:
+          type: string
+          maxLength: 100
+          nullable: true
+        provinceOrState:
+          type: string
+          maxLength: 100
+          nullable: true
+        postalCode:
+          type: string
+          maxLength: 20
+          nullable: true
+        lastUpdatedAt:
+          type: string
+          format: date-time
+    PersonalDetailsUpdateRequest:
+      type: object
+      required:
+        - legalFirstName
+        - legalLastName
+        - dateOfBirth
+        - countryOfOrigin
+      additionalProperties: false
+      properties:
+        legalFirstName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        legalLastName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        dateOfBirth:
+          type: string
+          format: date
+        countryOfOrigin:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phoneNumber:
+          type: string
+          maxLength: 30
+        addressLine1:
+          type: string
+          maxLength: 200
+        addressLine2:
+          type: string
+          maxLength: 200
+        city:
+          type: string
+          maxLength: 100
+        provinceOrState:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          maxLength: 20
+    UpdateSuccessResponse:
+      type: object
+      required: [message, personalDetails]
+      properties:
+        message:
+          type: string
+          example: Personal details updated successfully.
+        personalDetails:
+          $ref: '#/components/schemas/PersonalDetailsResponse'
+    ValidationErrorResponse:
+      type: object
+      required: [message, fieldErrors]
+      properties:
+        message:
+          type: string
+          example: Please correct highlighted fields.
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            dateOfBirth: Date of birth must be a valid past date.
+    SaveErrorResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: We could not save your changes. Please retry.
