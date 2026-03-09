@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: Force Withdrawal API
+  version: 1.0.0
+  description: REST contract for administrative forced course withdrawal (feature 001-force-withdrawal).
+servers:
+  - url: https://sis.example.edu
+paths:
+  /api/admin/force-withdrawals/implications:
+    get:
+      summary: Get withdrawal implications for selected student and offering
+      tags: [ForceWithdrawal]
+      parameters:
+        - in: query
+          name: studentId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Implications and current enrollment status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImplicationsResponse'
+        '400':
+          description: Missing/invalid selection
+        '403':
+          description: Unauthorized for enrollment administration
+        '404':
+          description: Student or offering not found
+  /api/admin/force-withdrawals:
+    post:
+      summary: Confirm and process forced withdrawal
+      tags: [ForceWithdrawal]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForceWithdrawalRequest'
+      responses:
+        '200':
+          description: Withdrawal completed (with optional pending audit)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForceWithdrawalResult'
+        '400':
+          description: Validation error (including missing reason)
+        '403':
+          description: Unauthorized for enrollment administration
+        '404':
+          description: Student or offering not found
+        '409':
+          description: Not enrolled or already withdrawn by prior successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResult'
+        '500':
+          description: Processing failure; transaction rolled back
+  /api/admin/force-withdrawals/{actionId}:
+    get:
+      summary: Get forced withdrawal action status
+      tags: [ForceWithdrawal]
+      parameters:
+        - in: path
+          name: actionId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current action status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForceWithdrawalStatus'
+        '404':
+          description: Action not found
+  /api/admin/force-withdrawals/pending-audit:
+    get:
+      summary: List completed withdrawals pending audit logging
+      tags: [ForceWithdrawal]
+      responses:
+        '200':
+          description: Pending audit actions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PendingAuditItem'
+        '403':
+          description: Unauthorized for enrollment administration
+components:
+  schemas:
+    ForceWithdrawalRequest:
+      type: object
+      required:
+        - studentId
+        - offeringId
+        - reason
+        - idempotencyKey
+      properties:
+        studentId:
+          type: string
+        offeringId:
+          type: string
+        reason:
+          type: string
+          minLength: 1
+        idempotencyKey:
+          type: string
+    ImplicationsResponse:
+      type: object
+      required:
+        - studentId
+        - offeringId
+        - enrolled
+        - transcriptImpact
+        - feeImpact
+      properties:
+        studentId:
+          type: string
+        offeringId:
+          type: string
+        enrolled:
+          type: boolean
+        transcriptImpact:
+          type: string
+        feeImpact:
+          type: string
+    ForceWithdrawalResult:
+      type: object
+      required:
+        - actionId
+        - status
+        - pendingAudit
+        - message
+      properties:
+        actionId:
+          type: string
+        status:
+          type: string
+          enum: [COMPLETED, PENDING_AUDIT]
+        pendingAudit:
+          type: boolean
+        message:
+          type: string
+    ConflictResult:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum: [NOT_ENROLLED, ALREADY_WITHDRAWN]
+        message:
+          type: string
+    ForceWithdrawalStatus:
+      type: object
+      required:
+        - actionId
+        - status
+        - studentId
+        - offeringId
+      properties:
+        actionId:
+          type: string
+        status:
+          type: string
+          enum: [PENDING_CONFIRMATION, COMPLETED, REJECTED_NOT_ENROLLED, FAILED, PENDING_AUDIT]
+        studentId:
+          type: string
+        offeringId:
+          type: string
+        reason:
+          type: string
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+    PendingAuditItem:
+      type: object
+      required:
+        - actionId
+        - studentId
+        - offeringId
+        - retryCount
+        - nextRetryAt
+      properties:
+        actionId:
+          type: string
+        studentId:
+          type: string
+        offeringId:
+          type: string
+        retryCount:
+          type: integer
+          minimum: 0
+        nextRetryAt:
+          type: string
+          format: date-time
+        lastError:
+          type: string
