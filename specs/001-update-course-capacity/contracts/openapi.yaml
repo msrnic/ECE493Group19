@@ -1,0 +1,214 @@
+openapi: 3.0.3
+info:
+  title: Course Capacity Update API
+  version: 1.0.0
+  description: API contracts for UC-40 update course capacity workflow.
+servers:
+  - url: https://example.edu
+paths:
+  /admin/course-offerings/{offeringId}/capacity:
+    get:
+      summary: Load course offering capacity edit form
+      operationId: getCourseCapacityForm
+      tags: [CourseCapacity]
+      parameters:
+        - in: path
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Course offering details loaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseCapacityView'
+        '404':
+          description: Offering not found
+    post:
+      summary: Submit capacity update request
+      operationId: submitCourseCapacityUpdate
+      tags: [CourseCapacity]
+      parameters:
+        - in: path
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapacityUpdateSubmission'
+      responses:
+        '200':
+          description: Update processed (success or rejected business outcome)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityUpdateResponse'
+        '400':
+          description: Invalid payload
+        '409':
+          description: Stale submission conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityUpdateResponse'
+        '500':
+          description: Unexpected failure while applying update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityUpdateResponse'
+
+  /admin/course-offerings/{offeringId}/capacity/overrides:
+    post:
+      summary: Request and decide below-enrollment override
+      operationId: requestCapacityOverride
+      tags: [CourseCapacity]
+      parameters:
+        - in: path
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OverrideRequestSubmission'
+      responses:
+        '201':
+          description: Override decision recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverrideDecisionResponse'
+        '400':
+          description: Invalid override submission
+        '403':
+          description: Self-approval denied by policy
+
+components:
+  schemas:
+    CourseCapacityView:
+      type: object
+      required:
+        - offeringId
+        - capacity
+        - currentEnrollment
+        - remainingSeats
+        - version
+      properties:
+        offeringId:
+          type: string
+        capacity:
+          type: integer
+          minimum: 1
+        currentEnrollment:
+          type: integer
+          minimum: 0
+        remainingSeats:
+          type: integer
+          minimum: 0
+        version:
+          type: integer
+          minimum: 1
+
+    CapacityUpdateSubmission:
+      type: object
+      required:
+        - proposedCapacity
+        - submittedVersion
+      properties:
+        proposedCapacity:
+          type: integer
+          minimum: 1
+        submittedVersion:
+          type: integer
+          minimum: 1
+        overrideRequestId:
+          type: string
+          nullable: true
+
+    CapacityUpdateResponse:
+      type: object
+      required:
+        - requestId
+        - outcome
+        - messageCode
+        - capacity
+        - remainingSeats
+      properties:
+        requestId:
+          type: string
+        outcome:
+          type: string
+          enum: [success, rejected, stale, failed]
+        messageCode:
+          type: string
+          enum:
+            - UPDATED
+            - VALIDATION_ERROR
+            - OVERRIDE_REQUIRED
+            - STALE_SUBMISSION
+            - UPDATE_FAILED
+        capacity:
+          type: integer
+          minimum: 1
+        remainingSeats:
+          type: integer
+          minimum: 0
+
+    OverrideRequestSubmission:
+      type: object
+      required:
+        - requestId
+        - reason
+        - decision
+        - approvedByAccountId
+        - allowSelfApproval
+      properties:
+        requestId:
+          type: string
+        reason:
+          type: string
+          minLength: 5
+          maxLength: 500
+        decision:
+          type: string
+          enum: [approved, denied]
+        approvedByAccountId:
+          type: string
+        allowSelfApproval:
+          type: boolean
+
+    OverrideDecisionResponse:
+      type: object
+      required:
+        - overrideRequestId
+        - requestId
+        - decision
+        - approvedByAccountId
+        - approvedAt
+        - retentionUntil
+      properties:
+        overrideRequestId:
+          type: string
+        requestId:
+          type: string
+        decision:
+          type: string
+          enum: [approved, denied]
+        approvedByAccountId:
+          type: string
+        approvedAt:
+          type: string
+          format: date-time
+        retentionUntil:
+          type: string
+          format: date-time
