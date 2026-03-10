@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  title: Student Inbox Notifications API
+  version: 0.1.0
+  description: API contract for UC-42 send notifications to students' inboxes.
+servers:
+  - url: /api
+paths:
+  /admin/notifications/preview-recipients:
+    post:
+      summary: Resolve and validate recipients before send
+      operationId: previewRecipients
+      tags: [AdminNotifications]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientSelectionRequest'
+      responses:
+        '200':
+          description: Recipient resolution completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientPreviewResponse'
+        '400':
+          description: Invalid or empty recipient selection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '403':
+          description: Unauthorized recipients found (blocking)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationErrorResponse'
+
+  /admin/notifications/send:
+    post:
+      summary: Submit notification send request
+      operationId: sendNotification
+      tags: [AdminNotifications]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendNotificationRequest'
+      responses:
+        '202':
+          description: Send request accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendAcceptedResponse'
+        '400':
+          description: Validation failure (message constraints / invalid recipients)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '403':
+          description: Authorization failure (all-or-nothing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationErrorResponse'
+        '409':
+          description: Send blocked due to consistency or logging failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictErrorResponse'
+
+  /admin/notifications/send-requests/{sendRequestId}:
+    get:
+      summary: Get send completion summary and delivery outcomes
+      operationId: getSendSummary
+      tags: [AdminNotifications]
+      parameters:
+        - in: path
+          name: sendRequestId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Send summary returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendSummaryResponse'
+        '404':
+          description: Send request not found
+
+  /admin/notifications/send-requests/{sendRequestId}/retry:
+    post:
+      summary: Retry failed recipient deliveries for a prior send request
+      operationId: retryFailedDeliveries
+      tags: [AdminNotifications]
+      parameters:
+        - in: path
+          name: sendRequestId
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Retry accepted for failed recipients only
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetryAcceptedResponse'
+        '400':
+          description: No failed recipients remain
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '410':
+          description: Retry window expired (>24h from original send)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetryExpiredResponse'
+        '404':
+          description: Send request not found
+
+components:
+  schemas:
+    RecipientSelectionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        individualStudentIds:
+          type: array
+          items:
+            type: string
+          default: []
+        courseRosterIds:
+          type: array
+          items:
+            type: string
+          default: []
+        groupIds:
+          type: array
+          items:
+            type: string
+          default: []
+      required: [individualStudentIds, courseRosterIds, groupIds]
+
+    SendNotificationRequest:
+      allOf:
+        - $ref: '#/components/schemas/RecipientSelectionRequest'
+        - type: object
+          additionalProperties: false
+          properties:
+            subject:
+              type: string
+              minLength: 1
+              maxLength: 120
+            body:
+              type: string
+              minLength: 1
+              maxLength: 5000
+          required: [subject, body]
+
+    RecipientPreviewResponse:
+      type: object
+      properties:
+        totalResolvedRecipients:
+          type: integer
+          minimum: 0
+        duplicateRecipientsRemoved:
+          type: integer
+          minimum: 0
+        recipientIds:
+          type: array
+          items:
+            type: string
+
+    SendAcceptedResponse:
+      type: object
+      properties:
+        sendRequestId:
+          type: string
+        status:
+          type: string
+          enum: [processing]
+        retryExpiresAt:
+          type: string
+          format: date-time
+
+    SendSummaryResponse:
+      type: object
+      properties:
+        sendRequestId:
+          type: string
+        status:
+          type: string
+          enum: [completed, completed_with_failures, failed]
+        totalUniqueRecipients:
+          type: integer
+        successfulDeliveries:
+          type: integer
+        failedDeliveries:
+          type: integer
+        duplicateRecipientsRemoved:
+          type: integer
+        retryEligible:
+          type: boolean
+        failedRecipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedRecipient'
+
+    FailedRecipient:
+      type: object
+      properties:
+        recipientId:
+          type: string
+        reason:
+          type: string
+
+    RetryAcceptedResponse:
+      type: object
+      properties:
+        sendRequestId:
+          type: string
+        retriedRecipientCount:
+          type: integer
+        status:
+          type: string
+          enum: [processing]
+
+    ValidationErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
+
+    AuthorizationErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          enum: [UNAUTHORIZED_RECIPIENTS]
+        message:
+          type: string
+        unauthorizedRecipientIds:
+          type: array
+          items:
+            type: string
+
+    ConflictErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+    RetryExpiredResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          enum: [RETRY_WINDOW_EXPIRED]
+        message:
+          type: string
+        retryExpiredAt:
+          type: string
+          format: date-time
