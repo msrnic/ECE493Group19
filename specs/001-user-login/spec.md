@@ -82,7 +82,6 @@ Source mapping: `Use Cases/UC-02.md`, `Acceptance Tests/UC-02-AS.md`.
 - **FR-004**: System MUST create an authenticated session and route the user to the main dashboard when credentials are valid and the account is active.
 - **FR-005**: System MUST deny access and present an invalid-credentials message when submitted credentials do not match an active account.
 - **FR-006**: System MUST allow users to retry login after an invalid-credentials result.
-- **FR-007**: System MUST track consecutive failed login attempts per account and temporarily lock the account after the configured failure threshold is reached.
 - **FR-007**: System MUST track consecutive failed login attempts per account and temporarily lock the account for 15 minutes after 5 consecutive failed attempts.
 - **FR-008**: System MUST deny login attempts for locked accounts, including attempts with valid credentials, until lock conditions are resolved.
 - **FR-009**: System MUST deny login attempts for disabled accounts and provide next-step guidance.
@@ -91,6 +90,12 @@ Source mapping: `Use Cases/UC-02.md`, `Acceptance Tests/UC-02-AS.md`.
 - **FR-012**: Each user scenario in this specification MUST remain traceable to `Use Cases/UC-02.md` and `Acceptance Tests/UC-02-AS.md`.
 - **FR-013**: Feature delivery MUST NOT modify `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` artifacts without explicit project authorization.
 - **FR-014**: This feature MUST support password-based authentication only (username/email plus password), and multi-factor authentication is explicitly out of scope.
+
+### Non-Functional Requirements
+
+- **NFR-001**: The system MUST meet SC-001 by demonstrating that at least 95% of valid sign-in attempts reach `/dashboard` within 30 seconds under normal operating conditions.
+- **NFR-002**: The system MUST capture measurement evidence for SC-001 in repeatable test output.
+- **NFR-003**: The system MUST define a post-release measurement process for SC-005, including sample size, data source, and reporting cadence.
 
 ### Key Entities *(include if feature involves data)*
 

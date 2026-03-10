@@ -55,11 +55,16 @@ specs/001-user-login/
 src/
 ├── controllers/
 │   └── auth-controller.js
+├── middleware/
+│   ├── require-auth.js
+│   └── session-middleware.js
 ├── models/
 │   ├── account-model.js
 │   ├── course-model.js
 │   ├── login-attempt-model.js
 │   └── session-model.js
+├── routes/
+│   └── auth-routes.js
 ├── views/
 │   ├── login.html
 │   └── dashboard.html
