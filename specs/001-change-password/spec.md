@@ -21,6 +21,8 @@
 
 An authenticated user opens account security settings, provides the current password and a new password, and completes a successful password change.
 
+**Source Traceability**: `UC-01`, `UC-01-AS`; admin extension `UC-43`, `UC-43-AS`
+
 **Why this priority**: This is the core security task and primary user value for the feature.
 
 **Independent Test**: Can be fully tested by signing in, opening security settings, submitting valid current and new passwords, and verifying the password is updated and confirmation is shown.
@@ -38,6 +40,8 @@ An authenticated user opens account security settings, provides the current pass
 
 A user in a password reset flow uses a valid reset token and a compliant new password to set a new password without entering the current password.
 
+**Source Traceability**: `UC-01`, `UC-01-AS`
+
 **Why this priority**: Supports users who cannot provide their current password while preserving account recovery continuity.
 
 **Independent Test**: Can be tested independently by starting from a reset-link entry point, submitting a valid token and compliant new password, and confirming successful password update.
@@ -52,6 +56,8 @@ A user in a password reset flow uses a valid reset token and a compliant new pas
 ### User Story 3 - Handle Validation, Errors, and Cancellation (Priority: P3)
 
 A user receives clear feedback for policy failures, system failures, and cancellation so they understand whether the password changed and what to do next.
+
+**Source Traceability**: `UC-01`, `UC-01-AS`
 
 **Why this priority**: Reduces user confusion and prevents accidental lockouts during non-happy paths.
 

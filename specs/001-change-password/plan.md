@@ -60,6 +60,7 @@ app/
 │   ├── user-model.js
 │   ├── reset-token-model.js
 │   ├── password-change-model.js
+│   ├── verification-cooldown-model.js
 │   ├── session-model.js
 │   └── notification-model.js
 ├── views/
@@ -78,6 +79,8 @@ app/
 └── services/
     ├── password-policy-service.js
     ├── password-change-service.js
+    ├── admin-password-change-service.js
+    ├── reset-token-password-change-service.js
     ├── cooldown-service.js
     ├── session-service.js
     └── notification-service.js
