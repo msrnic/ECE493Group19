@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-update-personal-details`  
 **Created**: 2026-03-06  
-**Status**: Draft  
+**Status**: Ready for Implementation  
 **Input**: User description: "1. Actor opens personal details. 2. System displays current stored personal details. 3. Actor edits allowed fields and submits changes. 4. System validates the data and saves updates. 5. System confirms the updated personal details. * **3a**: Actor submits invalid data (e.g., missing required fields). * 3a1: System highlights errors and requests correction. * **4a**: Save fails due to system error. * 4a1: System does not apply changes and informs actor to retry. * **6a**: User cancels or abandons the edit process. * 6a1: User selects cancel or navigates away before submitting changes. * 6a2: System discards any unsaved modifications."
 
 ## Clarifications
@@ -24,6 +24,8 @@ As a user, I can open my personal details, update allowed fields, and save succe
 
 **Independent Test**: Can be fully tested by opening existing details, changing allowed fields with valid values, submitting, and confirming persisted updates are shown.
 
+**Traceability**: Source Use Case: `UC-05` | Acceptance Tests: `UC-05-AS`
+
 **Acceptance Scenarios**:
 
 1. **Given** a user with existing personal details, **When** the user opens the personal details screen, **Then** the system displays the currently stored values for all viewable fields.
@@ -40,6 +42,8 @@ As a user, I receive clear validation feedback when I submit invalid or incomple
 
 **Independent Test**: Can be fully tested by submitting missing required fields or malformed values and confirming visible, field-specific errors and no saved changes.
 
+**Traceability**: Source Use Case: `UC-05` | Acceptance Tests: `UC-05-AS`
+
 **Acceptance Scenarios**:
 
 1. **Given** the user has edited personal details, **When** the user submits with one or more invalid fields, **Then** the system blocks saving and highlights the specific fields that need correction.
@@ -54,6 +58,8 @@ As a user, I can cancel edits or recover from save failures without partial or u
 **Why this priority**: Preventing accidental or inconsistent updates maintains user trust and data integrity.
 
 **Independent Test**: Can be fully tested by canceling before submit and by simulating a save failure, then verifying that no changes are persisted.
+
+**Traceability**: Source Use Case: `UC-05` | Acceptance Tests: `UC-05-AS`
 
 **Acceptance Scenarios**:
 
@@ -82,8 +88,8 @@ As a user, I can cancel edits or recover from save failures without partial or u
 - **FR-006**: System MUST show explicit confirmation after a successful update.
 - **FR-007**: System MUST ensure failed save attempts do not apply any portion of the submitted changes.
 - **FR-008**: System MUST notify the user when a save fails due to system error and instruct them to retry.
-- **FR-009**: System MUST discard unsaved changes when the user cancels editing or abandons the flow before submission.
-- **FR-009a**: System MUST prompt for confirmation when a user attempts to navigate away with unsaved changes, allowing the user to stay and continue editing or leave and discard changes.
+- **FR-009**: System MUST discard unsaved in-memory edits only after explicit cancel action or confirmed abandonment before submission.
+- **FR-009a**: System MUST prompt for confirmation when unsaved edits exist and navigation or cancel is attempted, allowing the user to stay and continue editing or leave and discard changes.
 - **FR-010**: System MUST preserve the last successfully saved personal details as the source of truth until a new save is confirmed.
 - **FR-011**: Every user story MUST reference one or more source use cases in `Use Cases/UC-XX.md` and matching acceptance tests in `Acceptance Tests/UC-XX-AS.md`.
 - **FR-012**: System MUST apply concurrent valid updates to the same personal details profile using last-write-wins behavior, where the most recent successful save becomes authoritative.
