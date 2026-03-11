@@ -5,6 +5,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-10
 ## Active Technologies
 - SQLite for account information, course information, timetable records, generated schedule records, and conflict-analysis inputs/results metadata (024-branch-conflict-warnings)
 - SQLite for account information, course information, selected schedule options, section enrollment records, and enrollment-eligibility inputs (025-branch-enroll-all)
+- SQLite for account information, course information, and term-scoped student scheduling constraints (026-branch-scheduling-constraints)
 
 - HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript (019-branch-built-in-inbox)
 
@@ -25,9 +26,9 @@ npm test && npm run lint
 HTML5, CSS3, JavaScript (ES2023): Follow standard conventions
 
 ## Recent Changes
+- 026-branch-scheduling-constraints: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 025-branch-enroll-all: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 024-branch-conflict-warnings: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
-- 023-branch-schedule-results: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 
 
 <!-- MANUAL ADDITIONS START -->
