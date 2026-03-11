@@ -23,6 +23,10 @@ As an authorized actor, I can open a relevant page from the dashboard and view t
 
 **Why this priority**: This is the core user value and primary journey.
 
+**Use Case Links**: `Use Cases/UC-06.md`, `Use Cases/UC-20.md`, `Use Cases/UC-21.md`, `Use Cases/UC-33.md`, `Use Cases/UC-36.md`
+
+**Acceptance Links**: `Acceptance Tests/UC-06-AS.md`, `Acceptance Tests/UC-20-AS.md`, `Acceptance Tests/UC-21-AS.md`, `Acceptance Tests/UC-33-AS.md`, `Acceptance Tests/UC-36-AS.md`
+
 **Independent Test**: Can be tested by navigating from the dashboard to a valid page and confirming expected information appears for an authorized actor.
 
 **Acceptance Scenarios**:
@@ -38,6 +42,10 @@ As an authorized actor, I can still use the page when only part of the requested
 
 **Why this priority**: Missing data is a common real-world condition and users still need actionable information.
 
+**Use Case Links**: `Use Cases/UC-06.md`, `Use Cases/UC-20.md`, `Use Cases/UC-21.md`, `Use Cases/UC-33.md`, `Use Cases/UC-36.md`
+
+**Acceptance Links**: `Acceptance Tests/UC-06-AS.md`, `Acceptance Tests/UC-20-AS.md`, `Acceptance Tests/UC-21-AS.md`, `Acceptance Tests/UC-33-AS.md`, `Acceptance Tests/UC-36-AS.md`
+
 **Independent Test**: Can be tested by simulating unavailable fields and confirming available data remains visible with missing items identified.
 
 **Acceptance Scenarios**:
@@ -52,6 +60,10 @@ As an authorized actor, I can still use the page when only part of the requested
 As a protected system, only authorized actors can view restricted information on relevant pages.
 
 **Why this priority**: Access control protects sensitive data and ensures role-appropriate visibility.
+
+**Use Case Links**: `Use Cases/UC-06.md`, `Use Cases/UC-20.md`, `Use Cases/UC-21.md`, `Use Cases/UC-33.md`, `Use Cases/UC-36.md`
+
+**Acceptance Links**: `Acceptance Tests/UC-06-AS.md`, `Acceptance Tests/UC-20-AS.md`, `Acceptance Tests/UC-21-AS.md`, `Acceptance Tests/UC-33-AS.md`, `Acceptance Tests/UC-36-AS.md`
 
 **Independent Test**: Can be tested by attempting page access with unauthorized and authorized actors and verifying only permitted views are shown.
 
@@ -73,7 +85,7 @@ As a protected system, only authorized actors can view restricted information on
 
 - **FR-001**: The system MUST allow an authenticated actor to navigate from the dashboard to relevant information pages within the feature scope.
 - **FR-002**: The system MUST retrieve requested data for the selected page before presenting results.
-- **FR-003**: The system MUST display retrieved data using formatting that preserves readability and meaning.
+- **FR-003**: The system MUST display retrieved data with readable labels, consistent field ordering per page template, and value formatting (`term_code`, dates, grades) that preserves meaning for the actor role.
 - **FR-004**: The system MUST enforce access controls so actors can only view pages and data items they are authorized to access.
 - **FR-005**: If any requested data is unavailable or incomplete, the system MUST still display all available data for that page.
 - **FR-006**: When data is missing, the system MUST explicitly indicate which requested items are unavailable.
@@ -109,6 +121,6 @@ As a protected system, only authorized actors can view restricted information on
 - **SC-001**: At least 95% of authorized actors can navigate from dashboard to target page and identify requested information within 60 seconds.
 - **SC-002**: In test cases with incomplete data, 100% of evaluated pages show available data and identify missing items without blocking page access.
 - **SC-003**: In authorization tests, 100% of unauthorized access attempts are denied with no restricted data displayed.
-- **SC-004**: At least 90% of pilot users report that missing-data indicators clearly communicate what is unavailable.
+- **SC-004**: In a pilot of at least 20 participants (minimum 5 per actor role), at least 90% of responses rate missing-data indicators as clear or very clear using a standardized survey question.
 - **SC-005**: In authorization testing, 100% of denied access attempts generate an audit record containing actor, page, timestamp, and reason code.
 - **SC-006**: In performance testing for in-scope pages, 95% of page data loads complete within 5 seconds.

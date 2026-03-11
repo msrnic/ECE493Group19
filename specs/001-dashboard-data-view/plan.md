@@ -61,6 +61,8 @@ server/
 │   ├── courseModel.js
 │   ├── dashboardDataModel.js
 │   └── accessAuditModel.js
+├── services/
+│   └── dashboardAuthorizationService.js
 ├── views/
 │   ├── dashboard/
 │   │   ├── contact-info.ejs
@@ -88,6 +90,8 @@ tests/
 │   └── models/
 ├── integration/
 │   └── dashboard-controller.test.js
+├── e2e/
+│   └── dashboard-data-states.spec.js
 └── contract/
     └── dashboard-data-view-api.test.js
 ```
