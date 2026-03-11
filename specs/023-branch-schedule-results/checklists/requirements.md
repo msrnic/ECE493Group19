@@ -1,8 +1,8 @@
-# Specification Quality Checklist: UC-20 View Course History
+# Specification Quality Checklist: UC-23 Request Multiple Schedule Results
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning  
-**Created**: 2026-03-11  
-**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/020-branch-course-history/spec.md)
+**Purpose**: Validate specification completeness and quality before proceeding to planning
+**Created**: 2026-03-11
+**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/023-branch-schedule-results/spec.md)
 
 ## Content Quality
 
@@ -31,5 +31,4 @@
 
 ## Notes
 
-- Validation pass 1: all checklist items passed.
-- Source alignment verified against `Use Cases/UC-20.md` and `Acceptance Tests/UC-20-AS.md`.
+- Validation passed on 2026-03-11 after drafting the initial spec from `UC-23.md` and `UC-23-AS.md`.
