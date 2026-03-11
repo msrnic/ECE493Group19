@@ -24,7 +24,7 @@ Deliver an administrator-only Force Enroll workflow for UC-37 that bypasses prer
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 - [x] All feature scope maps to one or more `Use Cases/UC-XX.md` files, with corresponding acceptance criteria in `Acceptance Tests/UC-XX-AS.md`.
-  Mapping: `Use Cases/UC-37.md` and `Acceptance Tests/UC-37-AS.md` (file heading says UC-26 but scenarios match UC-37 force-enroll behavior).
+  Mapping: `Use Cases/UC-37.md` and `Acceptance Tests/UC-37-AS.md` (canonical traceability IDs).
 - [x] Technical approach uses HTML/CSS/JavaScript and SQLite only.
 - [x] Design preserves Model-View-Controller boundaries and identifies where account and course data persist in SQLite.
 - [x] Plan does not modify `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit user authorization.
@@ -57,6 +57,7 @@ app/
 │   ├── courseOfferingModel.js
 │   ├── enrollmentModel.js
 │   ├── scheduleModel.js
+│   ├── forceEnrollRequestModel.js
 │   └── overrideAuditModel.js
 ├── services/
 │   └── forceEnrollService.js

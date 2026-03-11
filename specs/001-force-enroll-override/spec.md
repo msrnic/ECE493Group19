@@ -19,6 +19,8 @@
 
 As an administrator, I can force enroll a selected student into a selected course offering so that exceptional enrollment requests can be completed without blocking on prerequisite validation.
 
+**Traceability**: `Use Cases/UC-37.md`, `Acceptance Tests/UC-37-AS.md`
+
 **Why this priority**: This is the primary business outcome of the feature and delivers immediate operational value to administrators.
 
 **Independent Test**: Can be fully tested by submitting a force enrollment request where prerequisite checks would normally fail but all hard constraints are satisfied, then verifying enrollment, schedule/capacity updates, audit logging, and confirmation.
@@ -35,6 +37,8 @@ As an administrator, I can force enroll a selected student into a selected cours
 ### User Story 2 - Reject Invalid Force Enrollment Request (Priority: P2)
 
 As an administrator, I receive a clear rejection when a force enrollment request targets a non-existent student or non-existent offering so that invalid requests do not create inconsistent records.
+
+**Traceability**: `Use Cases/UC-37.md`, `Acceptance Tests/UC-37-AS.md`
 
 **Why this priority**: Preventing invalid data creation is critical to preserving enrollment integrity and trust in administrative workflows.
 
@@ -62,8 +66,8 @@ As an administrator, I receive a clear rejection when a force enrollment request
 - **FR-001**: The system MUST provide a Force Enroll action to authorized administrators from the course offering management workflow.
 - **FR-002**: The system MUST require the administrator to select both a student and a course offering before submitting a force enrollment request.
 - **FR-003**: When Force Enroll is requested, the system MUST bypass prerequisite validation rules for that enrollment attempt.
-- **FR-004**: The system MUST validate hard constraints before creating enrollment, including student identity validity and offering term validity.
-- **FR-005**: If any hard constraint fails, the system MUST reject the force enrollment request and return a clear reason.
+- **FR-004**: The system MUST validate hard constraints before creating enrollment, including student existence, student academic status eligibility, offering existence, offering term validity, and offering status eligibility.
+- **FR-005**: If any hard constraint fails, the system MUST reject the force enrollment request and return an error response with `code`, `message`, and `details` fields.
 - **FR-006**: If the selected student or selected offering does not exist, the system MUST reject the request and MUST NOT create or modify enrollment records.
 - **FR-007**: On successful force enrollment, the system MUST create the enrollment record and update the student's schedule records.
 - **FR-008**: On successful force enrollment, the system MUST update offering capacity usage to reflect the new enrollment.
@@ -74,8 +78,8 @@ As an administrator, I receive a clear rejection when a force enrollment request
 - **FR-013**: If the selected offering is at capacity, the system MUST require an additional explicit over-capacity confirmation before completing a force enrollment.
 - **FR-014**: If the selected offering is at capacity and the additional over-capacity confirmation is not provided, the system MUST reject the force enrollment request.
 - **FR-015**: If enrollment is completed above capacity, the audit entry MUST indicate that an over-capacity override was explicitly confirmed.
-- **FR-016**: The system MUST require administrators to provide a non-empty reason for every force enrollment request before processing.
-- **FR-017**: If the reason is missing, the system MUST reject the force enrollment request and return a clear validation error.
+- **FR-016**: The system MUST require administrators to provide a non-empty trimmed reason (10-500 characters) for every force enrollment request before processing.
+- **FR-017**: If the reason is missing or violates length constraints, the system MUST reject the force enrollment request and return `VALIDATION_ERROR` with `code`, `message`, and `details.reason`.
 - **FR-018**: For over-capacity force enrollment, final explicit confirmation MUST be performed by the same authorized administrator who initiated the request.
 
 ### Key Entities *(include if feature involves data)*
