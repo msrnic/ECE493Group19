@@ -72,8 +72,10 @@ backend/
 │   ├── services/
 │   │   ├── recipient-resolution-service.js
 │   │   ├── authorization-service.js
+│   │   ├── message-validation-service.js
 │   │   ├── inbox-delivery-service.js
-│   │   └── retry-service.js
+│   │   ├── retry-service.js
+│   │   └── delivery-retention-service.js
 │   ├── routes/
 │   │   └── admin-notifications-routes.js
 │   └── db/
@@ -85,6 +87,7 @@ backend/
 │       └── summary.html
 └── tests/
     ├── contract/
+    ├── e2e/
     ├── integration/
     └── unit/
 

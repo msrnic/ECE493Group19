@@ -23,6 +23,8 @@ An administrator sends a single message to one or more selected students by choo
 
 **Why this priority**: This is the core business value of the feature: direct, in-system communication from administrators to students.
 
+**Traceability**: UC-42, UC-42-AS
+
 **Independent Test**: Can be fully tested by having an authorized administrator select valid recipients, send a valid message, and verify that each targeted student receives it in their inbox.
 
 **Acceptance Scenarios**:
@@ -39,6 +41,8 @@ An administrator is prevented from sending when recipient selection is invalid o
 
 **Why this priority**: Preventing invalid sends reduces communication errors and avoids unnecessary delivery failures.
 
+**Traceability**: UC-42, UC-42-AS
+
 **Independent Test**: Can be tested by attempting to send with no recipients, invalid recipients, or invalid message content and confirming the send is blocked with actionable feedback.
 
 **Acceptance Scenarios**:
@@ -54,6 +58,8 @@ An administrator is prevented from sending when recipient selection is invalid o
 An administrator gets a delivery status summary when some student inbox deliveries fail and can retry failed deliveries without resending to successful recipients.
 
 **Why this priority**: Partial-failure recovery ensures message reach while minimizing duplicate communications.
+
+**Traceability**: UC-42, UC-42-AS; downstream inbox verification alignment with UC-19, UC-19-AS
 
 **Independent Test**: Can be tested by simulating mixed delivery outcomes, verifying partial success reporting, and retrying only failed recipients.
 
@@ -80,7 +86,7 @@ An administrator gets a delivery status summary when some student inbox deliveri
 - **FR-003**: The system MUST require at least one valid recipient before a message can be sent.
 - **FR-004**: The system MUST validate that the sending administrator has permission to message each selected recipient at send time and MUST treat any unauthorized recipient as a blocking validation error.
 - **FR-005**: The system MUST validate message content before accepting send by requiring a non-empty subject, a non-empty message body, and enforcing maximum length limits for both fields.
-- **FR-006**: The system MUST block sending when recipient selection is empty, invalid, or includes any unauthorized recipient and MUST present guidance to correct the recipient list.
+- **FR-006**: The system MUST block sending when recipient selection is empty, invalid, or includes any unauthorized recipient, and MUST return corrective guidance that includes (a) an error code, (b) affected field or recipient reference, and (c) a specific corrective action.
 - **FR-007**: The system MUST deliver an accepted message to each valid targeted student inbox.
 - **FR-008**: The system MUST record per-recipient delivery status for each send request and retain those delivery status records for 1 year.
 - **FR-009**: The system MUST present a send completion summary including total unique targeted recipients, successful deliveries, failed deliveries, and the count of duplicate recipients removed during recipient resolution.
