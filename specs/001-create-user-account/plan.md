@@ -66,6 +66,8 @@ app/
 │   ├── userAccountModel.js
 │   ├── roleModel.js
 │   ├── credentialModel.js
+│   ├── userRoleAssignmentModel.js
+│   ├── notificationAttemptModel.js
 │   └── courseModel.js
 ├── views/
 │   └── admin/
@@ -87,6 +89,7 @@ app/
 tests/
 ├── unit/
 ├── integration/
+├── e2e/
 └── contract/
 ```
 

@@ -24,6 +24,8 @@ An administrator creates a new user account by entering required identity inform
 
 **Independent Test**: Can be fully tested by submitting a valid new-account request and confirming account identifier and assigned role are shown.
 
+**Traceability**: Use Case: `UC-43` | Acceptance Test: `UC-43-AS`
+
 **Acceptance Scenarios**:
 
 1. **Given** an administrator with account-management permission, **When** they submit valid required identity data, a permitted role, and a compliant password, **Then** the system creates the account in active state, enforces password change at first login, and displays confirmation with account identifier and role.
@@ -38,6 +40,8 @@ An administrator is guided to fix invalid or missing identity, role, or password
 **Why this priority**: Prevents bad data and failed onboarding while reducing administrator rework.
 
 **Independent Test**: Can be tested by submitting forms with each invalid condition and verifying clear errors and successful resubmission after correction.
+
+**Traceability**: Use Case: `UC-43` | Acceptance Test: `UC-43-AS`
 
 **Acceptance Scenarios**:
 
@@ -55,6 +59,8 @@ An administrator receives accurate outcomes when duplicate identifiers, system e
 **Why this priority**: Protects account integrity and provides operational clarity without creating duplicate or partial accounts.
 
 **Independent Test**: Can be tested by attempting duplicate identifiers, simulating creation failures, and simulating notification delivery failures.
+
+**Traceability**: Use Case: `UC-43` | Acceptance Test: `UC-43-AS`
 
 **Acceptance Scenarios**:
 
@@ -83,8 +89,8 @@ An administrator receives accurate outcomes when duplicate identifiers, system e
 - **FR-007**: System MUST validate provided passwords against the active password policy and present policy guidance on failure.
 - **FR-008**: System MUST normalize the unique login identifier by trimming surrounding whitespace and applying case-insensitive comparison for uniqueness checks, then reject account creation when the normalized identifier is already in use and inform the administrator of the conflict.
 - **FR-009**: System MUST create the user account only after all validations pass and MUST assign the selected role in the same successful transaction.
-- **FR-010**: System MUST store credentials using approved secure credential-protection practices and apply first-login password-change enforcement to all newly created accounts.
-- **FR-017**: System MUST create new accounts in active state and enforce a mandatory password change at first successful login.
+- **FR-010**: System MUST store credentials as bcrypt hashes (configured cost factor >= 12) and MUST NOT persist plaintext passwords.
+- **FR-017**: System MUST create new accounts in active state with `must_change_password=true` enforced at first successful login.
 - **FR-011**: System MUST display a success confirmation including created account identifier and assigned role after successful creation.
 - **FR-012**: System MUST record account-creation failures caused by system errors in operational logs and return a failure response without creating an account.
 - **FR-013**: System MUST preserve submitted non-sensitive form values after validation failures so administrators can correct and resubmit efficiently.
