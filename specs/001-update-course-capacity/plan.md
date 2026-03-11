@@ -5,7 +5,7 @@
 
 ## Summary
 
-Implement administrator course-capacity updates with stale-write protection, below-enrollment override workflow, and transactional persistence so capacity + remaining seats updates are atomic. The implementation uses a JavaScript MVC web app (HTML/CSS/JS views + JS controllers/models) backed by SQLite for durable account/course/override audit data.
+Implement administrator course-capacity updates with stale-write protection, below-enrollment override workflow, and transactional persistence so capacity + remaining seats updates are atomic. The implementation uses a JavaScript MVC web app (HTML/CSS/JS views + JS controllers/models) backed by SQLite for durable account/course/override audit data, with HTML form rendering on GET and JSON outcome payloads on POST.
 
 ## Technical Context
 
@@ -59,10 +59,13 @@ specs/001-update-course-capacity/
 ```text
 src/
 ├── controllers/
+│   ├── validators/
+│   │   └── courseCapacityValidators.js
 │   └── courseCapacityController.js
 ├── models/
 │   ├── accountModel.js
 │   ├── courseOfferingModel.js
+│   ├── capacityUpdateRequestModel.js
 │   └── capacityOverrideModel.js
 ├── views/
 │   └── course-capacity/
@@ -78,6 +81,8 @@ src/
 └── db/
     ├── migrations/
     │   └── 001_course_capacity_override.sql
+    ├── jobs/
+    │   └── purgeExpiredOverrideAudits.js
     └── sqliteClient.js
 
 tests/

@@ -81,15 +81,16 @@ An administrator receives a clear failure result if the capacity update process 
 
 ### Functional Requirements
 
-- **FR-001**: System MUST allow an administrator to open an existing course offering and view current capacity, current enrollment, and remaining seats before editing.
+- **FR-001**: System MUST allow an administrator to open an existing course offering and view current capacity, current enrollment, and remaining seats before editing, and the opening action MUST render the HTML edit view for this workflow.
 - **FR-002**: System MUST allow an administrator to submit a new capacity value for a selected course offering.
 - **FR-003**: System MUST validate that submitted capacity is a positive whole number before applying any update.
 - **FR-004**: System MUST validate submitted capacity against current enrollment at submission time.
 - **FR-005**: If submitted capacity is less than current enrollment and no policy-compliant override is provided, the system MUST reject the change and keep existing capacity unchanged.
-- **FR-006**: If submitted capacity is less than current enrollment and a policy-compliant override is approved within this feature workflow, the system MUST allow the change and record that an override was used.
-- **FR-014**: System MUST provide an in-feature override workflow for below-enrollment capacity changes, including override request submission, approver decision capture, and final decision notification.
+- **FR-006**: If submitted capacity is less than current enrollment and a policy-compliant override decision is `approved`, the system MUST allow the change and record that an override was used.
+- **FR-014**: System MUST provide an in-feature override workflow for below-enrollment capacity changes, including override request submission, approver decision capture, and final decision notification in both API response fields and rendered UI result messaging.
 - **FR-015**: System MUST permit the requesting administrator to approve their own below-enrollment override request when policy allows and MUST record requester and approver identities.
 - **FR-016**: System MUST retain override request and approval audit records for 7 years from approval date.
+- **FR-017**: If submitted capacity equals the currently stored capacity, system MUST return a deterministic no-op outcome message and MUST leave persisted capacity and remaining seats unchanged.
 - **FR-007**: On any accepted change, system MUST recalculate remaining seats as `capacity - current enrollment` and persist both updated capacity and recalculated remaining seats as one completed update.
 - **FR-008**: On update failure, system MUST leave capacity and remaining seats unchanged and present a failure message to the administrator.
 - **FR-009**: On successful update, system MUST present a success confirmation that includes the updated capacity and remaining seats.

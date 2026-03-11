@@ -8,7 +8,7 @@ servers:
 paths:
   /admin/course-offerings/{offeringId}/capacity:
     get:
-      summary: Load course offering capacity edit form
+      summary: Load course offering capacity edit form (HTML)
       operationId: getCourseCapacityForm
       tags: [CourseCapacity]
       parameters:
@@ -19,11 +19,11 @@ paths:
             type: string
       responses:
         '200':
-          description: Course offering details loaded
+          description: Course offering edit form loaded
           content:
-            application/json:
+            text/html:
               schema:
-                $ref: '#/components/schemas/CourseCapacityView'
+                type: string
         '404':
           description: Offering not found
     post:
@@ -192,6 +192,8 @@ components:
       required:
         - overrideRequestId
         - requestId
+        - outcome
+        - messageCode
         - decision
         - approvedByAccountId
         - approvedAt
@@ -201,6 +203,12 @@ components:
           type: string
         requestId:
           type: string
+        outcome:
+          type: string
+          enum: [approved, denied]
+        messageCode:
+          type: string
+          enum: [OVERRIDE_APPROVED, OVERRIDE_DENIED, SELF_APPROVAL_NOT_ALLOWED]
         decision:
           type: string
           enum: [approved, denied]
