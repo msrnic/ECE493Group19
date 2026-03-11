@@ -23,6 +23,8 @@ A student selects an available class offering and successfully enrolls when they
 
 **Independent Test**: Can be fully tested by selecting a class offering with open seats, no holds, no schedule conflicts, and satisfied prerequisites, then verifying the class is added to the schedule and confirmation is shown.
 
+**Traceability**: Use Case: `UC-17` | Acceptance: `UC-17-AS`
+
 **Acceptance Scenarios**:
 
 1. **Given** a student is eligible and a class offering has available seats, **When** the student selects Enroll, **Then** the system enrolls the student, updates the schedule, and shows enrollment confirmation.
@@ -37,6 +39,8 @@ A student is prevented from enrolling when they do not meet eligibility requirem
 **Why this priority**: Preventing invalid enrollment protects academic policy compliance and avoids downstream correction work.
 
 **Independent Test**: Can be fully tested by attempting enrollment in separate cases for unmet prerequisites, full class capacity, registration hold, and schedule conflict, then verifying no schedule change and a specific reason is shown.
+
+**Traceability**: Use Case: `UC-17` | Acceptance: `UC-17-AS`
 
 **Acceptance Scenarios**:
 
@@ -55,6 +59,8 @@ A student is informed when an enrollment attempt fails due to a system issue, an
 **Why this priority**: Clear recovery behavior preserves trust and prevents partial or inconsistent registration outcomes.
 
 **Independent Test**: Can be fully tested by simulating an enrollment processing failure and verifying no schedule change, no enrollment record creation, and a retry instruction message.
+
+**Traceability**: Use Case: `UC-17` | Acceptance: `UC-17-AS`
 
 **Acceptance Scenarios**:
 
