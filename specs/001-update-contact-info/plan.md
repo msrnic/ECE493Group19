@@ -10,7 +10,7 @@ Implement UC-07 contact editing in a web MVC flow where authenticated users upda
 ## Technical Context
 
 **Language/Version**: JavaScript (ES2022), HTML5, CSS3  
-**Primary Dependencies**: Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent)  
+**Primary Dependencies**: Node.js runtime, Express.js web framework, `sqlite3` driver, server-rendered HTML template views (`app/views/contact-info.html`)  
 **Storage**: SQLite (persistent tables for accounts, courses, and contact information)  
 **Testing**: Manual acceptance verification against `Acceptance Tests/UC-07-AS.md` + JavaScript unit/integration tests (Node test runner/Jest)  
 **Target Platform**: Linux-hosted web application, modern desktop/mobile browsers  
@@ -105,6 +105,10 @@ Planned design artifacts:
 2. Interface contracts for contact-info read/update endpoints and validation/error responses.
 3. Quickstart for local implementation/testing workflow aligned to UC-07 acceptance scenarios.
 4. Agent context refresh via `.specify/scripts/bash/update-agent-context.sh codex`.
+
+Performance verification approach:
+- Measure p95 latency for `GET /contact-info` and `POST /contact-info` using seeded local data and integration timing instrumentation.
+- Record measured evidence and pass/fail against goals (`<= 500ms` read, `<= 800ms` save) in `specs/001-update-contact-info/quickstart.md`.
 
 Phase 1 output:
 - [`data-model.md`](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-update-contact-info/data-model.md)

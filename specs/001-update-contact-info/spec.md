@@ -19,6 +19,9 @@
 
 As a user, I can open my contact information, edit allowed basic and emergency contact fields, and save changes so my records stay current.
 
+**Use Case Traceability**: `UC-07`  
+**Acceptance Test Traceability**: `UC-07-AS`
+
 **Why this priority**: Keeping contact details current is the primary business value and core user outcome.
 
 **Independent Test**: Can be fully tested by opening the contact page, changing allowed fields with valid values, submitting, and verifying persisted updates and confirmation.
@@ -32,7 +35,10 @@ As a user, I can open my contact information, edit allowed basic and emergency c
 
 ### User Story 2 - Correct Invalid Formats (Priority: P1)
 
-As a user, I receive immediate, field-level feedback when submitted contact values are invalid so I can correct errors and resubmit.
+As a user, I receive field-level feedback on submit when contact values are invalid so I can correct errors and resubmit.
+
+**Use Case Traceability**: `UC-07`  
+**Acceptance Test Traceability**: `UC-07-AS`
 
 **Why this priority**: Validation prevents bad data from being saved and directly supports successful completion of the primary flow.
 
@@ -48,6 +54,9 @@ As a user, I receive immediate, field-level feedback when submitted contact valu
 ### User Story 3 - Cancel or Recover from Save Failure (Priority: P2)
 
 As a user, I can cancel edits safely and I am protected from partial updates if saving fails.
+
+**Use Case Traceability**: `UC-07`  
+**Acceptance Test Traceability**: `UC-07-AS`
 
 **Why this priority**: Preventing accidental or partial data changes maintains trust and data integrity.
 
@@ -78,7 +87,7 @@ As a user, I can cancel edits safely and I am protected from partial updates if 
 - **FR-005**: System MUST validate submitted address values against the approved address format rules before saving.
 - **FR-006**: System MUST reject the entire submission if any edited field fails validation.
 - **FR-007**: System MUST highlight each field that fails validation and provide corrective guidance tied to each invalid field.
-- **FR-008**: System MUST persist updated contact information only after all validation checks pass.
+- **FR-008**: System MUST persist updated contact information only after all validation checks pass and within a single transaction.
 - **FR-009**: System MUST confirm to the user when contact information has been successfully updated.
 - **FR-010**: System MUST leave stored contact information unchanged when a save attempt fails.
 - **FR-011**: System MUST inform the user to retry later when a save attempt fails.
@@ -86,6 +95,11 @@ As a user, I can cancel edits safely and I am protected from partial updates if 
 - **FR-013**: User stories in this specification MUST be traceable to corresponding use case and acceptance-test artifacts in project governance documents.
 - **FR-014**: If contact information changes from another source during an active edit session, system MUST apply the submitted edit as the latest saved version (last-write-wins).
 - **FR-015**: For a last-write-wins conflict event, system MUST display a post-save notice that another update occurred during editing.
+
+### Validation Rule Source
+
+- Email/phone/address format validation MUST follow `specs/001-update-contact-info/contracts/contact-info-api.md` and `specs/001-update-contact-info/research.md`.
+- Client-side checks MAY provide early UX feedback, but server-side validation is the authoritative enforcement source.
 
 ### Assumptions
 
