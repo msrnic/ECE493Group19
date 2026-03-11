@@ -1615,3 +1615,334 @@
 2026-03-11T16:00:34.508313Z  INFO session_loop{thread_id=019cdd66-855f-7340-967c-02bb4374bd24}:submission_dispatch{submission.id="019cdd9f-6cb8-7ac1-bf73-16ca117f9d04"}:turn{otel.name="session_task.turn" thread.id=019cdd66-855f-7340-967c-02bb4374bd24 turn.id=019cdd9f-6cb8-7ac1-bf73-16ca117f9d04 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n '^- \\[ \\] T[0-9]{3}.*\\[US1\\]|^- \\[ \\] T[0-9]{3}.*\\[US2\\]|^- \\[ \\] T[0-9]{3}.*\\[US3\\]' /home/thaia/ECE493Group19/specs/020-branch-course-history/tasks.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdd66-855f-7340-967c-02bb4374bd24
 2026-03-11T16:00:43.268077Z  INFO session_loop{thread_id=019cdd66-855f-7340-967c-02bb4374bd24}:submission_dispatch{submission.id="019cdd9f-6cb8-7ac1-bf73-16ca117f9d04"}:turn{otel.name="session_task.turn" thread.id=019cdd66-855f-7340-967c-02bb4374bd24 turn.id=019cdd9f-6cb8-7ac1-bf73-16ca117f9d04 model=gpt-5.4}: codex_core::tasks: close time.busy=89.7ms time.idle=104s
 2026-03-11T16:00:43.268121Z  INFO session_loop{thread_id=019cdd66-855f-7340-967c-02bb4374bd24}:submission_dispatch{submission.id="019cdd9f-6cb8-7ac1-bf73-16ca117f9d04"}: codex_core::codex: close time.busy=1.19ms time.idle=105s
+2026-03-11T17:12:01.849998Z  INFO codex_core::models_manager::manager: models cache: evaluating cache eligibility client_version="0.114.0"
+2026-03-11T17:12:01.850056Z  INFO codex_core::models_manager::cache: models cache: attempting load_fresh cache_path=/home/thaia/ECE493Group19/.codex/models_cache.json expected_version="0.114.0"
+2026-03-11T17:12:01.850889Z  INFO codex_core::models_manager::cache: models cache: loaded cache file cache_path=/home/thaia/ECE493Group19/.codex/models_cache.json cached_version=Some("0.112.0") fetched_at=2026-03-11 16:00:34.622750454 UTC
+2026-03-11T17:12:01.850935Z  INFO codex_core::models_manager::cache: models cache: cache version mismatch cache_path=/home/thaia/ECE493Group19/.codex/models_cache.json expected_version="0.114.0" cached_version=Some("0.112.0")
+2026-03-11T17:12:01.851025Z  INFO codex_core::models_manager::manager: models cache: no usable cache entry
+2026-03-11T17:12:01.855205Z  INFO codex_core::models_manager::manager: models cache: evaluating cache eligibility client_version="0.114.0"
+2026-03-11T17:12:01.855228Z  INFO codex_core::models_manager::cache: models cache: attempting load_fresh cache_path=/home/thaia/ECE493Group19/.codex/models_cache.json expected_version="0.114.0"
+2026-03-11T17:12:01.856137Z  INFO codex_core::models_manager::cache: models cache: loaded cache file cache_path=/home/thaia/ECE493Group19/.codex/models_cache.json cached_version=Some("0.112.0") fetched_at=2026-03-11 16:00:34.622750454 UTC
+2026-03-11T17:12:01.856183Z  INFO codex_core::models_manager::cache: models cache: cache version mismatch cache_path=/home/thaia/ECE493Group19/.codex/models_cache.json expected_version="0.114.0" cached_version=Some("0.112.0")
+2026-03-11T17:12:01.856254Z  INFO codex_core::models_manager::manager: models cache: no usable cache entry
+2026-03-11T17:12:01.856287Z  INFO codex_core::models_manager::manager: models cache: cache miss, fetching remote models
+2026-03-11T17:12:03.762355Z  INFO session_init: codex_core::codex: new
+2026-03-11T17:12:03.773344Z  INFO session_init:shell_snapshot{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}: codex_core::shell_snapshot: new
+2026-03-11T17:12:03.777103Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}: codex_core::codex: new
+2026-03-11T17:12:03.782240Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-55c6-7451-85ea-f01ed0caf8d4"}: codex_core::codex: new
+2026-03-11T17:12:03.786285Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-55c6-7451-85ea-f01ed0caf8d4"}: codex_core::codex: close time.busy=1.89ms time.idle=2.15ms
+2026-03-11T17:12:03.786364Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-55c6-7451-85ea-f028f31c28f1"}: codex_core::codex: new
+2026-03-11T17:12:03.789640Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-55c6-7451-85ea-f028f31c28f1"}: codex_core::codex: close time.busy=2.74ms time.idle=532µs
+2026-03-11T17:12:03.865698Z  INFO session_init:shell_snapshot{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}: codex_core::shell_snapshot: Shell snapshot successfully created: /home/thaia/ECE493Group19/.codex/shell_snapshots/019cdde2-55b2-7f92-98b7-a94192b9824d.tmp-1773249123773535623
+2026-03-11T17:12:03.868865Z  WARN session_init:shell_snapshot{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}: codex_core::shell_snapshot: Failed to delete shell snapshot at "/home/thaia/ECE493Group19/.codex/shell_snapshots/019cdde2-55b2-7f92-98b7-a94192b9824d.tmp-1773249123773535623": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-03-11T17:12:03.869083Z  INFO session_init:shell_snapshot{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}: codex_core::shell_snapshot: close time.busy=5.20ms time.idle=90.5ms
+2026-03-11T17:12:03.869114Z  INFO session_init: codex_core::codex: close time.busy=12.0ms time.idle=94.7ms
+2026-03-11T17:12:06.355672Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}: codex_core::codex: new
+2026-03-11T17:12:06.356930Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::tasks: new
+2026-03-11T17:12:06.357108Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-452071bcee0e"}: codex_core::codex: new
+2026-03-11T17:12:06.357149Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-452071bcee0e"}: codex_core::codex: close time.busy=5.99µs time.idle=35.8µs
+2026-03-11T17:12:11.231087Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:19.480908Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n \"^(#|##) \" specs/020-branch-course-history/spec.md specs/020-branch-course-history/plan.md specs/020-branch-course-history/tasks.md .specify/memory/constitution.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:19.549972Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"ls -l /home/thaia/ECE493Group19/specs/020-branch-course-history/spec.md /home/thaia/ECE493Group19/specs/020-branch-course-history/plan.md /home/thaia/ECE493Group19/specs/020-branch-course-history/tasks.md /home/thaia/ECE493Group19/.specify/memory/constitution.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":2000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:28.652958Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '17,139p' specs/020-branch-course-history/spec.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:28.715691Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '10,108p' specs/020-branch-course-history/plan.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:28.716035Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' specs/020-branch-course-history/tasks.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:28.716158Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '25,120p' .specify/memory/constitution.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":6000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:38.268565Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/spec.md | sed -n '17,150p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":10000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:38.268877Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/plan.md | sed -n '1,140p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:38.324705Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/tasks.md | sed -n '1,220p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":14000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:12:38.325025Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba .specify/memory/constitution.md | sed -n '1,130p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:14:11.348495Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde2-5fd3-7341-92e7-451a942619cb model=gpt-5.4}: codex_core::tasks: close time.busy=334ms time.idle=125s
+2026-03-11T17:14:11.348545Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde2-5fd3-7341-92e7-451a942619cb"}: codex_core::codex: close time.busy=1.22ms time.idle=125s
+2026-03-11T17:14:38.096950Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde4-b090-7310-9a8c-f7c59b83d30f"}: codex_core::codex: new
+2026-03-11T17:14:38.098240Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde4-b090-7310-9a8c-f7c59b83d30f"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde4-b090-7310-9a8c-f7c59b83d30f model=gpt-5.4}: codex_core::tasks: new
+2026-03-11T17:14:38.098391Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde4-b090-7310-9a8c-f7d55eef2959"}: codex_core::codex: new
+2026-03-11T17:14:38.098409Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde4-b090-7310-9a8c-f7d55eef2959"}: codex_core::codex: close time.busy=7.83µs time.idle=10.3µs
+2026-03-11T17:15:05.235998Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde4-b090-7310-9a8c-f7c59b83d30f"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde4-b090-7310-9a8c-f7c59b83d30f model=gpt-5.4}: codex_core::tasks: close time.busy=136ms time.idle=27.0s
+2026-03-11T17:15:05.236058Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde4-b090-7310-9a8c-f7c59b83d30f"}: codex_core::codex: close time.busy=1.33ms time.idle=27.1s
+2026-03-11T17:15:25.930588Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}: codex_core::codex: new
+2026-03-11T17:15:25.931748Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::tasks: new
+2026-03-11T17:15:25.931871Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7c1da6efdf7"}: codex_core::codex: new
+2026-03-11T17:15:25.931884Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7c1da6efdf7"}: codex_core::codex: close time.busy=4.87µs time.idle=8.12µs
+2026-03-11T17:15:35.479846Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,170p' specs/020-branch-course-history/spec.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:15:35.544424Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,130p' specs/020-branch-course-history/plan.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":10000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:15:35.544846Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' specs/020-branch-course-history/tasks.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":14000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:16:34.283839Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Update File: /home/thaia/ECE493Group19/specs/020-branch-course-history/spec.md
+@@
+-1. **Given** a student has a valid account and complete course history is available, **When** the student selects View my course history from the dashboard, **Then** the system displays that student's past enrollments with final outcomes.
+-2. **Given** course history is displayed for an authorized student, **When** the student reviews the page, **Then** the information is presented in a readable academic-history format that shows academic period, course code, course title, and final outcome for each available record and only that student's records are shown.
++1. **Given** a student has a valid account and complete course history is available, **When** the student selects View my course history from the dashboard or from the dedicated student-records navigation entry, **Then** the system displays that student's past enrollments with final outcomes.
++2. **Given** course history is displayed for an authorized student, **When** the student reviews the page, **Then** the information is presented grouped by academic period with a visible heading for each period and one row or list item per available record showing academic period, course code, course title, and final outcome, and only that student's records are shown.
+@@
+-- What happens when a student has a large course history covering many academic periods? The system still presents records grouped by academic period and preserves readability without omitting available records.
++- What happens when a student has a large course history covering many academic periods? The system still presents records grouped by academic period with a visible heading for each period and renders all available records without collapsing distinct periods into an unlabeled aggregate view.
+@@
+-- **FR-003**: The system MUST present course history in a readable format grouped by academic period and MUST show, for each available record, the academic period, course code, course title, and final outcome; when available, the view MUST also show the grade label and credit value.
++- **FR-003**: The system MUST present course history grouped by academic period with a visible heading for each period and one row or list item per available record, and MUST show, for each available record, the academic period, course code, course title, and final outcome; when available, the view MUST also show the grade label and credit value.
+@@
+-- **NFR-004**: In normal operating conditions, at least 95% of course-history page loads, including complete, partial, empty, and unavailable states, MUST present their first usable result within 2 seconds after the course-history view is requested.
++- **NFR-004**: In normal operating conditions, at least 95% of course-history page loads, including complete, partial, empty, unavailable, and denied states, MUST render the first state-appropriate user-visible content within 2 seconds after the course-history view is requested. State-appropriate content means the first course-history record group for complete or partial states, the dedicated no-course-history message for the empty state, the unavailable-state message for the unavailable state, or the denied-access message for the denied state.
+*** Update File: /home/thaia/ECE493Group19/specs/020-branch-course-history/plan.md
+@@
+-Implement UC-20 as an MVC web feature that lets an authenticated student view read-only course history, including all past enrollments with final outcomes, while handling incomplete history data, empty-history states, and unauthorized access attempts. The design uses HTML/CSS/JavaScript with SQLite-backed student, course-history, and authorization-audit data plus a UI contract for complete, partial, empty, and denied-access viewing states.
++Implement UC-20 as an MVC web feature that lets an authenticated student view read-only course history, including all past enrollments with final outcomes, while handling incomplete history data, empty-history states, unavailable-history states, and unauthorized access attempts. The design uses HTML/CSS/JavaScript with SQLite-backed student, course-history, and authorization-audit data plus a UI contract for complete, partial, empty, unavailable, and denied-access viewing states.
+@@
+-- [x] Plan does not modify `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit user authorization.
+-  Evidence: Planned outputs are limited to `/specs/020-branch-course-history/` plus agent-context sync.
++- [x] Plan does not modify `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit user authorization.
++  Evidence: Planned implementation work targets `app/`, `public/`, `database/`, `tests/`, and `/specs/020-branch-course-history/` artifacts without changing protected use-case or acceptance-test files.
+@@
+-        ├── course-history-error.html
++        ├── course-history-unavailable.html
+@@
+-- Define a UI contract for complete history, partial history, empty history, and unauthorized access states.
++- Define a UI contract for complete, partial, empty, unavailable, and unauthorized access states.
+*** Update File: /home/thaia/ECE493Group19/specs/020-branch-course-history/tasks.md
+@@
+-- [ ] T003 [P] Create the initial course-history controller, model, view, and client script placeholders in `/home/thaia/ECE493Group19/app/controllers/course-history-controller.js`, `/home/thaia/ECE493Group19/app/models/student-model.js`, `/home/thaia/ECE493Group19/app/models/course-history-model.js`, `/home/thaia/ECE493Group19/app/models/authorization-audit-model.js`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-error.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, `/home/thaia/ECE493Group19/public/js/course-history.js`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
++- [ ] T003 [P] Create the initial course-history controller, model, view, and client script placeholders in `/home/thaia/ECE493Group19/app/controllers/course-history-controller.js`, `/home/thaia/ECE493Group19/app/models/student-model.js`, `/home/thaia/ECE493Group19/app/models/course-history-model.js`, `/home/thaia/ECE493Group19/app/models/authorization-audit-model.js`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unavailable.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, `/home/thaia/ECE493Group19/public/js/course-history.js`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
+@@
+-- [ ] T011 [P] Implement the shared course-history page, empty-state, unavailable-state, and unauthorized-state view structure in `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-error.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
++- [ ] T011 [P] Implement the shared course-history page, empty-state, unavailable-state, and unauthorized-state view structure in `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unavailable.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
+@@
+-**Independent Test**: Sign in as an authorized student with complete course-history records and verify the student can open the course-history page from the dashboard, see all available records grouped by academic period, and view only their own data.
++**Independent Test**: Sign in as an authorized student with complete course-history records and verify the student can open the course-history page from the dashboard and from the dedicated student-records navigation entry, see all available records grouped by academic period, and view only their own data.
+@@
+-- [ ] T014 [P] [US1] Add unit tests for full course-history retrieval and required record-field mapping in `/home/thaia/ECE493Group19/tests/unit/course-history-model.test.js`
++- [ ] T014 [P] [US1] Add unit tests for full course-history retrieval, required record-field mapping, and optional grade-label and credit-value mapping in `/home/thaia/ECE493Group19/tests/unit/course-history-model.test.js`
+@@
+-- [ ] T016 [P] [US1] Add SQLite-backed integration tests for authorized complete-history viewing from the dashboard entry point in `/home/thaia/ECE493Group19/tests/integration/course-history-flow.test.js`
++- [ ] T016 [P] [US1] Add SQLite-backed integration tests for authorized complete-history viewing from the dashboard entry point and the dedicated student-records navigation entry in `/home/thaia/ECE493Group19/tests/integration/course-history-flow.test.js`
+@@
+-- [ ] T017 [P] [US1] Implement complete course-history record retrieval with required display fields in `/home/thaia/ECE493Group19/app/models/course-history-model.js`
++- [ ] T017 [P] [US1] Implement complete course-history record retrieval with required display fields and optional grade-label and credit-value fields when available in `/home/thaia/ECE493Group19/app/models/course-history-model.js`
+@@
+-- [ ] T019 [US1] Implement complete-history page rendering grouped by academic period in `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/public/js/course-history.js`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
++- [ ] T019 [US1] Implement complete-history page rendering grouped by academic period with visible period headings and conditional grade-label and credit-value display in `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/public/js/course-history.js`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
+@@
+-- [ ] T020 [US1] Add acceptance steps for authorized complete course-history viewing in `/home/thaia/ECE493Group19/tests/acceptance/uc20-acceptance-checklist.md`
++- [ ] T020 [US1] Add acceptance steps for authorized complete course-history viewing from the dashboard and dedicated student-records navigation entries in `/home/thaia/ECE493Group19/tests/acceptance/uc20-acceptance-checklist.md`
+@@
+-- [ ] T027 [US2] Implement unavailable-state messaging and retry guidance in `/home/thaia/ECE493Group19/app/views/course-history/course-history-error.html`, `/home/thaia/ECE493Group19/public/js/course-history.js`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
++- [ ] T027 [US2] Implement unavailable-state messaging and retry guidance in `/home/thaia/ECE493Group19/app/views/course-history/course-history-unavailable.html`, `/home/thaia/ECE493Group19/public/js/course-history.js`, and `/home/thaia/ECE493Group19/public/css/course-history.css`
+@@
+-- [ ] T036 [P] Implement keyboard-only navigation and assistive-technology messaging refinements across course-history states in `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-error.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, and `/home/thaia/ECE493Group19/public/js/course-history.js`
++- [ ] T036 [P] Implement keyboard-only navigation and assistive-technology messaging refinements across course-history states in `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unavailable.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, and `/home/thaia/ECE493Group19/public/js/course-history.js`
+@@
+-- [ ] T037 [P] Review modified HTML and CSS against `/home/thaia/ECE493Group19/Style Guides/google-style-guide-html-css.md` and update `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-error.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, and `/home/thaia/ECE493Group19/public/css/course-history.css` as needed
++- [ ] T037 [P] Review modified HTML and CSS against `/home/thaia/ECE493Group19/Style Guides/google-style-guide-html-css.md` and update `/home/thaia/ECE493Group19/app/views/course-history/course-history-page.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-empty.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unavailable.html`, `/home/thaia/ECE493Group19/app/views/course-history/course-history-unauthorized.html`, and `/home/thaia/ECE493Group19/public/css/course-history.css` as needed
+*** End Patch
+ thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:16:43.560519Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n \"course-history-(error|unavailable)|student-records navigation|grade-label|credit-value|first state-appropriate user-visible content|UI contract for complete, partial, empty, unavailable, and unauthorized\" specs/020-branch-course-history/spec.md specs/020-branch-course-history/plan.md specs/020-branch-course-history/tasks.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:16:43.560659Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/spec.md | sed -n '29,110p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":10000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:16:43.565637Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/plan.md | sed -n '6,110p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:16:43.627992Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/tasks.md | sed -n '18,130p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:16:56.232644Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde5-6b6a-7302-a12d-c7b481dc52e7 model=gpt-5.4}: codex_core::tasks: close time.busy=136ms time.idle=90.2s
+2026-03-11T17:16:56.232689Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde5-6b6a-7302-a12d-c7b481dc52e7"}: codex_core::codex: close time.busy=1.12ms time.idle=90.3s
+2026-03-11T17:17:35.763012Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}: codex_core::codex: new
+2026-03-11T17:17:35.763900Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::tasks: new
+2026-03-11T17:17:35.764004Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-92a156c2c19e"}: codex_core::codex: new
+2026-03-11T17:17:35.764020Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-92a156c2c19e"}: codex_core::codex: close time.busy=7.05µs time.idle=8.62µs
+2026-03-11T17:17:41.710120Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:17:49.031060Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/spec.md | sed -n '17,150p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":10000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:17:49.093533Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/plan.md | sed -n '1,130p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:17:49.093792Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba specs/020-branch-course-history/tasks.md | sed -n '1,220p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":14000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:17:49.093926Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"nl -ba .specify/memory/constitution.md | sed -n '25,120p'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:18:17.336125Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde7-6692-78a1-b4c7-9290cb57059b model=gpt-5.4}: codex_core::tasks: close time.busy=165ms time.idle=41.4s
+2026-03-11T17:18:17.336158Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde7-6692-78a1-b4c7-9290cb57059b"}: codex_core::codex: close time.busy=861µs time.idle=41.6s
+2026-03-11T17:19:43.016048Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}: codex_core::codex: new
+2026-03-11T17:19:43.017007Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::tasks: new
+2026-03-11T17:19:43.017320Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5cb6f46a7a6d"}: codex_core::codex: new
+2026-03-11T17:19:43.017394Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5cb6f46a7a6d"}: codex_core::codex: close time.busy=42.1µs time.idle=34.6µs
+2026-03-11T17:19:52.550061Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git fetch --all --prune","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:19:52.550270Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg --files \"Use Cases\" \"Acceptance Tests\" .specify/templates | rg \"UC-21|spec-template.md|checklist\"","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:19:52.618887Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git branch --list","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:19:52.619103Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"find specs -maxdepth 1 -mindepth 1 -type d | sort","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:03.944005Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' 'Use Cases/UC-21.md'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:04.003179Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' 'Acceptance Tests/UC-21-AS.md'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:04.003530Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,240p' .specify/templates/spec-template.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:04.003748Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' .specify/templates/checklist-template.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:20.829701Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git branch --list | rg 'branch-transcript$'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":2000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:20.890422Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"find specs -maxdepth 1 -mindepth 1 -type d | rg '/[0-9]+-branch-transcript$'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":2000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:20.890911Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git ls-remote --heads origin | rg 'refs/heads/[0-9]+-branch-transcript$'","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":2000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:27.074801Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,260p' .specify/scripts/bash/create-new-feature.sh","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":12000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:20:32.145585Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":".specify/scripts/bash/create-new-feature.sh --json --short-name \"branch-transcript\" --number 21 \"UC-21 with corresponding acceptance tests in Acceptance Test folder and create a new branch. the naming convention of the branch is xxx-branch-feature and xxx is number from UC-XX\"","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:21:35.340117Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: apply_patch *** Begin Patch
+*** Delete File: /home/thaia/ECE493Group19/specs/021-branch-transcript/spec.md
+*** Add File: /home/thaia/ECE493Group19/specs/021-branch-transcript/spec.md
++# Feature Specification: UC-21 View My Transcript
++
++**Feature Branch**: `[021-branch-transcript]`  
++**Created**: 2026-03-11  
++**Status**: Draft  
++**Input**: User description: "UC-21 with corresponding acceptance tests in Acceptance Test folder and create a new branch. the naming convention of the branch is xxx-branch-feature and xxx is number from UC-XX"
++
++## User Scenarios & Testing *(mandatory)*
++
++### User Story 1 - View Full Transcript (Priority: P1)
++
++As a student, I want to open my transcript and review my full academic record so I can confirm my completed coursework and results in one place.
++
++**Source Artifacts**: [UC-21.md](/home/thaia/ECE493Group19/Use%20Cases/UC-21.md), [UC-21-AS.md](/home/thaia/ECE493Group19/Acceptance%20Tests/UC-21-AS.md), `AT-UC21-01`
++
++**Why this priority**: This is the primary outcome of UC-21 and the minimum user value the feature must deliver.
++
++**Independent Test**: Can be fully tested by signing in as an authorized student with a complete transcript and verifying the student can open and review only their own transcript.
++
++**Acceptance Scenarios**:
++
++1. **Given** a student has a valid account and a complete transcript is available, **When** the student selects `View my transcript` from the dashboard, **Then** the system displays that student's transcript.
++2. **Given** a complete transcript is displayed for an authorized student, **When** the student reviews the page, **Then** the transcript is grouped by academic term and shows only that student's transcript entries with the expected academic details for each available entry.
++
++---
++
++### User Story 2 - View Available Transcript When Data Is Incomplete (Priority: P2)
++
++As a student, I want to see the available parts of my transcript when some data cannot be retrieved so I can still use what the system can provide.
++
++**Source Artifacts**: [UC-21.md](/home/thaia/ECE493Group19/Use%20Cases/UC-21.md), [UC-21-AS.md](/home/thaia/ECE493Group19/Acceptance%20Tests/UC-21-AS.md), `AT-UC21-02`
++
++**Why this priority**: Partial transcript access preserves student self-service when some information is temporarily unavailable, but it builds on the core viewing flow.
++
++**Independent Test**: Can be fully tested by signing in as an authorized student with incomplete transcript data and verifying the system shows the available entries and identifies what is missing.
++
++**Acceptance Scenarios**:
++
++1. **Given** a student is authorized to view a transcript and some transcript data is unavailable, **When** the student selects `View my transcript`, **Then** the system displays the available portion of the transcript.
++2. **Given** only part of the student's transcript is available, **When** the system displays the results, **Then** the system clearly indicates that some terms, grades, or transcript entries are missing or unavailable.
++
++---
++
++### User Story 3 - Block Unauthorized Transcript Access (Priority: P3)
++
++As the institution, I want transcript access restricted to authorized viewers so a student's academic record is not exposed to the wrong person.
++
++**Source Artifacts**: [UC-21.md](/home/thaia/ECE493Group19/Use%20Cases/UC-21.md), [UC-21-AS.md](/home/thaia/ECE493Group19/Acceptance%20Tests/UC-21-AS.md), `AT-UC21-03`
++
++**Why this priority**: Transcript privacy is mandatory, but it depends on the same viewing flow established for authorized students.
++
++**Independent Test**: Can be fully tested by attempting to access transcript data through an authenticated but unauthorized session and verifying access is denied and the attempt is recorded.
++
++**Acceptance Scenarios**:
++
++1. **Given** an authenticated actor is not authorized to view the requested transcript, **When** the actor attempts to access the transcript view, **Then** the system denies access and does not display transcript data.
++2. **Given** an unauthorized transcript access attempt occurs, **When** the system blocks the request, **Then** the system records the authorization failure for later review.
++
++### Edge Cases
++
++- What happens when a student has no transcript entries yet? The system shows a dedicated no-transcript-yet message and does not display placeholder rows.
++- What happens when some terms or grades cannot be retrieved? The system shows the available transcript entries and identifies the missing or unavailable portions.
++- What happens when all transcript data is temporarily unavailable? The system shows a distinct unavailable-state message rather than presenting the result as an empty transcript.
++- What happens when a student attempts to access another student's transcript through a direct link or manipulated navigation path? The system denies access and records the failed authorization attempt.
++- What happens when the same student opens the transcript multiple times in one session? The system consistently returns the same authorized read-only view without altering transcript data.
++- How does this story remain compliant with its mapped `UC-21` and `UC-21-AS` artifacts when requirements evolve? Any future change must continue to support transcript viewing, incomplete-data handling, and unauthorized-access denial.
++
++## Requirements *(mandatory)*
++
++### Functional Requirements
++
++- **FR-001**: The system MUST allow a signed-in student to open the `View my transcript` function from the dashboard.
++- **FR-002**: The system MUST retrieve and display the requesting student's own transcript when that student is authorized to view it.
++- **FR-003**: The system MUST present transcript entries grouped by academic term and MUST show, for each available entry, the academic term, course identifier, course title, credits, and final grade or equivalent result when available.
++- **FR-004**: The system MUST ensure that only the authorized student can view that student's transcript.
++- **FR-005**: If some transcript data is unavailable or incomplete, the system MUST display the available entries and clearly indicate that some information is missing or unavailable.
++- **FR-006**: If the student has no transcript entries, the system MUST show a dedicated no-transcript-yet message and MUST NOT show placeholder transcript rows.
++- **FR-007**: If the actor is not authorized to view the requested transcript, the system MUST deny access and MUST NOT display transcript data.
++- **FR-008**: The system MUST record each denied transcript access attempt for audit or security review.
++- **FR-009**: Viewing a transcript MUST be read-only and MUST NOT alter transcript data or related student academic records.
++- **FR-010**: The feature specification MUST remain traceable to [UC-21.md](/home/thaia/ECE493Group19/Use%20Cases/UC-21.md) and [UC-21-AS.md](/home/thaia/ECE493Group19/Acceptance%20Tests/UC-21-AS.md).
++
++### Non-Functional Requirements
++
++- **NFR-001**: Transcript views, including full, partial, empty, unavailable, and denied states, MUST support keyboard-only navigation and provide headings and messages in text that assistive technologies can announce.
++- **NFR-002**: Transcript viewing MUST preserve student privacy by ensuring that no view state exposes another student's transcript details.
++- **NFR-003**: In normal operating conditions, at least 95% of authorized students MUST be able to reach the transcript page within 30 seconds of selecting `View my transcript` from the dashboard.
++- **NFR-004**: In normal operating conditions, at least 95% of transcript page loads MUST render the first state-appropriate user-visible content within 2 seconds after the transcript view is requested.
++
++### Assumptions
++
++- Students are already authenticated before attempting to view a transcript.
++- Transcript data already exists in institutional academic records outside the scope of this feature.
++- Staff and proxy access patterns are outside the scope of UC-21 unless introduced by a separate feature.
++- Transcript viewing remains read-only for all supported scenarios in this feature.
++
++### Dependencies
++
++- The system depends on student identity and authorization status being available when a transcript is requested.
++- The system depends on transcript records being retrievable from existing academic record sources.
++- The system depends on audit or security review capabilities being available for denied access events.
++
++### Key Entities *(include if feature involves data)*
++
++- **Student Account**: The student identity used to determine whether the requester may view a specific transcript.
++- **Transcript Entry**: An academic record entry associated with one student, including academic term, course identifier, course title, credits, and final grade or equivalent result when available.
++- **Transcript View**: The student-facing presentation of transcript results in one of five states: full, partial, empty, unavailable, or denied.
++- **Authorization Failure Record**: A record of a denied attempt to access transcript data without proper authorization.
++
++### Traceability
++
++| Requirement Area | Story / Acceptance Coverage |
++|--------|--------|
++| `FR-001` to `FR-004` | User Story 1, `AT-UC21-01` |
++| `FR-005` to `FR-006` | User Story 2, `AT-UC21-02` |
++| `FR-007` to `FR-008` | User Story 3, `AT-UC21-03` |
++| `FR-009` | User Stories 1-3, read-only expectation across `AT-UC21-01` to `AT-UC21-03` |
++| `FR-010` | `UC-21.md`, `UC-21-AS.md`, `AT-UC21-01` to `AT-UC21-03` |
++| `NFR-001` | Accessibility review across transcript view states |
++| `NFR-002` | Privacy validation across authorized and denied-access scenarios |
++| `NFR-003` to `NFR-004` | Transcript responsiveness validation |
++
++## Success Criteria *(mandatory)*
++
++### Measurable Outcomes
++
++- **SC-001**: In acceptance testing, 100% of authorized students with available transcript data can open and view only their own transcript.
++- **SC-002**: In acceptance testing, 100% of incomplete-transcript scenarios show the available entries and clearly indicate that some information is missing or unavailable.
++- **SC-003**: In acceptance testing, 100% of unauthorized transcript access attempts are denied and recorded.
++- **SC-004**: In scenario-based validation, at least 95% of authorized students can reach the transcript page and receive its first state-appropriate result within 30 seconds of selecting `View my transcript`.
++- **SC-005**: In scenario-based validation, at least 90% of authorized students can correctly identify whether they are viewing a full, partial, or empty transcript on first review.
+*** Add File: /home/thaia/ECE493Group19/specs/021-branch-transcript/checklists/requirements.md
++# Specification Quality Checklist: UC-21 View My Transcript
++
++**Purpose**: Validate specification completeness and quality before proceeding to planning
++**Created**: 2026-03-11
++**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/021-branch-transcript/spec.md)
++
++## Content Quality
++
++- [x] No implementation details (languages, frameworks, APIs)
++- [x] Focused on user value and business needs
++- [x] Written for non-technical stakeholders
++- [x] All mandatory sections completed
++
++## Requirement Completeness
++
++- [x] No [NEEDS CLARIFICATION] markers remain
++- [x] Requirements are testable and unambiguous
++- [x] Success criteria are measurable
++- [x] Success criteria are technology-agnostic (no implementation details)
++- [x] All acceptance scenarios are defined
++- [x] Edge cases are identified
++- [x] Scope is clearly bounded
++- [x] Dependencies and assumptions identified
++
++## Feature Readiness
++
++- [x] All functional requirements have clear acceptance criteria
++- [x] User scenarios cover primary flows
++- [x] Feature meets measurable outcomes defined in Success Criteria
++- [x] No implementation details leak into specification
++
++## Notes
++
++- Validated against `UC-21.md` and `UC-21-AS.md`.
++- No clarification markers were needed; reasonable defaults were documented in Assumptions and Edge Cases.
+*** End Patch
+ thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:21:42.705651Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,240p' specs/021-branch-transcript/spec.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":14000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:21:42.709924Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"sed -n '1,220p' specs/021-branch-transcript/checklists/requirements.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":8000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:21:42.773970Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"rg -n \"NEEDS CLARIFICATION|\\[ \\]\" specs/021-branch-transcript/spec.md specs/021-branch-transcript/checklists/requirements.md","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":4000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:21:42.774168Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::stream_events_utils: ToolCall: exec_command {"cmd":"git branch --show-current","workdir":"/home/thaia/ECE493Group19","yield_time_ms":1000,"max_output_tokens":2000} thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d
+2026-03-11T17:21:48.757752Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}:turn{otel.name="session_task.turn" thread.id=019cdde2-55b2-7f92-98b7-a94192b9824d turn.id=019cdde9-57a7-7f31-90b4-5ca25d0a0578 model=gpt-5.4}: codex_core::tasks: close time.busy=141ms time.idle=126s
+2026-03-11T17:21:48.757786Z  INFO session_loop{thread_id=019cdde2-55b2-7f92-98b7-a94192b9824d}:submission_dispatch{submission.id="019cdde9-57a7-7f31-90b4-5ca25d0a0578"}: codex_core::codex: close time.busy=977µs time.idle=126s

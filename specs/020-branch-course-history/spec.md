@@ -28,8 +28,8 @@ As a student, I want to open my course history and see my completed academic rec
 
 **Acceptance Scenarios**:
 
-1. **Given** a student has a valid account and complete course history is available, **When** the student selects View my course history from the dashboard, **Then** the system displays that student's past enrollments with final outcomes.
-2. **Given** course history is displayed for an authorized student, **When** the student reviews the page, **Then** the information is presented in a readable academic-history format that shows academic period, course code, course title, and final outcome for each available record and only that student's records are shown.
+1. **Given** a student has a valid account and complete course history is available, **When** the student selects View my course history from the dashboard or from the dedicated student-records navigation entry, **Then** the system displays that student's past enrollments with final outcomes.
+2. **Given** course history is displayed for an authorized student, **When** the student reviews the page, **Then** the information is presented grouped by academic period with a visible heading for each period and one row or list item per available record showing academic period, course code, course title, and final outcome, and only that student's records are shown.
 
 ---
 
@@ -73,7 +73,7 @@ As the institution, I want course history access restricted to authorized viewer
 - What happens when a student tries to access another student's course history through a direct link or manipulated navigation path? The system denies access and records the failed authorization attempt.
 - What happens when a signed-in account can authenticate but does not have self-service permission to view the requested course history? The system treats the request as unauthorized and follows the same denied-access and logging requirements.
 - What happens when the same student opens course history multiple times in one session? The system consistently returns the same authorized view without changing academic records.
-- What happens when a student has a large course history covering many academic periods? The system still presents records grouped by academic period and preserves readability without omitting available records.
+- What happens when a student has a large course history covering many academic periods? The system still presents records grouped by academic period with a visible heading for each period and renders all available records without collapsing distinct periods into an unlabeled aggregate view.
 - What happens when denied-access logging is temporarily unavailable? The system still denies access, shows no course-history data, and preserves evidence that authorization-failure recording could not be completed normally.
 - How does this story remain compliant with its mapped `UC-20` and `UC-20-AS` artifacts when requirements evolve? Any future change must continue to support complete history viewing, partial-history handling, and unauthorized-access denial.
 
@@ -83,7 +83,7 @@ As the institution, I want course history access restricted to authorized viewer
 
 - **FR-001**: The system MUST allow a signed-in student to open the View my course history function from a dashboard link labeled `View my course history` or from a dedicated student-records navigation entry that leads to the same course-history view.
 - **FR-002**: The system MUST retrieve and display the requesting student's own course history, including all past enrollments with final outcomes such as completed, failed, and withdrawn results, when that student is authorized to view it.
-- **FR-003**: The system MUST present course history in a readable format grouped by academic period and MUST show, for each available record, the academic period, course code, course title, and final outcome; when available, the view MUST also show the grade label and credit value.
+- **FR-003**: The system MUST present course history grouped by academic period with a visible heading for each period and one row or list item per available record, and MUST show, for each available record, the academic period, course code, course title, and final outcome; when available, the view MUST also show the grade label and credit value.
 - **FR-004**: The system MUST ensure that only the authorized student can view that student's course history; for this feature, authorized means a signed-in student accessing only that student's own self-service course history, and staff, proxy, or other viewer roles are out of scope unless explicitly added by a future feature.
 - **FR-005**: If some course history records are unavailable or incomplete, the system MUST display the available records, show a page-level indicator that some information is missing, and identify the affected term or record when that detail is known.
 - **FR-005a**: If the student has no course history records, the system MUST show a dedicated no course history yet message and MUST NOT show placeholder course rows.
@@ -101,7 +101,7 @@ As the institution, I want course history access restricted to authorized viewer
 - **NFR-001**: Built-in course-history views, including complete, partial, empty, unavailable, and denied states, MUST support keyboard-only navigation and expose headings, record-group labels, missing-data indicators, and denied or unavailable messages in text that assistive technologies can announce.
 - **NFR-002**: Course-history requirements MUST preserve student privacy by ensuring that no view state, error state, or unavailable state exposes another student's academic records or identifying course-history details.
 - **NFR-003**: In normal operating conditions, at least 95% of authorized students MUST be able to reach the course-history page within 30 seconds when starting from the dashboard link and completing the initial page load.
-- **NFR-004**: In normal operating conditions, at least 95% of course-history page loads, including complete, partial, empty, and unavailable states, MUST present their first usable result within 2 seconds after the course-history view is requested.
+- **NFR-004**: In normal operating conditions, at least 95% of course-history page loads, including complete, partial, empty, unavailable, and denied states, MUST render the first state-appropriate user-visible content within 2 seconds after the course-history view is requested. State-appropriate content means the first course-history record group for complete or partial states, the dedicated no-course-history message for the empty state, the unavailable-state message for the unavailable state, or the denied-access message for the denied state.
 
 ### Assumptions
 

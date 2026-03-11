@@ -5,7 +5,7 @@
 
 ## Summary
 
-Implement UC-20 as an MVC web feature that lets an authenticated student view read-only course history, including all past enrollments with final outcomes, while handling incomplete history data, empty-history states, and unauthorized access attempts. The design uses HTML/CSS/JavaScript with SQLite-backed student, course-history, and authorization-audit data plus a UI contract for complete, partial, empty, and denied-access viewing states.
+Implement UC-20 as an MVC web feature that lets an authenticated student view read-only course history, including all past enrollments with final outcomes, while handling incomplete history data, empty-history states, unavailable-history states, and unauthorized access attempts. The design uses HTML/CSS/JavaScript with SQLite-backed student, course-history, and authorization-audit data plus a UI contract for complete, partial, empty, unavailable, and denied-access viewing states.
 
 ## Technical Context
 
@@ -30,7 +30,7 @@ Implement UC-20 as an MVC web feature that lets an authenticated student view re
 - [x] Design preserves Model-View-Controller boundaries and identifies where account and course data persist in SQLite.
   Evidence: Project structure separates course-history models, student-facing views, and controller flow while relying on SQLite-backed student account and course-history records.
 - [x] Plan does not modify `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit user authorization.
-  Evidence: Planned outputs are limited to `/specs/020-branch-course-history/` plus agent-context sync.
+  Evidence: Planned implementation work targets `app/`, `public/`, `database/`, `tests/`, and `/specs/020-branch-course-history/` artifacts without changing protected use-case or acceptance-test files.
 - [x] Implementation approach includes style compliance with `Style Guides/google-style-guide-html-css.md` and `Style Guides/google-style-guide-javascript.md`.
   Evidence: Quickstart and validation steps include review against both style guides.
 
@@ -65,7 +65,7 @@ app/
     └── course-history/
         ├── course-history-page.html
         ├── course-history-empty.html
-        ├── course-history-error.html
+        ├── course-history-unavailable.html
         └── course-history-unauthorized.html
 
 public/
@@ -102,7 +102,7 @@ tests/
 ## Phase 1: Design & Contracts
 
 - Model student accounts, course-history records, course-history view state, and authorization failure records.
-- Define a UI contract for complete history, partial history, empty history, and unauthorized access states.
+- Define a UI contract for complete, partial, empty, unavailable, and unauthorized access states.
 - Prepare quickstart validation steps for authorized viewing, partial-history display, empty-history handling, unauthorized denial logging, style-guide review, and performance validation.
 
 ## Complexity Tracking
