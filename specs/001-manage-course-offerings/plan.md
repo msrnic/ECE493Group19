@@ -24,7 +24,7 @@ Implement UC-39 add/delete course-offering administration in a web MVC applicati
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 - [x] All feature scope maps to one or more `Use Cases/UC-XX.md` files, with corresponding acceptance criteria in `Acceptance Tests/UC-XX-AS.md`.
-  Mapping: UC-39 -> UC39 acceptance suite in `/Acceptance Tests/UC-39-AS.md`.
+  Mapping: UC-39 -> UC-39 acceptance suite in `/Acceptance Tests/UC-39-AS.md`.
 - [x] Technical approach uses HTML/CSS/JavaScript and SQLite only.
 - [x] Design preserves Model-View-Controller boundaries and identifies where account and course data persist in SQLite.
 - [x] Plan does not modify `Use Cases/UC-*.md` or `Acceptance Tests/UC-*-AS.md` without explicit user authorization.

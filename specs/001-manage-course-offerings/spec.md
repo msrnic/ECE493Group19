@@ -21,6 +21,9 @@
 
 An administrator creates a new course offering so students can enroll in an upcoming term.
 
+**Use Case Trace**: UC-39  
+**Acceptance Trace**: `Acceptance Tests/UC-39-AS.md`
+
 **Why this priority**: Creating offerings is the primary path for publishing available courses and directly affects catalog completeness.
 
 **Independent Test**: Can be fully tested by creating a new offering with valid term, instructor, capacity, and schedule values, then confirming it appears in the catalog.
@@ -36,6 +39,9 @@ An administrator creates a new course offering so students can enroll in an upco
 ### User Story 2 - Delete Existing Offering (Priority: P2)
 
 An administrator removes an offering that should no longer be available in the catalog.
+
+**Use Case Trace**: UC-39  
+**Acceptance Trace**: `Acceptance Tests/UC-39-AS.md`
 
 **Why this priority**: Deletion is necessary for catalog maintenance but is secondary to creating required offerings.
 
@@ -53,6 +59,9 @@ An administrator removes an offering that should no longer be available in the c
 ### User Story 3 - Handle Save/Delete Failures Safely (Priority: P3)
 
 An administrator receives clear feedback when an add or delete operation fails due to a system issue, and data remains consistent.
+
+**Use Case Trace**: UC-39  
+**Acceptance Trace**: `Acceptance Tests/UC-39-AS.md`
 
 **Why this priority**: Reliable failure handling prevents partial updates and protects catalog integrity.
 
@@ -79,14 +88,14 @@ An administrator receives clear feedback when an add or delete operation fails d
 - **FR-001**: The system MUST allow authorized administrators to access a course offerings administration view.
 - **FR-002**: The system MUST allow an administrator to initiate either adding a new offering or deleting an existing offering.
 - **FR-003**: Before creating an offering, the system MUST validate required fields and constraints including term, instructor assignment, capacity, and schedule validity.
-- **FR-004**: The system MUST reject add or edit submissions containing invalid or missing offering data and present field-level error feedback that supports correction and resubmission.
+- **FR-004**: The system MUST reject add submissions containing invalid or missing offering data and present field-level error feedback that supports correction and resubmission.
 - **FR-015**: The system MUST treat `course + term + instructor + section` as a unique offering identity and reject creation attempts that duplicate an existing offering with the same identity.
 - **FR-005**: The system MUST persist a new offering and reflect it in the course catalog only after validation succeeds.
 - **FR-006**: Before deleting an offering, the system MUST check whether the offering has active enrollments.
-- **FR-007**: The system MUST prevent deletion of offerings with active enrollments unless the administrator follows an approved exception workflow defined by policy.
+- **FR-007**: The system MUST prevent direct deletion of offerings with active enrollments unless override deletion is explicitly confirmed per policy.
 - **FR-008**: If deletion is blocked due to active enrollments, the system MUST make no catalog changes to that offering.
 - **FR-009**: The system MUST require an explicit administrator confirmation before applying an offering deletion.
-- **FR-018**: The system MUST support immediate override deletion for offerings with active enrollments for any administrator after explicit override confirmation.
+- **FR-018**: The system MUST support immediate override deletion for offerings with active enrollments for any administrator after explicit override confirmation and reason capture.
 - **FR-019**: For override deletions, the system MUST require a recorded reason and include an override-deletion indicator in the audit log entry.
 - **FR-017**: At final deletion confirmation, the system MUST re-check enrollment and offering state; if the state no longer allows deletion, the system MUST block deletion and show a conflict message.
 - **FR-010**: The system MUST support cancellation of add and delete actions, and cancellation MUST result in no persisted catalog changes from that action.
