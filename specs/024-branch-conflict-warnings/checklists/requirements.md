@@ -1,8 +1,8 @@
-# Specification Quality Checklist: UC-23 Request Multiple Schedule Results
+# Specification Quality Checklist: UC-24 Warn About Time Conflicts in Candidate Schedules
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-03-11
-**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/023-branch-schedule-results/spec.md)
+**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/024-branch-conflict-warnings/spec.md)
 
 ## Content Quality
 
@@ -31,4 +31,4 @@
 
 ## Notes
 
-- Validation passed on 2026-03-11 after drafting the initial spec from `UC-23.md` and `UC-23-AS.md`.
+- Validation passed on 2026-03-11 after drafting the initial spec from `UC-24.md` and `UC-24-AS.md`.
