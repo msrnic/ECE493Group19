@@ -11,15 +11,9 @@ Deliver a role-scoped dashboard after successful login with resilient partial re
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
 **Language/Version**: JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript)  
 **Primary Dependencies**: Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views  
-**Storage**: SQLite 3 (`database/app.db`) with persistent account, course, role, module, and dashboard load-outcome tables  
+**Storage**: SQLite 3 (`app/db/app.db`) with persistent account, course, role, module, and dashboard load-outcome tables  
 **Testing**: Vitest (unit/service tests), Supertest (HTTP controller tests), Playwright (dashboard integration flows)  
 **Target Platform**: Linux-hosted web server, modern desktop/mobile browsers  
 **Project Type**: Web application (monolithic MVC server + server-rendered HTML/CSS/JS)  
@@ -58,13 +52,6 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
-
 ```text
 app/
 ├── controllers/
@@ -97,9 +84,7 @@ tests/
 └── contract/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
-Single web application with explicit MVC ownership: `models/` encapsulate SQLite queries and validation, `controllers/` implement request/session orchestration and retries, and `views/` + `public/` render HTML/CSS/JavaScript dashboard states.
+**Structure Decision**: Single web application with explicit MVC ownership: `models/` encapsulate SQLite queries and validation, `controllers/` implement request/session orchestration and retries, and `views/` + `public/` render HTML/CSS/JavaScript dashboard states.
 
 ## Phase 0 Research Summary
 
@@ -126,5 +111,4 @@ Research decisions and alternatives are documented in [/home/m_srnic/ece493/grou
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| None | N/A | N/A |

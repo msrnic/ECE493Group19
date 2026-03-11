@@ -22,6 +22,9 @@ After successful login, an actor lands on a dashboard that shows navigation and 
 
 **Why this priority**: This is the core value path; without a role-scoped dashboard, authenticated users cannot effectively use the system.
 
+**Use Case Links**: `Use Cases/UC-03.md`  
+**Acceptance Links**: `Acceptance Tests/UC-03-AS.md`
+
 **Independent Test**: Can be tested by logging in with a user assigned one or more roles and verifying that only permitted modules and navigation items appear.
 
 **Acceptance Scenarios**:
@@ -37,6 +40,9 @@ After successful login, an actor lands on a dashboard that shows navigation and 
 If some dashboard sections cannot be loaded, the actor still gets useful access to available modules and a clear indication of what is unavailable.
 
 **Why this priority**: Partial availability preserves task continuity and reduces disruption during transient data or service failures.
+
+**Use Case Links**: `Use Cases/UC-03.md`, `Use Cases/UC-09.md`, `Use Cases/UC-02.md`  
+**Acceptance Links**: `Acceptance Tests/UC-03-AS.md`, `Acceptance Tests/UC-09-AS.md`, `Acceptance Tests/UC-02-AS.md`
 
 **Independent Test**: Can be tested by simulating a failure for one or more dashboard sections and verifying that available sections still render while failed sections are flagged.
 
@@ -55,6 +61,9 @@ If some dashboard sections cannot be loaded, the actor still gets useful access 
 Actors must not see modules outside their permissions, even when modules are dynamically unavailable or role data changes.
 
 **Why this priority**: This protects access boundaries and reduces the risk of confusion or accidental exposure of restricted features.
+
+**Use Case Links**: `Use Cases/UC-09.md`, `Use Cases/UC-03.md`  
+**Acceptance Links**: `Acceptance Tests/UC-09-AS.md`, `Acceptance Tests/UC-03-AS.md`
 
 **Independent Test**: Can be tested by comparing visible modules for actors with different role assignments and confirming restricted modules are never shown.
 
@@ -83,7 +92,7 @@ Actors must not see modules outside their permissions, even when modules are dyn
 - **FR-004**: System MUST support actors with multiple roles by combining all permitted modules into one dashboard view.
 - **FR-005**: System MUST prevent display of modules not permitted for the actor, including during partial-load and retry states.
 - **FR-006**: System MUST attempt to load each dashboard section independently so available sections can still be shown when others fail.
-- **FR-007**: System MUST display a clear unavailable-state indicator for each section that fails to load.
+- **FR-007**: System MUST display each failed dashboard section with an explicit `Unavailable` label and keep the section placeholder visible until a successful refresh clears the state.
 - **FR-008**: System MUST provide a retry action when one or more dashboard sections are unavailable.
 - **FR-009**: System MUST show an explicit empty-access state when the actor has no available modules.
 - **FR-010**: System MUST show a full-dashboard error state with a retry action when no dashboard sections can be loaded.
