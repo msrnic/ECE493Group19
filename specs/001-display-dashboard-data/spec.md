@@ -90,6 +90,12 @@ As a protected system, access is limited so actors only see information they are
 - **FR-010**: This feature MUST NOT introduce additional logging obligations for unauthorized access attempts beyond existing project behavior.
 - **FR-011**: If none of the requested data can be retrieved for a permitted page, the system MUST present a dedicated no-data state that includes a brief reason and retry guidance.
 
+### Non-Functional Requirements
+
+- **NFR-001 (Performance)**: `GET /dashboard/pages/{pageId}` MUST render in less than 2.0 seconds at p95 for authorized users under expected project load.
+- **NFR-002 (Usability timing)**: In moderated usability testing, at least 95% of authorized actors MUST locate requested information within 60 seconds.
+- **NFR-003 (Missing-data clarity)**: At least 90% of pilot participants (n >= 20) MUST rate missing-data indicators as clear (4 or higher on a 5-point Likert scale).
+
 ### Key Entities *(include if feature involves data)*
 
 - **Actor**: A signed-in user attempting to view information pages from the dashboard; key attributes include identity and authorization level.
