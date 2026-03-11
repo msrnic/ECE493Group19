@@ -24,6 +24,9 @@ An administrator removes a currently enrolled student from a selected course off
 
 **Independent Test**: Can be fully tested by selecting an enrolled student in a course offering, executing force withdraw with confirmation, and verifying enrollment removal, schedule update, audit log creation, and success confirmation.
 
+**Use Case Reference**: `Use Cases/UC-38.md`  
+**Acceptance Reference**: `Acceptance Tests/UC-38-AS.md`
+
 **Acceptance Scenarios**:
 
 1. **Given** an administrator is viewing a student enrolled in a selected course offering, **When** the administrator chooses force withdraw and confirms, **Then** the system removes the enrollment, updates the student schedule, applies transcript and fee impacts, records an audit event, and shows success.
@@ -40,6 +43,9 @@ An administrator is blocked from forcing withdrawal when the student is not curr
 
 **Independent Test**: Can be fully tested by selecting a student not enrolled in the course and attempting force withdraw; no records should change and an explanatory message should appear.
 
+**Use Case Reference**: `Use Cases/UC-38.md`  
+**Acceptance Reference**: `Acceptance Tests/UC-38-AS.md`
+
 **Acceptance Scenarios**:
 
 1. **Given** an administrator selects a student not enrolled in a selected course offering, **When** force withdraw is requested, **Then** the system rejects the request and informs the administrator that the student is not enrolled.
@@ -54,6 +60,9 @@ An administrator can cancel a pending forced withdrawal, and the system safely r
 **Why this priority**: Ensures trust, reversibility before confirmation, and consistent records during operational failures.
 
 **Independent Test**: Can be tested by canceling at confirmation and by simulating an update failure; both tests must leave enrollment and schedule unchanged and return clear failure/cancel outcomes.
+
+**Use Case Reference**: `Use Cases/UC-38.md`  
+**Acceptance Reference**: `Acceptance Tests/UC-38-AS.md`
 
 **Acceptance Scenarios**:
 
@@ -93,6 +102,8 @@ An administrator can cancel a pending forced withdrawal, and the system safely r
 - **FR-019**: System MUST expose pending-audit status to administrators for completed withdrawals until audit logging succeeds.
 - **FR-020**: Forced-withdraw processing MUST be idempotent per student and course offering, so only the first confirmed concurrent request can succeed.
 - **FR-021**: Any later concurrent request for the same student and course offering after a successful withdrawal MUST be rejected with an already-withdrawn or not-enrolled result and MUST NOT change records.
+- **FR-022**: If the course offering status changes to `CLOSED` or `ARCHIVED` after implications are shown but before confirmation processing, system MUST reject confirmation and apply no enrollment, schedule, transcript, or fee changes.
+- **FR-023**: Success and failure responses MUST include deterministic machine-readable `code` and human-readable `message` fields; success responses MUST include `actionId`.
 
 ### Key Entities *(include if feature involves data)*
 
