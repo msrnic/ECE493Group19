@@ -77,7 +77,8 @@ tests/
 │   └── course-list-page.test.js
 ├── unit/
 │   ├── models/
-│   └── controllers/
+│   ├── controllers/
+│   └── services/
 └── contract/
     └── course-list-page.contract.test.js
 ```

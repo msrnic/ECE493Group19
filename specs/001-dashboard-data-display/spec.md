@@ -23,6 +23,8 @@ A user opens the course list page from the dashboard and sees the requested data
 
 **Why this priority**: This is the primary value path for the feature and must work for the feature to be useful.
 
+**Traceability**: `Use Cases/UC-08.md`, `Acceptance Tests/UC-08-AS.md`
+
 **Independent Test**: Navigate from the dashboard to the course list page as an authorized user and verify the page shows the expected data set with clear formatting.
 
 **Acceptance Scenarios**:
@@ -38,6 +40,8 @@ A user can still complete their task when only part of the requested data is ava
 
 **Why this priority**: Partial failures are common and must not block users from using available information.
 
+**Traceability**: `Use Cases/UC-08.md`, `Acceptance Tests/UC-08-AS.md`
+
 **Independent Test**: Request a page where some data elements are missing and verify available content is shown while missing elements are clearly indicated.
 
 **Acceptance Scenarios**:
@@ -52,6 +56,8 @@ A user can still complete their task when only part of the requested data is ava
 A user only sees information they are permitted to access on the course list page.
 
 **Why this priority**: Preventing unauthorized data exposure is a core business and compliance need.
+
+**Traceability**: `Use Cases/UC-20.md`, `Acceptance Tests/UC-20-AS.md`
 
 **Independent Test**: Access the course list page with users who have different permission levels and verify each user sees only allowed information.
 
@@ -74,8 +80,8 @@ A user only sees information they are permitted to access on the course list pag
 ### Functional Requirements
 
 - **FR-001**: System MUST allow users to open the course list page from the dashboard in one navigation action.
-- **FR-002**: System MUST retrieve the latest available data for the course list page each time the page is opened.
-- **FR-003**: System MUST display retrieved data using a consistent, human-readable format with clear labels.
+- **FR-002**: System MUST retrieve course records at request time ordered by `courses.updated_at DESC`; no cached snapshot older than 5 minutes may be used.
+- **FR-003**: System MUST render course-list columns in this order: `course_code`, `course_title`, `term_code`, `capacity`, `enrolled_count`, with fixed labels and consistent empty-value formatting.
 - **FR-004**: System MUST evaluate user permissions using existing role/permission rules before showing each requested data section on the course list page.
 - **FR-005**: System MUST prevent display of any data the current user is not authorized to view.
 - **FR-006**: If only part of the requested data is available, system MUST display all available items instead of failing the full page.
