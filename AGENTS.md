@@ -7,6 +7,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-10
 - SQLite for account information, course information, selected schedule options, section enrollment records, and enrollment-eligibility inputs (025-branch-enroll-all)
 - SQLite for account information, course information, and term-scoped student scheduling constraints (026-branch-scheduling-constraints)
 - SQLite for account information, course information, saved scheduling constraints, and term-scoped constraint priority settings (027-branch-constraint-priorities)
+- SQLite for account information, course information, scheduling constraints, and named constraint-set records (028-save-constraint-sets)
+- SQLite for account information, course information, section offerings, compatibility linkage metadata, and generated schedule records (029-compatible-components)
 
 - HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript (019-branch-built-in-inbox)
 
@@ -27,9 +29,9 @@ npm test && npm run lint
 HTML5, CSS3, JavaScript (ES2023): Follow standard conventions
 
 ## Recent Changes
+- 029-compatible-components: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+- 028-save-constraint-sets: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 027-branch-constraint-priorities: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
-- 026-branch-scheduling-constraints: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
-- 025-branch-enroll-all: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 
 
 <!-- MANUAL ADDITIONS START -->

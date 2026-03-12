@@ -1,8 +1,8 @@
-# Specification Quality Checklist: UC-27 Set Constraint Priorities
+# Specification Quality Checklist: UC-29 Auto-pick Compatible Components
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-03-11
-**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/027-branch-constraint-priorities/spec.md)
+**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/029-compatible-components/spec.md)
 
 ## Content Quality
 
@@ -31,5 +31,5 @@
 
 ## Notes
 
-- Validation pass completed on 2026-03-11 against [spec.md](/home/thaia/ECE493Group19/specs/027-branch-constraint-priorities/spec.md).
-- Traceability to [UC-27.md](/home/thaia/ECE493Group19/Use%20Cases/UC-27.md) and [UC-27-AS.md](/home/thaia/ECE493Group19/Acceptance%20Tests/UC-27-AS.md) is explicitly preserved in each user story and in FR-014.
+- Validation pass completed with no unresolved clarification markers.
+- Missing or inconsistent linkage rules default to blocking generation rather than returning schedules whose compatibility cannot be verified.
