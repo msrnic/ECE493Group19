@@ -1,8 +1,8 @@
-# Specification Quality Checklist: UC-27 Set Constraint Priorities
+# Specification Quality Checklist: UC-28 Save and Name Constraint Sets
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-03-11
-**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/027-branch-constraint-priorities/spec.md)
+**Feature**: [spec.md](/home/thaia/ECE493Group19/specs/028-save-constraint-sets/spec.md)
 
 ## Content Quality
 
@@ -31,5 +31,5 @@
 
 ## Notes
 
-- Validation pass completed on 2026-03-11 against [spec.md](/home/thaia/ECE493Group19/specs/027-branch-constraint-priorities/spec.md).
-- Traceability to [UC-27.md](/home/thaia/ECE493Group19/Use%20Cases/UC-27.md) and [UC-27-AS.md](/home/thaia/ECE493Group19/Acceptance%20Tests/UC-27-AS.md) is explicitly preserved in each user story and in FR-014.
+- Validation pass completed with no unresolved clarification markers.
+- Duplicate-name handling defaults to explicit overwrite confirmation after normalized name matching within the same student and term.
