@@ -1,0 +1,90 @@
+openapi: 3.0.3
+info:
+  title: Payment Methods API Contract
+  version: 1.0.0
+  description: Contract for storing tokenized credit card payment methods (UC-12).
+paths:
+  /payment-methods/credit-card:
+    post:
+      summary: Add a tokenized credit card payment method for the authenticated student.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cardNumber
+                - expiryMonth
+                - expiryYear
+                - cvv
+              properties:
+                cardNumber:
+                  type: string
+                expiryMonth:
+                  type: integer
+                  minimum: 1
+                  maximum: 12
+                expiryYear:
+                  type: integer
+                cvv:
+                  type: string
+      responses:
+        "201":
+          description: Card tokenized and stored successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - paymentMethodId
+                  - last4
+                  - expiryMonth
+                  - expiryYear
+                  - status
+                properties:
+                  paymentMethodId:
+                    type: string
+                  last4:
+                    type: string
+                  expiryMonth:
+                    type: integer
+                  expiryYear:
+                    type: integer
+                  status:
+                    type: string
+                    enum: [active]
+        "409":
+          description: Duplicate active method for the same token already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "422":
+          description: Card rejected by payment processor.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message, retryAllowed]
+                properties:
+                  message:
+                    type: string
+                  retryAllowed:
+                    type: boolean
+        "503":
+          description: Payment processor unavailable or timeout exceeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message, retryLater]
+                properties:
+                  message:
+                    type: string
+                  retryLater:
+                    type: boolean
