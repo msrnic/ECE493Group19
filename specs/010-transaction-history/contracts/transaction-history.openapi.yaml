@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: Transaction History API
+  version: 1.0.0
+  description: Read-only contract for UC-10 transaction history retrieval.
+servers:
+  - url: /api
+paths:
+  /students/{studentId}/financial-transactions:
+    get:
+      summary: Get student fee-payment transaction history
+      description: Returns all in-scope fee-payment transactions for the authenticated student, newest first.
+      operationId: getStudentFinancialTransactions
+      tags:
+        - TransactionHistory
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction history returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHistoryResponse'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authenticated user is not authorized to access this student account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Student account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Transaction retrieval failed due to dependency outage. No state mutation occurs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    TransactionHistoryResponse:
+      type: object
+      required:
+        - studentId
+        - records
+        - sortOrder
+        - generatedAt
+      properties:
+        studentId:
+          type: string
+        sortOrder:
+          type: string
+          enum: [newest_first]
+        generatedAt:
+          type: string
+          format: date-time
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialTransactionRecord'
+    FinancialTransactionRecord:
+      type: object
+      required:
+        - transactionId
+        - postedAt
+        - amount
+        - currency
+        - paymentMethodLabel
+        - status
+      properties:
+        transactionId:
+          type: string
+        postedAt:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: double
+          minimum: 0.01
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+        paymentMethodLabel:
+          type: string
+        maskedMethodIdentifier:
+          type: string
+          description: Masked instrument suffix/token only; full instrument identifiers are never returned.
+        status:
+          type: string
+          enum: [Pending, Succeeded, Failed, Reversed]
+        referenceNumber:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
