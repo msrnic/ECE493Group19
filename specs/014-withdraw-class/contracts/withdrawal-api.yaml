@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  title: Class Withdrawal API Contract
+  version: 1.0.0
+paths:
+  /api/schedule/{offeringId}/withdraw:
+    post:
+      summary: Confirm withdrawal from enrolled class
+      parameters:
+        - in: path
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idempotencyKey:
+                  type: string
+      responses:
+        '200':
+          description: Withdrawal recorded
+        '409':
+          description: Already withdrawn or state changed
+        '422':
+          description: Eligibility or implication preconditions not met
+        '503':
+          description: Withdrawal processing unavailable
