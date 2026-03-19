@@ -8,6 +8,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 - HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS) + Express 4 (HTTP routing/controller layer), `express-session` (session management), `better-sqlite3` (SQLite access), bcrypt (password hash verification) (002-user-login)
 - JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views (003-role-based-dashboard)
 - HTML5, CSS3, JavaScript (ES2022) on Node.js 20 LTS + Express.js (routing/controllers), `better-sqlite3` (SQLite access), server-rendered templates + browser JavaScript for page behavior (004-display-dashboard-data)
+- JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (controller/routing), better-sqlite3 (SQLite access), express-session (authenticated session), EJS or server-rendered HTML templates (005-update-personal-details)
 
 ## Project Structure
 
@@ -31,6 +32,7 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS): Fol
 - 002-user-login: Added HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS) + Express 4 (HTTP routing/controller layer), `express-session` (session management), `better-sqlite3` (SQLite access), bcrypt (password hash verification)
 - 003-role-based-dashboard: Added JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views
 - 004-display-dashboard-data: Added HTML5, CSS3, JavaScript (ES2022) on Node.js 20 LTS + Express.js (routing/controllers), `better-sqlite3` (SQLite access), server-rendered templates + browser JavaScript for page behavior
+- 005-update-personal-details: Added JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (controller/routing), better-sqlite3 (SQLite access), express-session (authenticated session), EJS or server-rendered HTML templates
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
