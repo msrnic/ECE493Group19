@@ -25,6 +25,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-13
 - JavaScript (Node.js 20 LTS for server, ES2022 browser JavaScript for client) + Express.js (controller routing), EJS (server-rendered HTML views), better-sqlite3 (SQLite access), express-session (admin session auth), Playwright + Node test runner (acceptance/integration) (037-force-enroll-override)
 - JavaScript (Node.js 20 LTS backend, ES2022 browser JavaScript frontend) + Express 4 (routing/controllers), `sqlite3` (SQLite access), vanilla HTML/CSS/JavaScript views (038-force-withdrawal)
 - HTML5, CSS3, JavaScript (ES2023) on Node.js 20 LTS + Express 4 (HTTP + routing), `better-sqlite3` (SQLite access), `express-validator` (request validation) (039-manage-course-offerings)
+- JavaScript (Node.js 20 LTS for server/controllers/models, ES2022 browser JavaScript for views) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), EJS (server-rendered HTML views), express-validator (input validation), dotenv (config) (040-update-course-capacity)
 
 ## Project Structure
 
@@ -72,6 +73,7 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 037-force-enroll-override: Added JavaScript (Node.js 20 LTS for server, ES2022 browser JavaScript for client) + Express.js (controller routing), EJS (server-rendered HTML views), better-sqlite3 (SQLite access), express-session (admin session auth), Playwright + Node test runner (acceptance/integration)
 - 038-force-withdrawal: Added JavaScript (Node.js 20 LTS backend, ES2022 browser JavaScript frontend) + Express 4 (routing/controllers), `sqlite3` (SQLite access), vanilla HTML/CSS/JavaScript views
 - 039-manage-course-offerings: Added HTML5, CSS3, JavaScript (ES2023) on Node.js 20 LTS + Express 4 (HTTP + routing), `better-sqlite3` (SQLite access), `express-validator` (request validation)
+- 040-update-course-capacity: Added JavaScript (Node.js 20 LTS for server/controllers/models, ES2022 browser JavaScript for views) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), EJS (server-rendered HTML views), express-validator (input validation), dotenv (config)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
