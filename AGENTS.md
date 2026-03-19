@@ -6,6 +6,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 
 - JavaScript (Node.js 20 LTS for server; ES2022 browser JavaScript for client) + Express 4.x (controller routing), `sqlite3` (SQLite driver), `bcrypt` (password hashing), `express-session` (session management), `csurf` (form CSRF protection) (001-change-password)
 - HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS) + Express 4 (HTTP routing/controller layer), `express-session` (session management), `better-sqlite3` (SQLite access), bcrypt (password hash verification) (001-user-login)
+- JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views (001-role-based-dashboard)
 
 ## Project Structure
 
@@ -27,6 +28,7 @@ JavaScript (Node.js 20 LTS for server; ES2022 browser JavaScript for client): Fo
 - 001-change-password: Added JavaScript (Node.js 20 LTS for server; ES2022 browser JavaScript for client) + Express 4.x (controller routing), `sqlite3` (SQLite driver), `bcrypt` (password hashing), `express-session` (session management), `csurf` (form CSRF protection)
 HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS): Follow standard conventions
 - 001-user-login: Added HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS) + Express 4 (HTTP routing/controller layer), `express-session` (session management), `better-sqlite3` (SQLite access), bcrypt (password hash verification)
+- 001-role-based-dashboard: Added JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
