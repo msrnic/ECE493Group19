@@ -16,7 +16,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-13
 
 ## Active Technologies
 
-- HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime) + Express.js (controller routing), SQLite driver (009-view-financial-dashboard)
+- HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript (019-branch-built-in-inbox)
 
 ## Project Structure
 
@@ -53,6 +53,8 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 016-drop-priority-withdrawal: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 018-branch-class-waitlist: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 017-branch-class-enrollment: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+- 020-branch-course-history: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+- 019-branch-built-in-inbox: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
