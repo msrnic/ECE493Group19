@@ -1,6 +1,6 @@
 # Tasks: User Login Authentication
 
-**Input**: Design documents from `/specs/001-user-login/`
+**Input**: Design documents from `/specs/002-user-login/`
 **Prerequisites**: `plan.md` (required), `spec.md` (required), `research.md`, `data-model.md`, `contracts/login-auth.yaml`, `quickstart.md`
 
 **Tests**: Include unit, integration, and E2E tests because testing is explicitly required by the feature specification and plan.
@@ -127,11 +127,11 @@
 
 - [ ] T042 [P] Add representative seed data for active, locked, and disabled accounts plus course records in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/seed-login-fixtures.js`
 - [ ] T043 Verify Google style-guide compliance for modified HTML/CSS in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html` and `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/login.css`
-- [ ] T044 Run full validation commands (`npm test && npm run lint`) and record results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/quickstart.md`
+- [ ] T044 Run full validation commands (`npm test && npm run lint`) and record results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
 - [ ] T045 Validate no modifications to protected artifacts in `/home/m_srnic/ece493/group_project/ECE493Group19/Use Cases/UC-02.md` and `/home/m_srnic/ece493/group_project/ECE493Group19/Acceptance Tests/UC-02-AS.md`
 - [ ] T047 [P] Add login performance integration benchmark for SC-001 in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-performance.test.js`
-- [ ] T048 Record SC-001 benchmark evidence and pass/fail threshold results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/quickstart.md`
-- [ ] T049 Define SC-005 post-release measurement procedure and reporting template in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/quickstart.md`
+- [ ] T048 Record SC-001 benchmark evidence and pass/fail threshold results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
+- [ ] T049 Define SC-005 post-release measurement procedure and reporting template in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
 
 ---
 

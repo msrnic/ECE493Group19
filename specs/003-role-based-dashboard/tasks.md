@@ -1,6 +1,6 @@
 # Tasks: Role-Based Dashboard Access
 
-**Input**: Design documents from `/specs/001-role-based-dashboard/`
+**Input**: Design documents from `/specs/003-role-based-dashboard/`
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, `contracts/dashboard-api.yaml`, `quickstart.md`
 
 **Tests**: Include unit, contract, integration, and Playwright coverage because the feature specification and quickstart explicitly define testing scenarios and quality gates.
@@ -21,7 +21,7 @@
 - [ ] T002 Initialize Node.js dependencies and scripts for Express, better-sqlite3, express-session, Vitest, Supertest, and Playwright in package.json
 - [ ] T003 [P] Add baseline test runner configuration for unit/integration/contract tests in vitest.config.js
 - [ ] T004 [P] Add browser test configuration for dashboard flows in playwright.config.js
-- [ ] T005 Document UC traceability references (UC-03, UC-09, UC-02) for implementation handoff in specs/001-role-based-dashboard/quickstart.md
+- [ ] T005 Document UC traceability references (UC-03, UC-09, UC-02) for implementation handoff in specs/003-role-based-dashboard/quickstart.md
 
 ---
 
@@ -38,7 +38,7 @@
 - [ ] T010 [P] Register auth and dashboard route shells with middleware wiring in app/routes/dashboard-routes.js
 - [ ] T011 Add shared dashboard response/status mapping utility for contract-compliant payloads in app/controllers/dashboard-response.js
 - [ ] T012 Add centralized dashboard error/outcome logging helper used across controllers in app/models/dashboard-load-model.js
-- [ ] T013 Record protected-artifact non-edit check for `Use Cases/` and `Acceptance Tests/` in specs/001-role-based-dashboard/checklists/requirements.md
+- [ ] T013 Record protected-artifact non-edit check for `Use Cases/` and `Acceptance Tests/` in specs/003-role-based-dashboard/checklists/requirements.md
 
 **Checkpoint**: Foundation ready. US1, US2, and US3 can start independently with no cross-story blockers.
 
@@ -127,8 +127,8 @@
 
 - [ ] T043 [P] Add dashboard validator helpers for retry payload sanitation and error code consistency in app/controllers/validators/dashboard-validator.js
 - [ ] T044 [P] Add cross-story Playwright smoke scenario for login -> dashboard -> retry -> auth-return flow in tests/integration/dashboard-smoke.playwright.test.js
-- [ ] T045 Update quickstart with finalized runbook (`npm test && npm run lint`) and verification notes in specs/001-role-based-dashboard/quickstart.md
-- [ ] T046 Capture final acceptance evidence and checklist sign-off for UC-03/UC-09/UC-02 in specs/001-role-based-dashboard/checklists/requirements.md
+- [ ] T045 Update quickstart with finalized runbook (`npm test && npm run lint`) and verification notes in specs/003-role-based-dashboard/quickstart.md
+- [ ] T046 Capture final acceptance evidence and checklist sign-off for UC-03/UC-09/UC-02 in specs/003-role-based-dashboard/checklists/requirements.md
 - [ ] T047 Add performance verification test for SC-001 (P95 dashboard load <= 3s) in tests/integration/dashboard-performance.integration.test.js
 - [ ] T048 [P] Add dashboard load timing instrumentation and percentile reporting utility in app/models/dashboard-load-model.js
 

@@ -2,7 +2,7 @@
 
 **Purpose**: Validate that login/authentication requirements are complete, clear, consistent, measurable, and scenario-complete before implementation/review.
 **Created**: 2026-03-07
-**Feature**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/spec.md)
+**Feature**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/spec.md)
 
 **Note**: This checklist evaluates requirement quality, not implementation behavior.
 

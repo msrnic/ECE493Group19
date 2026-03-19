@@ -1,7 +1,7 @@
 # Implementation Plan: User Login Authentication
 
-**Branch**: `001-user-login` | **Date**: 2026-03-07 | **Spec**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/spec.md)
-**Input**: Feature specification from `/specs/001-user-login/spec.md`
+**Branch**: `002-user-login` | **Date**: 2026-03-07 | **Spec**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/spec.md)
+**Input**: Feature specification from `/specs/002-user-login/spec.md`
 
 ## Summary
 
@@ -39,7 +39,7 @@ Deliver password-only login for registered users with MVC boundaries: login page
 ### Documentation (this feature)
 
 ```text
-specs/001-user-login/
+specs/002-user-login/
 ├── plan.md
 ├── research.md
 ├── data-model.md

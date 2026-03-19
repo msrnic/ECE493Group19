@@ -1,7 +1,7 @@
 # Implementation Plan: Role-Based Dashboard Access
 
-**Branch**: `001-role-based-dashboard` | **Date**: 2026-03-07 | **Spec**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/spec.md)
-**Input**: Feature specification from `/specs/001-role-based-dashboard/spec.md`
+**Branch**: `003-role-based-dashboard` | **Date**: 2026-03-07 | **Spec**: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/spec.md)
+**Input**: Feature specification from `/specs/003-role-based-dashboard/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
@@ -88,13 +88,13 @@ tests/
 
 ## Phase 0 Research Summary
 
-Research decisions and alternatives are documented in [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/research.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/research.md). All initial clarifications are resolved with concrete stack, retry behavior, telemetry, and session-expiration handling.
+Research decisions and alternatives are documented in [/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/research.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/research.md). All initial clarifications are resolved with concrete stack, retry behavior, telemetry, and session-expiration handling.
 
 ## Phase 1 Design Outputs
 
-- Data model: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/data-model.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/data-model.md)
-- Interface contracts: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/contracts/dashboard-api.yaml](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/contracts/dashboard-api.yaml)
-- Quickstart: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/quickstart.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-role-based-dashboard/quickstart.md)
+- Data model: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/data-model.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/data-model.md)
+- Interface contracts: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/contracts/dashboard-api.yaml](/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/contracts/dashboard-api.yaml)
+- Quickstart: [/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/quickstart.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/003-role-based-dashboard/quickstart.md)
 
 ## Post-Design Constitution Check
 

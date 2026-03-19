@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
 **Created**: 2026-03-06  
-**Feature**: [spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/001-user-login/spec.md)
+**Feature**: [spec.md](/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/spec.md)
 
 ## Content Quality
 

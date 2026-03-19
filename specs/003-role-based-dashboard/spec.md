@@ -1,6 +1,6 @@
 # Feature Specification: Role-Based Dashboard Access
 
-**Feature Branch**: `001-role-based-dashboard`  
+**Feature Branch**: `003-role-based-dashboard`  
 **Created**: 2026-03-06  
 **Status**: Draft  
 **Input**: User description: "1. Actor logs in successfully. 2. System retrieves the actor's role(s) and relevant modules. 3. System displays the main dashboard with navigation to available features. * **2a**: System cannot load dashboard data. * 2b1: System displays a partial dashboard and indicates unavailable sections."
