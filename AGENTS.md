@@ -12,17 +12,16 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 - JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context) (006-dashboard-data-view)
 - JavaScript (ES2022), HTML5, CSS3 + Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent) (007-update-contact-info)
 - HTML5, CSS3, JavaScript (ES2022) + Node.js runtime for tooling, Express.js web server, `sqlite3` driver, server-side template rendering (EJS) (008-dashboard-data-display)
-Auto-generated from all feature plans. Last updated: 2026-03-13
-
-## Active Technologies
 - SQLite for account information, course information, timetable records, generated schedule records, and conflict-analysis inputs/results metadata (024-branch-conflict-warnings)
 - SQLite for account information, course information, selected schedule options, section enrollment records, and enrollment-eligibility inputs (025-branch-enroll-all)
 - SQLite for account information, course information, and term-scoped student scheduling constraints (026-branch-scheduling-constraints)
 - SQLite for account information, course information, saved scheduling constraints, and term-scoped constraint priority settings (027-branch-constraint-priorities)
 - SQLite for account information, course information, scheduling constraints, and named constraint-set records (028-save-constraint-sets)
 - SQLite for account information, course information, section offerings, compatibility linkage metadata, and generated schedule records (029-compatible-components)
-
 - HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript (019-branch-built-in-inbox)
+Auto-generated from all feature plans. Last updated: 2026-03-13
+- SQLite (feature-specific tables plus audit rows as needed) (030-regenerate-full-schedule)
+- HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer (036-grade-submission-summary)
 
 ## Project Structure
 
@@ -64,6 +63,9 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 029-compatible-components: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 028-save-constraint-sets: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 - 027-branch-constraint-priorities: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+- 036-grade-submission-summary: Added HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer
+- 035-update-grades-deadline: Added HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer
+- 034-enter-final-grades: Added HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer
 
 
 <!-- MANUAL ADDITIONS START -->

@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Re-generate schedules when a class becomes full (UC-30) API Contract
+  version: 1.0.0
+paths:
+  /api/feature/request:
+    post:
+      summary: Execute primary feature action
+      responses:
+        '200':
+          description: Success or alternate outcome
+        '400':
+          description: Validation failure
+        '403':
+          description: Authorization failure
+        '500':
+          description: Processing failure with no state mutation
+  /api/feature/status:
+    get:
+      summary: Retrieve current feature status/details
+      responses:
+        '200':
+          description: Current status available
+        '503':
+          description: Dependency unavailable, result may be incomplete
