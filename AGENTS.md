@@ -9,6 +9,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 - JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views (003-role-based-dashboard)
 - HTML5, CSS3, JavaScript (ES2022) on Node.js 20 LTS + Express.js (routing/controllers), `better-sqlite3` (SQLite access), server-rendered templates + browser JavaScript for page behavior (004-display-dashboard-data)
 - JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (controller/routing), better-sqlite3 (SQLite access), express-session (authenticated session), EJS or server-rendered HTML templates (005-update-personal-details)
+- JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context) (006-dashboard-data-view)
 
 ## Project Structure
 
@@ -33,6 +34,7 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS): Fol
 - 003-role-based-dashboard: Added JavaScript (Node.js 20 LTS server, ES2022 browser JavaScript) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), express-session (session handling), EJS or HTML template partials for server-rendered views
 - 004-display-dashboard-data: Added HTML5, CSS3, JavaScript (ES2022) on Node.js 20 LTS + Express.js (routing/controllers), `better-sqlite3` (SQLite access), server-rendered templates + browser JavaScript for page behavior
 - 005-update-personal-details: Added JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (controller/routing), better-sqlite3 (SQLite access), express-session (authenticated session), EJS or server-rendered HTML templates
+- 006-dashboard-data-view: Added JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

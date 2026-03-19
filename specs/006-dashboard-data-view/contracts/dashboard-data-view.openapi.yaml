@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: Dashboard Data View API
+  version: 1.0.0
+  description: >
+    Contract for dashboard-linked data retrieval and authorization behavior for
+    UC-06, UC-20, UC-21, UC-33, and UC-36.
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/dashboard/pages/{pageId}:
+    get:
+      summary: Retrieve data required for an in-scope dashboard page
+      operationId: getDashboardPageData
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [UC-06, UC-20, UC-21, UC-33, UC-36]
+        - name: subjectAccountId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: subjectCourseId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Authorized response with available/missing/outdated item details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageDataResponse"
+        "401":
+          description: Actor not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Actor authenticated but not authorized; must be audited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Unknown or out-of-scope pageId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    PageDataResponse:
+      type: object
+      required: [pageId, items, dataState]
+      properties:
+        pageId:
+          type: string
+          enum: [UC-06, UC-20, UC-21, UC-33, UC-36]
+        dataState:
+          type: string
+          enum: [full, partial, none]
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PageItem"
+        generatedAt:
+          type: string
+          format: date-time
+    PageItem:
+      type: object
+      required: [fieldKey, status, freshnessState]
+      properties:
+        fieldKey:
+          type: string
+        label:
+          type: string
+        status:
+          type: string
+          enum: [available, missing]
+        value:
+          type: string
+          nullable: true
+        missingReason:
+          type: string
+          nullable: true
+        freshnessState:
+          type: string
+          enum: [fresh, may_be_outdated, unknown]
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum:
+            [NOT_AUTHENTICATED, ROLE_DENIED, SUBJECT_SCOPE_DENIED, PAGE_NOT_FOUND]
+        message:
+          type: string
