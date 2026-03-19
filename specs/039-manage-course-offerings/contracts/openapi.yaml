@@ -1,0 +1,303 @@
+openapi: 3.0.3
+info:
+  title: Course Offering Administration API
+  version: 0.1.0
+  description: API contract for UC-39 add/delete course offerings with override and conflict-safe deletion confirmation.
+servers:
+  - url: /api
+security:
+  - sessionAuth: []
+paths:
+  /offerings:
+    get:
+      summary: List course offerings for administration
+      tags: [Offerings]
+      parameters:
+        - in: query
+          name: termId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Offerings list returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offerings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseOffering'
+    post:
+      summary: Create a new course offering
+      tags: [Offerings]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOfferingRequest'
+      responses:
+        '201':
+          description: Offering created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferingMutationResponse'
+        '400':
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: Duplicate offering identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /offerings/{offeringId}/deletion-check:
+    post:
+      summary: Perform pre-delete checks and produce confirmation token
+      tags: [Offerings]
+      parameters:
+        - in: path
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deletion check completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletionCheckResponse'
+        '404':
+          description: Offering not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /offerings/{offeringId}/delete:
+    post:
+      summary: Confirm deletion with final recheck and optional override
+      tags: [Offerings]
+      parameters:
+        - in: path
+          name: offeringId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteOfferingRequest'
+      responses:
+        '200':
+          description: Offering deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferingMutationResponse'
+        '400':
+          description: Missing confirmation or invalid override reason
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: Conflict or blocked due to active enrollments without override
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Offering not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: session_id
+  schemas:
+    CourseOffering:
+      type: object
+      required:
+        - offeringId
+        - courseId
+        - termId
+        - instructorId
+        - section
+        - capacity
+        - scheduleDays
+        - scheduleStartTime
+        - scheduleEndTime
+        - status
+        - updatedAt
+      properties:
+        offeringId:
+          type: string
+        courseId:
+          type: string
+        termId:
+          type: string
+        instructorId:
+          type: string
+        section:
+          type: string
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 999
+        scheduleDays:
+          type: string
+          example: MWF
+        scheduleStartTime:
+          type: string
+          pattern: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+        scheduleEndTime:
+          type: string
+          pattern: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, DELETED]
+        updatedAt:
+          type: string
+          format: date-time
+    CreateOfferingRequest:
+      type: object
+      required:
+        - courseId
+        - termId
+        - instructorId
+        - section
+        - capacity
+        - scheduleDays
+        - scheduleStartTime
+        - scheduleEndTime
+      properties:
+        courseId:
+          type: string
+        termId:
+          type: string
+        instructorId:
+          type: string
+        section:
+          type: string
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 999
+        scheduleDays:
+          type: string
+        scheduleStartTime:
+          type: string
+          pattern: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+        scheduleEndTime:
+          type: string
+          pattern: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+    DeletionCheckResponse:
+      type: object
+      required:
+        - offeringId
+        - activeEnrollmentCount
+        - deletionAllowedWithoutOverride
+        - confirmationToken
+        - expectedUpdatedAt
+      properties:
+        offeringId:
+          type: string
+        activeEnrollmentCount:
+          type: integer
+          minimum: 0
+        deletionAllowedWithoutOverride:
+          type: boolean
+        confirmationToken:
+          type: string
+        expectedUpdatedAt:
+          type: string
+          format: date-time
+    DeleteOfferingRequest:
+      type: object
+      required:
+        - confirmationToken
+        - expectedUpdatedAt
+        - confirmDelete
+      properties:
+        confirmationToken:
+          type: string
+        expectedUpdatedAt:
+          type: string
+          format: date-time
+        confirmDelete:
+          type: boolean
+          enum: [true]
+        overrideConfirmed:
+          type: boolean
+          default: false
+        overrideReason:
+          type: string
+          minLength: 5
+          maxLength: 500
+    OfferingMutationResponse:
+      type: object
+      required:
+        - offeringId
+        - action
+        - outcome
+        - message
+      properties:
+        offeringId:
+          type: string
+        action:
+          type: string
+          enum: [ADD, DELETE]
+        outcome:
+          type: string
+          enum: [SUCCESS]
+        message:
+          type: string
+        auditStatus:
+          type: string
+          enum: [WRITTEN, QUEUED_FOR_RETRY]
+    ValidationErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+        - fieldErrors
+      properties:
+        code:
+          type: string
+          enum: [VALIDATION_ERROR]
+        message:
+          type: string
+        fieldErrors:
+          type: array
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum: [NOT_FOUND, CONFLICT, ACTIVE_ENROLLMENTS_BLOCK, INTERNAL_ERROR]
+        message:
+          type: string
