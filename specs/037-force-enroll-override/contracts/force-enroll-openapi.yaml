@@ -1,0 +1,233 @@
+openapi: 3.0.3
+info:
+  title: Force Enroll Override API
+  version: 1.0.0
+  description: API contract for UC-37 force-enroll override workflow.
+servers:
+  - url: /api
+paths:
+  /force-enroll/requests:
+    post:
+      summary: Initiate a force-enroll request
+      operationId: createForceEnrollRequest
+      tags: [ForceEnroll]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForceEnrollCreateRequest'
+      responses:
+        '201':
+          description: Force-enroll completed immediately or pending extra confirmation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForceEnrollCreateResponse'
+        '400':
+          description: Validation failure (missing reason, duplicate enrollment, bad input)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Student or offering not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Hard constraint violation or term/status constraint failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Transactional processing failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /force-enroll/requests/{requestId}/confirm-over-capacity:
+    post:
+      summary: Finalize an over-capacity force-enroll request
+      operationId: confirmOverCapacityForceEnroll
+      tags: [ForceEnroll]
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [confirm]
+              properties:
+                confirm:
+                  type: boolean
+                  enum: [true]
+      responses:
+        '200':
+          description: Enrollment completed and audited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForceEnrollConfirmResponse'
+        '403':
+          description: Different admin attempted final confirmation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Request no longer confirmable (already resolved / hard constraint now fails)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Transactional processing failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /force-enroll/requests/{requestId}:
+    get:
+      summary: Fetch current request status for UI polling/reload recovery
+      operationId: getForceEnrollRequest
+      tags: [ForceEnroll]
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Current request state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForceEnrollRequestStatus'
+        '404':
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ForceEnrollCreateRequest:
+      type: object
+      required: [studentId, offeringId, reason]
+      properties:
+        studentId:
+          type: integer
+          minimum: 1
+        offeringId:
+          type: integer
+          minimum: 1
+        reason:
+          type: string
+          minLength: 10
+          maxLength: 500
+
+    ForceEnrollCreateResponse:
+      type: object
+      required: [requestId, status, message]
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [COMPLETED, PENDING_CONFIRMATION]
+        message:
+          type: string
+        enrollmentId:
+          type: integer
+          nullable: true
+        requiresOverCapacityConfirmation:
+          type: boolean
+        overCapacityConfirmationByAccountId:
+          type: integer
+          nullable: true
+
+    ForceEnrollConfirmResponse:
+      type: object
+      required: [requestId, status, message, enrollmentId]
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [COMPLETED]
+        message:
+          type: string
+        enrollmentId:
+          type: integer
+
+    ForceEnrollRequestStatus:
+      type: object
+      required: [requestId, status, studentId, offeringId, initiatedByAccountId, createdAt]
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [PENDING_CONFIRMATION, COMPLETED, REJECTED]
+        studentId:
+          type: integer
+        offeringId:
+          type: integer
+        initiatedByAccountId:
+          type: integer
+        reason:
+          type: string
+        rejectionReason:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        resolvedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+            - STUDENT_NOT_FOUND
+            - OFFERING_NOT_FOUND
+            - HARD_CONSTRAINT_FAILED
+            - DUPLICATE_ENROLLMENT
+            - OVER_CAPACITY_CONFIRMATION_REQUIRED
+            - CONFIRMATION_NOT_ALLOWED
+            - REQUEST_NOT_FOUND
+            - TRANSACTION_FAILED
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
