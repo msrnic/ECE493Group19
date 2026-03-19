@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: Class Search API Contract
+  version: 1.0.0
+paths:
+  /api/classes/search:
+    get:
+      summary: Search available classes
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: term
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: subject
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: courseNumber
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Matching classes
+        '400':
+          description: Invalid search input
+        '503':
+          description: Catalog service unavailable
