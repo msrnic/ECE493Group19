@@ -5,6 +5,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 ## Active Technologies
 
 - JavaScript (Node.js 20 LTS for server; ES2022 browser JavaScript for client) + Express 4.x (controller routing), `sqlite3` (SQLite driver), `bcrypt` (password hashing), `express-session` (session management), `csurf` (form CSRF protection) (001-change-password)
+- HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS) + Express 4 (HTTP routing/controller layer), `express-session` (session management), `better-sqlite3` (SQLite access), bcrypt (password hash verification) (001-user-login)
 
 ## Project Structure
 
@@ -24,6 +25,8 @@ JavaScript (Node.js 20 LTS for server; ES2022 browser JavaScript for client): Fo
 ## Recent Changes
 
 - 001-change-password: Added JavaScript (Node.js 20 LTS for server; ES2022 browser JavaScript for client) + Express 4.x (controller routing), `sqlite3` (SQLite driver), `bcrypt` (password hashing), `express-session` (session management), `csurf` (form CSRF protection)
+HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS): Follow standard conventions
+- 001-user-login: Added HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS) + Express 4 (HTTP routing/controller layer), `express-session` (session management), `better-sqlite3` (SQLite access), bcrypt (password hash verification)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
