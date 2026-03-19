@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: Dashboard Data Display API
+  version: 0.1.0
+  description: Contract for retrieving dashboard-linked display data for UC-06/20/21/33/36.
+servers:
+  - url: https://example.local
+paths:
+  /dashboard/pages/{pageId}:
+    get:
+      summary: Get display data for a dashboard page
+      operationId: getDashboardPageData
+      parameters:
+        - name: pageId
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [contact-info, course-history, transcript, student-info, grade-summary]
+      responses:
+        '200':
+          description: Data retrieval completed (full, partial, or none)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardPageResponse'
+        '401':
+          description: Unauthenticated session
+        '403':
+          description: Authenticated but unauthorized for requested page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+components:
+  schemas:
+    DashboardPageResponse:
+      type: object
+      required: [pageId, ucId, status, availableItems, missingItems, message]
+      properties:
+        pageId:
+          type: string
+        ucId:
+          type: string
+          enum: [UC-06, UC-20, UC-21, UC-33, UC-36]
+        status:
+          type: string
+          enum: [complete, partial, none]
+        availableItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/VisibleDataItem'
+        missingItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingDataItem'
+        message:
+          type: string
+          description: Includes retry guidance when status=none.
+    VisibleDataItem:
+      type: object
+      required: [fieldKey, label, value]
+      properties:
+        fieldKey:
+          type: string
+        label:
+          type: string
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+            - type: array
+            - type: object
+    MissingDataItem:
+      type: object
+      required: [fieldKey, reason]
+      properties:
+        fieldKey:
+          type: string
+        reason:
+          type: string
+          enum: [not_found, unavailable, restricted_by_role, stale]
+    UnauthorizedResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          enum: [forbidden]
+        message:
+          type: string
