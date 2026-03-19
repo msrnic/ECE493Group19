@@ -23,6 +23,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-13
 - SQLite (feature-specific tables plus audit rows as needed) (030-regenerate-full-schedule)
 - HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer (036-grade-submission-summary)
 - JavaScript (Node.js 20 LTS for server, ES2022 browser JavaScript for client) + Express.js (controller routing), EJS (server-rendered HTML views), better-sqlite3 (SQLite access), express-session (admin session auth), Playwright + Node test runner (acceptance/integration) (037-force-enroll-override)
+- JavaScript (Node.js 20 LTS backend, ES2022 browser JavaScript frontend) + Express 4 (routing/controllers), `sqlite3` (SQLite access), vanilla HTML/CSS/JavaScript views (038-force-withdrawal)
 
 ## Project Structure
 
@@ -68,6 +69,7 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 035-update-grades-deadline: Added HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer
 - 034-enter-final-grades: Added HTML5, CSS3, JavaScript (ES2021) + Existing MVC web app modules, SQLite data access layer
 - 037-force-enroll-override: Added JavaScript (Node.js 20 LTS for server, ES2022 browser JavaScript for client) + Express.js (controller routing), EJS (server-rendered HTML views), better-sqlite3 (SQLite access), express-session (admin session auth), Playwright + Node test runner (acceptance/integration)
+- 038-force-withdrawal: Added JavaScript (Node.js 20 LTS backend, ES2022 browser JavaScript frontend) + Express 4 (routing/controllers), `sqlite3` (SQLite access), vanilla HTML/CSS/JavaScript views
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
