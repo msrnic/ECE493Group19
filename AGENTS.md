@@ -10,6 +10,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 - HTML5, CSS3, JavaScript (ES2022) on Node.js 20 LTS + Express.js (routing/controllers), `better-sqlite3` (SQLite access), server-rendered templates + browser JavaScript for page behavior (004-display-dashboard-data)
 - JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (controller/routing), better-sqlite3 (SQLite access), express-session (authenticated session), EJS or server-rendered HTML templates (005-update-personal-details)
 - JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context) (006-dashboard-data-view)
+- JavaScript (ES2022), HTML5, CSS3 + Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent) (007-update-contact-info)
 
 ## Project Structure
 
@@ -35,6 +36,7 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS): Fol
 - 004-display-dashboard-data: Added HTML5, CSS3, JavaScript (ES2022) on Node.js 20 LTS + Express.js (routing/controllers), `better-sqlite3` (SQLite access), server-rendered templates + browser JavaScript for page behavior
 - 005-update-personal-details: Added JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (controller/routing), better-sqlite3 (SQLite access), express-session (authenticated session), EJS or server-rendered HTML templates
 - 006-dashboard-data-view: Added JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context)
+- 007-update-contact-info: Added JavaScript (ES2022), HTML5, CSS3 + Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
