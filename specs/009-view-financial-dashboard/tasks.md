@@ -1,6 +1,6 @@
 # Tasks: Financial Information Dashboard
 
-**Input**: Design documents from `/Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/`
+**Input**: Design documents from `/Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
 **Tests**: Contract and integration tests are included because plan/research/quickstart explicitly require acceptance alignment and automated validation.
@@ -16,7 +16,7 @@
 ## Path Conventions
 
 - Single project at repository root: `src/`, `tests/`
-- Documentation and planning in `/Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/`
+- Documentation and planning in `/Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/`
 
 ## Phase 1: Setup (Shared Infrastructure)
 
@@ -27,7 +27,7 @@
 - [ ] T003 Initialize Node.js project metadata and scripts in /Users/ahsanmansoor/ECE493Group19/package.json
 - [ ] T004 [P] Add runtime and test dependencies (Express, sqlite3, Vitest, supertest) in /Users/ahsanmansoor/ECE493Group19/package.json
 - [ ] T005 [P] Add lint/style tooling configuration in /Users/ahsanmansoor/ECE493Group19/.eslintrc.json and /Users/ahsanmansoor/ECE493Group19/.prettierrc
-- [ ] T006 Map feature traceability references (UC-09/UC-09-AS, UC-02/UC-03 support) in /Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/quickstart.md
+- [ ] T006 Map feature traceability references (UC-09/UC-09-AS, UC-02/UC-03 support) in /Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/quickstart.md
 
 ---
 
@@ -125,11 +125,11 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T038 [P] Update contract documentation and endpoint examples in /Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/contracts/dashboard.openapi.yaml
-- [ ] T039 [P] Update quickstart validation steps with exact local run commands in /Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/quickstart.md
-- [ ] T040 Run full test/lint/style suite and record results in /Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/implementation-validation.md
+- [ ] T038 [P] Update contract documentation and endpoint examples in /Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/contracts/dashboard.openapi.yaml
+- [ ] T039 [P] Update quickstart validation steps with exact local run commands in /Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/quickstart.md
+- [ ] T040 Run full test/lint/style suite and record results in /Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/implementation-validation.md
 - [ ] T041 [P] Add regression test coverage for own-data-only boundary (no cross-student leakage) in /Users/ahsanmansoor/ECE493Group19/tests/integration/dashboard-flow.test.js
-- [ ] T042 Verify protected use-case and acceptance artifacts remain unchanged and log outcome in /Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/implementation-validation.md
+- [ ] T042 Verify protected use-case and acceptance artifacts remain unchanged and log outcome in /Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/implementation-validation.md
 
 ---
 

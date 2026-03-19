@@ -2,7 +2,7 @@
 
 **Purpose**: Validate requirement quality, ambiguity risk, and traceability before planning/tasks
 **Created**: 2026-03-13
-**Feature**: [/Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/spec.md](/Users/ahsanmansoor/ECE493Group19/specs/001-view-financial-dashboard/spec.md)
+**Feature**: [/Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/spec.md](/Users/ahsanmansoor/ECE493Group19/specs/009-view-financial-dashboard/spec.md)
 
 **Note**: This checklist evaluates the quality of written requirements, not implementation behavior.
 

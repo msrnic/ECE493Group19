@@ -1,6 +1,6 @@
 # Feature Specification: Financial Information Dashboard
 
-**Feature Branch**: `001-view-financial-dashboard`  
+**Feature Branch**: `009-view-financial-dashboard`  
 **Created**: 2026-03-13  
 **Status**: Draft  
 **Input**: User description: "Goal in context is for a student to view a financial information dashboard after login, with role-based module visibility and graceful handling of missing roles or partial data load failures."
