@@ -1,0 +1,29 @@
+openapi: 3.0.3
+info:
+  title: Drop Deadline Policy API Contract
+  version: 1.0.0
+paths:
+  /api/deadlines/drop:
+    get:
+      summary: Retrieve drop deadline status for student term
+      parameters:
+        - in: query
+          name: term
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deadline details and status
+        '404':
+          description: Deadline rule not configured
+        '503':
+          description: Deadline service unavailable
+  /api/deadlines/drop/evaluate:
+    post:
+      summary: Evaluate drop eligibility for current time
+      responses:
+        '200':
+          description: Eligibility decision returned
+        '503':
+          description: Unable to evaluate eligibility
