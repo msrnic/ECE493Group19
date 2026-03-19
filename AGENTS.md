@@ -12,6 +12,11 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 - JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context) (006-dashboard-data-view)
 - JavaScript (ES2022), HTML5, CSS3 + Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent) (007-update-contact-info)
 - HTML5, CSS3, JavaScript (ES2022) + Node.js runtime for tooling, Express.js web server, `sqlite3` driver, server-side template rendering (EJS) (008-dashboard-data-display)
+Auto-generated from all feature plans. Last updated: 2026-03-13
+
+## Active Technologies
+
+- HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime) + Express.js (controller routing), SQLite driver (001-view-financial-dashboard)
 
 ## Project Structure
 
@@ -39,6 +44,8 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime for server-side JS): Fol
 - 006-dashboard-data-view: Added JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context)
 - 007-update-contact-info: Added JavaScript (ES2022), HTML5, CSS3 + Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent)
 - 008-dashboard-data-display: Added HTML5, CSS3, JavaScript (ES2022) + Node.js runtime for tooling, Express.js web server, `sqlite3` driver, server-side template rendering (EJS)
+HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conventions
+- 001-view-financial-dashboard: Added HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime) + Express.js (controller routing), SQLite driver
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

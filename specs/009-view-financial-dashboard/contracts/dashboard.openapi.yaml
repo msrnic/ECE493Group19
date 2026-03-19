@@ -1,0 +1,147 @@
+openapi: 3.0.3
+info:
+  title: Financial Information Dashboard API
+  version: 0.1.0
+  description: |
+    Read-only endpoints for rendering the student financial dashboard,
+    module visibility, and degraded-mode availability indicators.
+servers:
+  - url: https://example.edu
+paths:
+  /api/dashboard:
+    get:
+      summary: Get dashboard shell data for the authenticated student
+      operationId: getDashboard
+      tags: [Dashboard]
+      responses:
+        '200':
+          description: Dashboard shell returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardResponse'
+        '401':
+          description: Unauthenticated session
+        '403':
+          description: Authenticated but not permitted for student dashboard
+  /api/dashboard/modules:
+    get:
+      summary: Get module visibility and availability for dashboard navigation
+      operationId: getDashboardModules
+      tags: [Dashboard]
+      responses:
+        '200':
+          description: Module list returned
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [studentId, modules]
+                properties:
+                  studentId:
+                    type: string
+                  modules:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ModuleView'
+  /api/dashboard/financial-summary:
+    get:
+      summary: Get prioritized financial summary section
+      operationId: getFinancialSummary
+      tags: [Dashboard]
+      responses:
+        '200':
+          description: Financial summary returned (live or stale)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialSummaryResponse'
+        '503':
+          description: Financial source unavailable and no confirmed snapshot
+components:
+  schemas:
+    DashboardResponse:
+      type: object
+      required:
+        - studentId
+        - dashboardType
+        - financialPriority
+        - modules
+      properties:
+        studentId:
+          type: string
+        dashboardType:
+          type: string
+          enum: [full, minimal, partial]
+        financialPriority:
+          type: boolean
+          description: Indicates financial information is prioritized in layout.
+        adminContactMessage:
+          type: string
+          nullable: true
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModuleView'
+    ModuleView:
+      type: object
+      required:
+        - moduleCode
+        - displayName
+        - navPath
+        - assignmentState
+        - availabilityState
+      properties:
+        moduleCode:
+          type: string
+        displayName:
+          type: string
+        navPath:
+          type: string
+        assignmentState:
+          type: string
+          enum: [assigned, unassigned]
+        availabilityState:
+          type: string
+          enum: [available, unavailable]
+        unavailableReason:
+          type: string
+          nullable: true
+    FinancialSummaryResponse:
+      type: object
+      required:
+        - studentId
+        - sourceState
+        - lastConfirmedAt
+        - items
+      properties:
+        studentId:
+          type: string
+        sourceState:
+          type: string
+          enum: [live, stale]
+        lastConfirmedAt:
+          type: string
+          format: date-time
+        staleNotice:
+          type: string
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialSummaryItem'
+    FinancialSummaryItem:
+      type: object
+      required:
+        - label
+        - value
+        - currency
+      properties:
+        label:
+          type: string
+        value:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: CAD
