@@ -1,6 +1,5 @@
 # ECE493Group19 Development Guidelines
 
-<<<<<<< HEAD
 Auto-generated from all feature plans. Last updated: 2026-03-07
 
 ## Active Technologies
@@ -13,8 +12,6 @@ Auto-generated from all feature plans. Last updated: 2026-03-07
 - JavaScript (Node.js 20 LTS for server, modern browser JavaScript for client) + Express 4 (controller routing), EJS (server-rendered views), `better-sqlite3` (SQLite access), `express-session` (session auth context) (006-dashboard-data-view)
 - JavaScript (ES2022), HTML5, CSS3 + Node.js runtime, Express.js web framework, `sqlite3` driver, server-side templating (EJS or equivalent) (007-update-contact-info)
 - HTML5, CSS3, JavaScript (ES2022) + Node.js runtime for tooling, Express.js web server, `sqlite3` driver, server-side template rendering (EJS) (008-dashboard-data-display)
-=======
->>>>>>> 011-store-banking-information
 Auto-generated from all feature plans. Last updated: 2026-03-13
 
 ## Active Technologies
@@ -25,6 +22,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-13
 
 ```text
 src/
+backend/
+frontend/
 tests/
 ```
 
@@ -52,5 +51,8 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 010-transaction-history: Added HTML5, CSS3, JavaScript (ES6+) + Browser Web APIs, Node.js tooling for lint/test execution
 - 011-store-banking-information: Added HTML5, CSS3, JavaScript (ES2020+) + Existing project MVC modules, SQLite driver used by projec
 - 016-drop-priority-withdrawal: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+- 018-branch-class-waitlist: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+- 017-branch-class-enrollment: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
+
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

@@ -1,2 +1,9 @@
+model = "gpt-5.4"
 [projects."/home/m_srnic/ece493/group_project/ECE493Group19"]
 trust_level = "trusted"
+
+[projects."/home/thaia/ECE493Group19"]
+trust_level = "trusted"
+
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
