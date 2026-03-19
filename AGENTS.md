@@ -51,6 +51,6 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 009-view-financial-dashboard: Added HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime) + Express.js (controller routing), SQLite driver
 - 010-transaction-history: Added HTML5, CSS3, JavaScript (ES6+) + Browser Web APIs, Node.js tooling for lint/test execution
 - 011-store-banking-information: Added HTML5, CSS3, JavaScript (ES2020+) + Existing project MVC modules, SQLite driver used by projec
-
+- 016-drop-priority-withdrawal: Added HTML5, CSS3, JavaScript (ES2023) + Browser DOM APIs, Node.js-compatible JavaScript runtime, SQLite driver for JavaScript
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
