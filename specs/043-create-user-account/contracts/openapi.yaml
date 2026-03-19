@@ -1,0 +1,257 @@
+openapi: 3.0.3
+info:
+  title: Admin Account Creation API
+  version: 0.1.0
+  description: >-
+    Contracts for UC-43 administrative account creation using MVC controllers
+    and SQLite-backed persistence.
+servers:
+  - url: https://example.edu
+paths:
+  /api/admin/accounts/form-metadata:
+    get:
+      summary: Fetch assignable roles and password policy for the create-account form
+      operationId: getAccountFormMetadata
+      tags: [Admin Accounts]
+      responses:
+        '200':
+          description: Form metadata returned
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [roles, passwordPolicy, notificationsEnabled]
+                properties:
+                  roles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignableRole'
+                  passwordPolicy:
+                    $ref: '#/components/schemas/PasswordPolicy'
+                  notificationsEnabled:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/accounts:
+    post:
+      summary: Create a new user account with role assignment and password setup
+      operationId: createUserAccount
+      tags: [Admin Accounts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountRequest'
+      responses:
+        '201':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccountSuccessResponse'
+        '400':
+          description: Validation failure (identity, role format, password policy)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Authenticated but lacks account-management permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Duplicate normalized login identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictErrorResponse'
+        '500':
+          description: System failure; no account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  responses:
+    Unauthorized:
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Action not permitted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    AssignableRole:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Student
+
+    PasswordPolicy:
+      type: object
+      required: [minLength, requiresUpper, requiresLower, requiresDigit, requiresSpecial]
+      properties:
+        minLength:
+          type: integer
+          minimum: 8
+        requiresUpper:
+          type: boolean
+        requiresLower:
+          type: boolean
+        requiresDigit:
+          type: boolean
+        requiresSpecial:
+          type: boolean
+
+    CreateAccountRequest:
+      type: object
+      required:
+        - fullName
+        - institutionalId
+        - loginIdentifier
+        - roleId
+        - passwordMode
+      properties:
+        fullName:
+          type: string
+          minLength: 1
+        institutionalId:
+          type: string
+          minLength: 1
+        loginIdentifier:
+          type: string
+          description: Email or username; uniqueness checked using trim+lowercase normalization.
+          minLength: 1
+        roleId:
+          type: integer
+          minimum: 1
+        passwordMode:
+          type: string
+          enum: [preset, generated]
+        presetPassword:
+          type: string
+          description: Required when passwordMode=preset.
+        sendNotification:
+          type: boolean
+          default: true
+
+    CreateAccountSuccessResponse:
+      type: object
+      required:
+        - accountId
+        - accountIdentifier
+        - assignedRole
+        - accountStatus
+        - mustChangePassword
+        - notification
+      properties:
+        accountId:
+          type: integer
+        accountIdentifier:
+          type: string
+          description: Created account login identifier.
+        assignedRole:
+          type: string
+        accountStatus:
+          type: string
+          enum: [active]
+        mustChangePassword:
+          type: boolean
+          enum: [true]
+        notification:
+          type: object
+          required: [enabled, status]
+          properties:
+            enabled:
+              type: boolean
+            status:
+              type: string
+              enum: [sent, failed, skipped_disabled]
+            warning:
+              type: string
+              description: Present when status=failed; no resend/copy actions in this feature.
+
+    ValidationError:
+      type: object
+      required: [field, message, code]
+      properties:
+        field:
+          type: string
+          example: fullName
+        message:
+          type: string
+        code:
+          type: string
+          example: REQUIRED
+
+    ValidationErrorResponse:
+      type: object
+      required: [error, errors, preservedValues]
+      properties:
+        error:
+          type: string
+          example: Validation failed
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+        preservedValues:
+          type: object
+          description: Non-sensitive values that can repopulate the form.
+          properties:
+            fullName:
+              type: string
+            institutionalId:
+              type: string
+            loginIdentifier:
+              type: string
+            roleId:
+              type: integer
+            passwordMode:
+              type: string
+              enum: [preset, generated]
+            sendNotification:
+              type: boolean
+
+    ConflictErrorResponse:
+      type: object
+      required: [error, code, field]
+      properties:
+        error:
+          type: string
+          example: Login identifier already in use
+        code:
+          type: string
+          enum: [DUPLICATE_IDENTIFIER]
+        field:
+          type: string
+          example: loginIdentifier
+
+    ErrorResponse:
+      type: object
+      required: [error, code]
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+          example: INTERNAL_ERROR

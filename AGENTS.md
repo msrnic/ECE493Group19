@@ -28,6 +28,7 @@ Auto-generated from all feature plans. Last updated: 2026-03-13
 - JavaScript (Node.js 20 LTS for server/controllers/models, ES2022 browser JavaScript for views) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), EJS (server-rendered HTML views), express-validator (input validation), dotenv (config) (040-update-course-capacity)
 - JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (HTTP + controllers), EJS (HTML views), `sqlite3` driver, `express-validator` for request validation (041-class-enrollment)
 - JavaScript (ES2023) for server and browser, HTML5, CSS3 + Node.js 22 LTS, Express 5 (HTTP + routing), better-sqlite3 (SQLite access), server-side template engine for HTML views, client-side vanilla JavaScript modules (042-student-inbox-notifications)
+- JavaScript (Node.js 20 LTS for server, ES2022 for browser) + Express.js (MVC web routing), better-sqlite3 (SQLite access), bcryptjs (password hashing), express-validator (input validation) (043-create-user-account)
 
 ## Project Structure
 
@@ -78,6 +79,7 @@ HTML5, CSS3, JavaScript (ES2022, Node.js 20 LTS runtime): Follow standard conven
 - 040-update-course-capacity: Added JavaScript (Node.js 20 LTS for server/controllers/models, ES2022 browser JavaScript for views) + Express 4 (routing/controllers), better-sqlite3 (SQLite access), EJS (server-rendered HTML views), express-validator (input validation), dotenv (config)
 - 041-class-enrollment: Added JavaScript (Node.js 20 LTS for server, ES2022 in browser) + Express 4 (HTTP + controllers), EJS (HTML views), `sqlite3` driver, `express-validator` for request validation
 - 042-student-inbox-notifications: Added JavaScript (ES2023) for server and browser, HTML5, CSS3 + Node.js 22 LTS, Express 5 (HTTP + routing), better-sqlite3 (SQLite access), server-side template engine for HTML views, client-side vanilla JavaScript modules
+- 043-create-user-account: Added JavaScript (Node.js 20 LTS for server, ES2022 for browser) + Express.js (MVC web routing), better-sqlite3 (SQLite access), bcryptjs (password hashing), express-validator (input validation)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
