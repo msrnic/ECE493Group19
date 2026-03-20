@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card" aria-labelledby="login-title">
+        <p class="eyebrow">University Student Information System</p>
+        <h1 id="login-title">Sign in {{heading_suffix}}</h1>
+        <p class="help-text">{{help_message}}</p>
+        <p class="status-chip">HTTP status: {{http_status}}</p>
+        <div class="error-banner" role="alert">{{error_message}}</div>
+        <form id="login-form" method="post" action="/login" novalidate>
+          <label for="identifier">Username or email</label>
+          <input
+            id="identifier"
+            name="identifier"
+            type="text"
+            autocomplete="username"
+            required
+            value="{{identifier}}"
+          >
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+
+          <button type="submit">Sign in</button>
+        </form>
+      </section>
+    </main>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

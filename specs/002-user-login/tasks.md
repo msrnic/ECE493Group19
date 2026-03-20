@@ -17,12 +17,12 @@
 
 **Purpose**: Initialize project skeleton and tooling needed by all stories.
 
-- [ ] T001 Initialize Node.js project metadata and scripts in `/home/m_srnic/ece493/group_project/ECE493Group19/package.json`
-- [ ] T002 Add runtime and test dependencies to `/home/m_srnic/ece493/group_project/ECE493Group19/package.json` for `express`, `express-session`, `better-sqlite3`, `bcrypt`, `supertest`, and `playwright`
-- [ ] T003 [P] Create MVC and test directory skeleton by adding `.gitkeep` placeholders in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/public/js/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/.gitkeep`, and `/home/m_srnic/ece493/group_project/ECE493Group19/tests/e2e/.gitkeep`
-- [ ] T004 [P] Create Express application bootstrap and server export in `/home/m_srnic/ece493/group_project/ECE493Group19/src/app.js`
-- [ ] T005 [P] Create shared SQLite connection helper in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/connection.js`
-- [ ] T006 Add repository-level traceability note for UC-02 artifacts in `/home/m_srnic/ece493/group_project/ECE493Group19/README.md`
+- [X] T001 Initialize Node.js project metadata and scripts in `/home/m_srnic/ece493/group_project/ECE493Group19/package.json`
+- [X] T002 Add runtime and test dependencies to `/home/m_srnic/ece493/group_project/ECE493Group19/package.json` for `express`, `express-session`, `better-sqlite3`, `bcrypt`, `supertest`, and `playwright`
+- [X] T003 [P] Create MVC and test directory skeleton by adding `.gitkeep` placeholders in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/public/js/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/.gitkeep`, `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/.gitkeep`, and `/home/m_srnic/ece493/group_project/ECE493Group19/tests/e2e/.gitkeep`
+- [X] T004 [P] Create Express application bootstrap and server export in `/home/m_srnic/ece493/group_project/ECE493Group19/src/app.js`
+- [X] T005 [P] Create shared SQLite connection helper in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/connection.js`
+- [X] T006 Add repository-level traceability note for UC-02 artifacts in `/home/m_srnic/ece493/group_project/ECE493Group19/README.md`
 
 ---
 
@@ -32,13 +32,13 @@
 
 **⚠️ CRITICAL**: Complete this phase before starting user story tasks.
 
-- [ ] T007 Implement baseline SQLite schema for `accounts`, `courses`, `account_courses`, `login_attempts`, and `user_sessions` in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/schema.sql`
-- [ ] T008 Create schema apply/migration runner for `sis.db` in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/apply-schema.js`
-- [ ] T009 [P] Implement Express session middleware configuration in `/home/m_srnic/ece493/group_project/ECE493Group19/src/middleware/session-middleware.js`
-- [ ] T010 [P] Implement authentication guard middleware for dashboard protection in `/home/m_srnic/ece493/group_project/ECE493Group19/src/middleware/require-auth.js`
-- [ ] T011 [P] Create route wiring module for `/login` and `/dashboard` in `/home/m_srnic/ece493/group_project/ECE493Group19/src/routes/auth-routes.js`
-- [ ] T012 Implement shared login outcome constants aligned to contract enum values in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/login-outcomes.js`
-- [ ] T013 Configure centralized auth error logging helper in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-audit-service.js`
+- [X] T007 Implement baseline SQLite schema for `accounts`, `courses`, `account_courses`, `login_attempts`, and `user_sessions` in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/schema.sql`
+- [X] T008 Create schema apply/migration runner for `sis.db` in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/apply-schema.js`
+- [X] T009 [P] Implement Express session middleware configuration in `/home/m_srnic/ece493/group_project/ECE493Group19/src/middleware/session-middleware.js`
+- [X] T010 [P] Implement authentication guard middleware for dashboard protection in `/home/m_srnic/ece493/group_project/ECE493Group19/src/middleware/require-auth.js`
+- [X] T011 [P] Create route wiring module for `/login` and `/dashboard` in `/home/m_srnic/ece493/group_project/ECE493Group19/src/routes/auth-routes.js`
+- [X] T012 Implement shared login outcome constants aligned to contract enum values in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/login-outcomes.js`
+- [X] T013 Configure centralized auth error logging helper in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-audit-service.js`
 
 **Checkpoint**: Foundation complete; user stories can start with no inter-story blocking.
 
@@ -52,21 +52,21 @@
 
 ### Tests for User Story 1
 
-- [ ] T014 [P] [US1] Add integration test for `POST /login` success redirect and session cookie in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-success.test.js`
-- [ ] T015 [P] [US1] Add integration test for authenticated `GET /dashboard` access in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-authenticated.test.js`
-- [ ] T016 [P] [US1] Add E2E happy-path login journey test in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/e2e/login-success.spec.js`
+- [X] T014 [P] [US1] Add integration test for `POST /login` success redirect and session cookie in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-success.test.js`
+- [X] T015 [P] [US1] Add integration test for authenticated `GET /dashboard` access in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-authenticated.test.js`
+- [X] T016 [P] [US1] Add E2E happy-path login journey test in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/e2e/login-success.spec.js`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Implement account lookup and status read operations in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/account-model.js`
-- [ ] T018 [P] [US1] Implement user session create/read operations in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/session-model.js`
-- [ ] T019 [US1] Implement credential verification and success-session orchestration in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-service.js`
-- [ ] T020 [US1] Implement `GET /login`, `POST /login` success path, and login redirect behavior in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/auth-controller.js`
-- [ ] T021 [US1] Implement dashboard rendering controller in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/dashboard-controller.js`
-- [ ] T022 [P] [US1] Create login form view with identifier/password fields in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html`
-- [ ] T023 [P] [US1] Create authenticated dashboard view in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/dashboard.html`
-- [ ] T024 [P] [US1] Add login page styles in `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/login.css`
-- [ ] T025 [P] [US1] Add login form client behavior for field validation/submit UX in `/home/m_srnic/ece493/group_project/ECE493Group19/public/js/login.js`
+- [X] T017 [P] [US1] Implement account lookup and status read operations in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/account-model.js`
+- [X] T018 [P] [US1] Implement user session create/read operations in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/session-model.js`
+- [X] T019 [US1] Implement credential verification and success-session orchestration in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-service.js`
+- [X] T020 [US1] Implement `GET /login`, `POST /login` success path, and login redirect behavior in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/auth-controller.js`
+- [X] T021 [US1] Implement dashboard rendering controller in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/dashboard-controller.js`
+- [X] T022 [P] [US1] Create login form view with identifier/password fields in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html`
+- [X] T023 [P] [US1] Create authenticated dashboard view in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/dashboard.html`
+- [X] T024 [P] [US1] Add login page styles in `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/login.css`
+- [X] T025 [P] [US1] Add login form client behavior for field validation/submit UX in `/home/m_srnic/ece493/group_project/ECE493Group19/public/js/login.js`
 
 **Checkpoint**: User Story 1 is independently functional and demo-ready.
 
@@ -80,17 +80,17 @@
 
 ### Tests for User Story 2
 
-- [ ] T026 [P] [US2] Add integration test for invalid-credentials response and retry message in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-invalid-credentials.test.js`
-- [ ] T027 [P] [US2] Add integration test for lockout enforcement at 5 failed attempts in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-lockout-threshold.test.js`
-- [ ] T028 [P] [US2] Add unit test for lockout duration/reset rules in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/lockout-service.test.js`
+- [X] T026 [P] [US2] Add integration test for invalid-credentials response and retry message in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-invalid-credentials.test.js`
+- [X] T027 [P] [US2] Add integration test for lockout enforcement at 5 failed attempts in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-lockout-threshold.test.js`
+- [X] T028 [P] [US2] Add unit test for lockout duration/reset rules in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/lockout-service.test.js`
 
 ### Implementation for User Story 2
 
-- [ ] T029 [P] [US2] Implement login attempt persistence operations in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/login-attempt-model.js`
-- [ ] T030 [US2] Implement lockout threshold, expiry, and failed-attempt reset policy in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/lockout-service.js`
-- [ ] T031 [US2] Update authentication service invalid-credential flow with attempt tracking and lock-state transitions in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-service.js`
-- [ ] T032 [US2] Update login controller to return `401` for invalid credentials and `423` for temporary lockout per contract in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/auth-controller.js`
-- [ ] T033 [US2] Update login view error regions for invalid and locked account messaging in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html`
+- [X] T029 [P] [US2] Implement login attempt persistence operations in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/login-attempt-model.js`
+- [X] T030 [US2] Implement lockout threshold, expiry, and failed-attempt reset policy in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/lockout-service.js`
+- [X] T031 [US2] Update authentication service invalid-credential flow with attempt tracking and lock-state transitions in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-service.js`
+- [X] T032 [US2] Update login controller to return `401` for invalid credentials and `423` for temporary lockout per contract in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/auth-controller.js`
+- [X] T033 [US2] Update login view error regions for invalid and locked account messaging in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html`
 
 **Checkpoint**: User Story 2 is independently testable with invalid/retry/lockout behavior.
 
@@ -104,18 +104,18 @@
 
 ### Tests for User Story 3
 
-- [ ] T034 [P] [US3] Add integration test for disabled-account denial guidance on `POST /login` in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-disabled-account.test.js`
-- [ ] T035 [P] [US3] Add integration test for authentication-service-unavailable `503` response and no session creation in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-service-unavailable.test.js`
-- [ ] T036 [P] [US3] Add unit test for outage failure logging behavior in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/auth-audit-service.test.js`
-- [ ] T046 [P] [US3] Add integration test for locked-account denial with valid credentials in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-locked-account.test.js`
+- [X] T034 [P] [US3] Add integration test for disabled-account denial guidance on `POST /login` in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-disabled-account.test.js`
+- [X] T035 [P] [US3] Add integration test for authentication-service-unavailable `503` response and no session creation in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-service-unavailable.test.js`
+- [X] T036 [P] [US3] Add unit test for outage failure logging behavior in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/auth-audit-service.test.js`
+- [X] T046 [P] [US3] Add integration test for locked-account denial with valid credentials in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-locked-account.test.js`
 
 ### Implementation for User Story 3
 
-- [ ] T037 [US3] Implement disabled/locked pre-check query helpers in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/account-model.js`
-- [ ] T038 [US3] Implement auth-service unavailable error mapping and denial flow in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-service.js`
-- [ ] T039 [US3] Record failure outcomes (`locked`, `disabled`, `service_unavailable`) in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-audit-service.js`
-- [ ] T040 [US3] Update login controller to return `403` for disabled accounts and `503` for auth outages in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/auth-controller.js`
-- [ ] T041 [US3] Update login guidance copy for disabled and service-unavailable states in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html`
+- [X] T037 [US3] Implement disabled/locked pre-check query helpers in `/home/m_srnic/ece493/group_project/ECE493Group19/src/models/account-model.js`
+- [X] T038 [US3] Implement auth-service unavailable error mapping and denial flow in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-service.js`
+- [X] T039 [US3] Record failure outcomes (`locked`, `disabled`, `service_unavailable`) in `/home/m_srnic/ece493/group_project/ECE493Group19/src/services/auth-audit-service.js`
+- [X] T040 [US3] Update login controller to return `403` for disabled accounts and `503` for auth outages in `/home/m_srnic/ece493/group_project/ECE493Group19/src/controllers/auth-controller.js`
+- [X] T041 [US3] Update login guidance copy for disabled and service-unavailable states in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html`
 
 **Checkpoint**: User Story 3 independently handles restricted and outage scenarios.
 
@@ -125,13 +125,13 @@
 
 **Purpose**: Final hardening, compliance checks, and end-to-end validation.
 
-- [ ] T042 [P] Add representative seed data for active, locked, and disabled accounts plus course records in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/seed-login-fixtures.js`
-- [ ] T043 Verify Google style-guide compliance for modified HTML/CSS in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html` and `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/login.css`
-- [ ] T044 Run full validation commands (`npm test && npm run lint`) and record results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
-- [ ] T045 Validate no modifications to protected artifacts in `/home/m_srnic/ece493/group_project/ECE493Group19/Use Cases/UC-02.md` and `/home/m_srnic/ece493/group_project/ECE493Group19/Acceptance Tests/UC-02-AS.md`
-- [ ] T047 [P] Add login performance integration benchmark for SC-001 in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-performance.test.js`
-- [ ] T048 Record SC-001 benchmark evidence and pass/fail threshold results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
-- [ ] T049 Define SC-005 post-release measurement procedure and reporting template in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
+- [X] T042 [P] Add representative seed data for active, locked, and disabled accounts plus course records in `/home/m_srnic/ece493/group_project/ECE493Group19/src/db/migrations/seed-login-fixtures.js`
+- [X] T043 Verify Google style-guide compliance for modified HTML/CSS in `/home/m_srnic/ece493/group_project/ECE493Group19/src/views/login.html` and `/home/m_srnic/ece493/group_project/ECE493Group19/public/css/login.css`
+- [X] T044 Run full validation commands (`npm test && npm run lint`) and record results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
+- [X] T045 Validate no modifications to protected artifacts in `/home/m_srnic/ece493/group_project/ECE493Group19/Use Cases/UC-02.md` and `/home/m_srnic/ece493/group_project/ECE493Group19/Acceptance Tests/UC-02-AS.md`
+- [X] T047 [P] Add login performance integration benchmark for SC-001 in `/home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/login-performance.test.js`
+- [X] T048 Record SC-001 benchmark evidence and pass/fail threshold results in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
+- [X] T049 Define SC-005 post-release measurement procedure and reporting template in `/home/m_srnic/ece493/group_project/ECE493Group19/specs/002-user-login/quickstart.md`
 
 ---
 
@@ -227,6 +227,6 @@ Task: "T036 [US3] auth audit unit test in tests/unit/auth-audit-service.test.js"
 
 ## Notes
 
-- All checklist entries follow the required format: `- [ ] T### [P?] [Story?] Description with file path`.
+- All checklist entries follow the required format: `- [X] T### [P?] [Story?] Description with file path`.
 - `[Story]` labels are present on all user story tasks and omitted for setup/foundational/polish.
 - Tasks are concrete and executable by an LLM without extra context.

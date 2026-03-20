@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, #d4ebff, transparent 45%),
+    linear-gradient(135deg, #f7fbff, #dcecf6);
+  color: #16324f;
+}
+
+.login-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: min(100%, 420px);
+  padding: 32px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 24px 60px rgba(22, 50, 79, 0.15);
+}
+
+.eyebrow,
+.help-text,
+.status-chip,
+.error-banner,
+label,
+button,
+input,
+.course-list {
+  font-size: 16px;
+}
+
+.eyebrow,
+.status-chip {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.help-text {
+  margin-bottom: 16px;
+}
+
+.status-chip,
+.error-banner {
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.status-chip {
+  background: #e4f0ff;
+}
+
+.error-banner {
+  min-height: 24px;
+  background: #ffe6e1;
+  color: #8b2214;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+}
+
+input,
+button {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #aac5d9;
+}
+
+button {
+  border: 0;
+  background: #0a5ea8;
+  color: #fff;
+  cursor: pointer;
+}
+
+.course-list {
+  padding-left: 20px;
+}
+
+
+.login-button-link {
+  display: inline-block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #0a5ea8;
+  color: #fff;
+  text-decoration: none;
+}

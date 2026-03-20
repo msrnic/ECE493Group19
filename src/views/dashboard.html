@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Dashboard</title>
+    <link rel="stylesheet" href="/css/login.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card">
+        <p class="eyebrow">Authenticated dashboard</p>
+        <h1>Welcome, {{username}}</h1>
+        <p class="help-text">Your session started at {{session_created_at}}.</p>
+        <h2>Permitted account functions</h2>
+        <ul class="course-list">
+          {{course_list}}
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

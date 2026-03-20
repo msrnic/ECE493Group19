@@ -1,2 +1,17 @@
+node_modules/
+coverage/
+playwright-report/
+test-results/
+dist/
+build/
+*.log
+.env*
 *.sqlite-shm
 *.sqlite-wal
+*.tmp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+sis.db
+tmp/

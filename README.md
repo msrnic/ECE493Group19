@@ -10,3 +10,11 @@ Local Repo for ECE 493 Group 19.
 - Required architecture: MVC
 - Required style guides: `Style Guides/google-style-guide-html-css.md` and
   `Style Guides/google-style-guide-javascript.md`
+
+## UC-02 Traceability
+
+- Feature spec: `specs/002-user-login/spec.md`
+- Use case: `Use Cases/UC-02.md`
+- Acceptance suite: `Acceptance Tests/UC-02-AS.md`
+- App bootstrap: `src/app.js`
+- Validation command: `npm test && npm run lint`
