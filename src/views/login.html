@@ -12,6 +12,13 @@
         <p class="eyebrow">University Student Information System</p>
         <h1 id="login-title">Sign in {{heading_suffix}}</h1>
         <p class="help-text">{{help_message}}</p>
+        <div aria-label="Demo reset guidance">
+          <p class="help-text">Need a known demo password again? Reset the demo data with <code>npm run setup</code>.</p>
+          <ul class="rule-list">
+            <li>Demo reset restores userA@example.com / CorrectPass!234</li>
+            <li>Demo reset restores admin@example.com / AdminPass!234</li>
+          </ul>
+        </div>
         <p class="status-chip">HTTP status: {{http_status}}</p>
         <div class="error-banner" role="alert">{{error_message}}</div>
         <form id="login-form" method="post" action="/login" novalidate>

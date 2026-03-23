@@ -41,7 +41,7 @@ test('migration entrypoints apply schema and seed fixtures from the command line
   assert.match(seedResult.stdout, /Seeded login fixtures/);
 
   const db = getDb(dbPath);
-  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM accounts').get().count, 4);
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM accounts').get().count, 5);
 
   closeAll();
   fs.rmSync(tempDir, { force: true, recursive: true });
@@ -94,11 +94,110 @@ test('auth controller forwards session save failures to next', async () => {
   assert.equal(forwardedError, error);
 });
 
+test('auth controller invalidates the current session and clears the cookie on logout', async () => {
+  const invalidations = [];
+  const controller = createAuthController({
+    now: () => new Date('2026-03-07T13:00:00.000Z'),
+    sessionModel: {
+      invalidateSession(sessionId, details) {
+        invalidations.push({ sessionId, details });
+        return 1;
+      }
+    }
+  });
+
+  let clearedCookie = '';
+  let redirectPath = '';
+  let destroyCalled = false;
+
+  await controller.postLogout(
+    {
+      sessionID: 'session-logout-1',
+      session: {
+        destroy(callback) {
+          destroyCalled = true;
+          callback();
+        }
+      }
+    },
+    {
+      clearCookie(name) {
+        clearedCookie = name;
+        return this;
+      },
+      redirect(pathname) {
+        redirectPath = pathname;
+        return pathname;
+      }
+    },
+    (error) => {
+      throw error;
+    }
+  );
+
+  assert.equal(destroyCalled, true);
+  assert.equal(clearedCookie, 'connect.sid');
+  assert.equal(redirectPath, '/login');
+  assert.deepEqual(invalidations, [
+    {
+      sessionId: 'session-logout-1',
+      details: {
+        reason: 'logout',
+        revokedAt: '2026-03-07T13:00:00.000Z'
+      }
+    }
+  ]);
+});
+
+test('auth controller forwards logout destroy failures to next', async () => {
+  const controller = createAuthController({
+    now: () => new Date('2026-03-07T13:00:00.000Z'),
+    sessionModel: {
+      invalidateSession() {
+        return 1;
+      }
+    }
+  });
+
+  const error = new Error('session destroy failed');
+  let clearedCookie = false;
+  let forwardedError = null;
+
+  await controller.postLogout(
+    {
+      sessionID: 'session-logout-2',
+      session: {
+        destroy(callback) {
+          callback(error);
+        }
+      }
+    },
+    {
+      clearCookie() {
+        clearedCookie = true;
+        return this;
+      },
+      redirect() {
+        throw new Error('redirect should not be reached');
+      }
+    },
+    (receivedError) => {
+      forwardedError = receivedError;
+    }
+  );
+
+  assert.equal(clearedCookie, false);
+  assert.equal(forwardedError, error);
+});
+
 test('dashboard controller renders fallback text when there are no courses or session metadata', () => {
   const controller = createDashboardController({
     accountModel: {
       getDashboardAccount() {
-        return { username: 'userA', courses: [] };
+        return { id: 2, role: 'admin', username: 'userA', courses: [] };
+      },
+      listPasswordManagementTargets() {
+        return [];
       }
     },
     sessionModel: {
@@ -125,6 +224,8 @@ test('dashboard controller renders fallback text when there are no courses or se
 
   assert.match(responseBody, /No courses are assigned/);
   assert.match(responseBody, /Session metadata unavailable/);
+  assert.match(responseBody, /Change password/);
+  assert.match(responseBody, /Log out/);
 });
 
 test('session middleware supports both default and explicit secrets', () => {

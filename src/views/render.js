@@ -13,11 +13,12 @@ function renderHtml(templatePath, replacements) {
   let template = fs.readFileSync(templatePath, 'utf8');
 
   for (const [key, value] of Object.entries(replacements)) {
-    const escapedValue = key === 'course_list' ? String(value) : escapeHtml(value);
+    const escapedValue =
+      key === 'course_list' || key.endsWith('_html') ? String(value) : escapeHtml(value);
     template = template.replaceAll(`{{${key}}}`, escapedValue);
   }
 
   return template;
 }
 
-module.exports = { renderHtml };
+module.exports = { escapeHtml, renderHtml };

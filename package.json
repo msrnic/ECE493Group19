@@ -13,6 +13,7 @@
     "test:acceptance": "node scripts/run-playwright.js",
     "test": "npm run test:coverage && npm run test:acceptance",
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=src/**/*.js --test-coverage-exclude=src/views/*.js --test-coverage-branches=100 --test-coverage-functions=100 --test-coverage-lines=100 tests/unit/*.test.js tests/integration/*.test.js",
+    "c8": "npm run test:coverage",
     "setup": "npm run db:migrate && npm run db:seed:login",
     "start": "node scripts/start-server.js"
   },

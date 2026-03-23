@@ -15,13 +15,16 @@ test('GET / renders a title page with navigation to the login page', async () =>
   context.cleanup();
 });
 
-test('GET /login renders for unauthenticated users and redirects authenticated users', async () => {
+test('GET /login renders demo reset guidance for unauthenticated users and redirects authenticated users', async () => {
   const context = createTestContext();
   const agent = request.agent(context.app);
 
   const firstResponse = await agent.get('/login');
   assert.equal(firstResponse.status, 200);
   assert.match(firstResponse.text, /Sign in/);
+  assert.match(firstResponse.text, /npm run setup/);
+  assert.match(firstResponse.text, /userA@example.com \/ CorrectPass!234/);
+  assert.match(firstResponse.text, /admin@example.com \/ AdminPass!234/);
 
   await agent
     .post('/login')

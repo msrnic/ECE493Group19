@@ -28,6 +28,18 @@ function createAuthController(services) {
     });
   }
 
+  async function destroySession(req) {
+    await new Promise((resolve, reject) => {
+      req.session.destroy((error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   return {
     getLoginPage(req, res) {
       if (req.session && req.session.accountId) {
@@ -100,6 +112,20 @@ function createAuthController(services) {
           headingSuffix: 'Service unavailable',
           helpMessage: 'No session was created. Retry once the authentication service is healthy.'
         });
+      } catch (error) {
+        return next(error);
+      }
+    },
+
+    async postLogout(req, res, next) {
+      try {
+        services.sessionModel.invalidateSession(req.sessionID, {
+          reason: 'logout',
+          revokedAt: services.now().toISOString()
+        });
+        await destroySession(req);
+        res.clearCookie('connect.sid');
+        return res.redirect('/login');
       } catch (error) {
         return next(error);
       }

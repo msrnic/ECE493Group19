@@ -1,6 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
-test('AT-UC02-01 successful login routes to the dashboard', async ({ page }) => {
+const { resetFixtures } = require('./reset-fixtures');
+
+test.beforeEach(async ({ request }) => {
+  await resetFixtures(request);
+});
+
+test('AT-UC02-01 successful login routes to the dashboard and logout returns to login', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('link', { name: 'Go to login' }).click();
   await page.getByLabel('Username or email').fill('userA@example.com');
@@ -9,6 +15,12 @@ test('AT-UC02-01 successful login routes to the dashboard', async ({ page }) => 
 
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(page.getByRole('heading', { name: 'Welcome, userA' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Log out' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Log out' }).click();
+
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
 });
 
 test('AT-UC02-02 invalid credentials show an error and retry succeeds', async ({ page }) => {

@@ -14,6 +14,9 @@ seedLoginFixtures(dbPath, { now: fixedNow });
 const app = createApp({
   db: getDb(dbPath),
   now: () => fixedNow,
+  resetFixtures: () => {
+    seedLoginFixtures(dbPath, { now: fixedNow });
+  },
   sessionSecret: 'acceptance-session-secret',
   unavailableIdentifiers: ['outage.user@example.com']
 });

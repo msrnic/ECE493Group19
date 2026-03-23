@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Dashboard</title>
     <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
   </head>
   <body>
     <main class="login-shell">
@@ -12,6 +13,13 @@
         <p class="eyebrow">Authenticated dashboard</p>
         <h1>Welcome, {{username}}</h1>
         <p class="help-text">Your session started at {{session_created_at}}.</p>
+        <form class="action-row" method="post" action="/logout">
+          <button class="secondary-button" type="submit">Log out</button>
+        </form>
+        <h2>Security actions</h2>
+        <ul class="action-list">
+          {{security_links_html}}
+        </ul>
         <h2>Permitted account functions</h2>
         <ul class="course-list">
           {{course_list}}

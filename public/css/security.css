@@ -1,0 +1,26 @@
+.rule-list,
+.action-list {
+  padding-left: 20px;
+}
+
+.rule-list,
+.action-list,
+.status-chip {
+  margin-bottom: 16px;
+}
+
+.action-row {
+  display: flex;
+  gap: 12px;
+}
+
+.action-row button,
+.action-list .login-button-link {
+  flex: 1 1 auto;
+}
+
+.secondary-button,
+.secondary-link {
+  background: #e4f0ff;
+  color: #16324f;
+}

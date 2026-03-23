@@ -60,6 +60,31 @@ test('account, attempt, session, and audit helpers cover null and optional-field
     null
   );
   assert.equal(sessionModel.findActiveSession('missing-session'), null);
+  assert.equal(sessionModel.invalidateSession('missing-session'), 0);
+  assert.equal(sessionModel.invalidateSessionsForAccount(999), 0);
+
+  const createdSession = sessionModel.createSession({
+    id: 'session-1',
+    accountId: 1,
+    createdAt: '2026-03-07T12:05:00.000Z',
+    expiresAt: '2026-03-07T13:05:00.000Z'
+  });
+  assert.equal(createdSession.id, 'session-1');
+  assert.equal(
+    sessionModel.invalidateSession('session-1', {
+      reason: 'logout',
+      revokedAt: '2026-03-07T12:10:00.000Z'
+    }),
+    1
+  );
+  assert.equal(sessionModel.findActiveSession('session-1'), null);
+  assert.deepEqual(
+    db.prepare('SELECT invalidation_reason, revoked_at FROM user_sessions WHERE id = ?').get('session-1'),
+    {
+      invalidation_reason: 'logout',
+      revoked_at: '2026-03-07T12:10:00.000Z'
+    }
+  );
 
   auditService.recordFailure({
     accountId: null,

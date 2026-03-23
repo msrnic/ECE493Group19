@@ -7,6 +7,12 @@ function createAccountModel(db) {
   `);
 
   const selectById = db.prepare('SELECT * FROM accounts WHERE id = ?');
+  const selectPasswordManagementTargets = db.prepare(`
+    SELECT id, email, username, role, status
+    FROM accounts
+    WHERE id != ?
+    ORDER BY email ASC
+  `);
   const selectDashboardCourses = db.prepare(`
     SELECT c.course_code, c.title, c.credits, ac.role
     FROM account_courses ac
@@ -22,6 +28,14 @@ function createAccountModel(db) {
       failed_attempt_count = @failed_attempt_count,
       last_failed_at = @last_failed_at,
       locked_until = @locked_until,
+      updated_at = @updated_at
+    WHERE id = @id
+  `);
+  const updatePasswordHashStatement = db.prepare(`
+    UPDATE accounts
+    SET
+      password_hash = @password_hash,
+      password_changed_at = @password_changed_at,
       updated_at = @updated_at
     WHERE id = @id
   `);
@@ -50,6 +64,10 @@ function createAccountModel(db) {
     };
   }
 
+  function listPasswordManagementTargets(actorAccountId) {
+    return selectPasswordManagementTargets.all(actorAccountId);
+  }
+
   function saveFailureState(accountId, state) {
     updateFailureState.run({
       id: accountId,
@@ -73,12 +91,25 @@ function createAccountModel(db) {
     });
   }
 
+  function updatePasswordHash(accountId, passwordHash, changedAt) {
+    updatePasswordHashStatement.run({
+      id: accountId,
+      password_hash: passwordHash,
+      password_changed_at: changedAt,
+      updated_at: changedAt
+    });
+
+    return findById(accountId);
+  }
+
   return {
     findByIdentifier,
     findById,
     getDashboardAccount,
+    listPasswordManagementTargets,
     resetFailureState,
-    saveFailureState
+    saveFailureState,
+    updatePasswordHash
   };
 }
 

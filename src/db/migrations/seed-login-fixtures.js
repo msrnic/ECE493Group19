@@ -1,7 +1,14 @@
 const bcrypt = require('bcrypt');
 
 const { getDb, resolveDbPath } = require('../connection');
+const { digestToken } = require('../../models/reset-token-model');
 const { applySchema } = require('./apply-schema');
+
+const RESET_TOKENS = {
+  expired: 'TOKEN_EXPIRED',
+  revoked: 'TOKEN_REVOKED',
+  valid: 'TOKEN_VALID'
+};
 
 function isoNow(now) {
   return now.toISOString();
@@ -9,8 +16,7 @@ function isoNow(now) {
 
 function seedLoginFixtures(dbPath, options = {}) {
   const now = options.now || new Date('2026-03-07T12:00:00.000Z');
-  const lockedUntil =
-    options.lockedUntil || new Date(now.getTime() + 15 * 60 * 1000);
+  const lockedUntil = options.lockedUntil || new Date(now.getTime() + 15 * 60 * 1000);
   const resolvedPath = applySchema(dbPath);
   const db = getDb(resolvedPath);
 
@@ -18,17 +24,39 @@ function seedLoginFixtures(dbPath, options = {}) {
     DELETE FROM account_courses;
     DELETE FROM courses;
     DELETE FROM login_attempts;
+    DELETE FROM notifications;
+    DELETE FROM password_change_attempts;
+    DELETE FROM verification_cooldowns;
+    DELETE FROM password_reset_tokens;
     DELETE FROM user_sessions;
     DELETE FROM accounts;
   `);
 
   const insertAccount = db.prepare(`
     INSERT INTO accounts (
-      email, username, password_hash, status, failed_attempt_count,
-      last_failed_at, locked_until, created_at, updated_at
+      email,
+      username,
+      role,
+      password_hash,
+      status,
+      failed_attempt_count,
+      last_failed_at,
+      locked_until,
+      password_changed_at,
+      created_at,
+      updated_at
     ) VALUES (
-      @email, @username, @password_hash, @status, @failed_attempt_count,
-      @last_failed_at, @locked_until, @created_at, @updated_at
+      @email,
+      @username,
+      @role,
+      @password_hash,
+      @status,
+      @failed_attempt_count,
+      @last_failed_at,
+      @locked_until,
+      @password_changed_at,
+      @created_at,
+      @updated_at
     )
   `);
 
@@ -42,18 +70,53 @@ function seedLoginFixtures(dbPath, options = {}) {
     VALUES (@account_id, @course_id, @role, @created_at)
   `);
 
+  const insertResetToken = db.prepare(`
+    INSERT INTO password_reset_tokens (
+      account_id,
+      token_digest,
+      issued_at,
+      expires_at,
+      consumed_at,
+      revoked_at
+    ) VALUES (
+      @account_id,
+      @token_digest,
+      @issued_at,
+      @expires_at,
+      @consumed_at,
+      @revoked_at
+    )
+  `);
+
   const timestamp = isoNow(now);
   const passwordHash = bcrypt.hashSync('CorrectPass!234', 10);
+  const adminPasswordHash = bcrypt.hashSync('AdminPass!234', 10);
   const lockedTimestamp = lockedUntil.toISOString();
 
   const activeAccount = insertAccount.run({
     email: 'userA@example.com',
     username: 'userA',
+    role: 'student',
     password_hash: passwordHash,
     status: 'active',
     failed_attempt_count: 0,
     last_failed_at: null,
     locked_until: null,
+    password_changed_at: timestamp,
+    created_at: timestamp,
+    updated_at: timestamp
+  });
+
+  insertAccount.run({
+    email: 'admin@example.com',
+    username: 'adminA',
+    role: 'admin',
+    password_hash: adminPasswordHash,
+    status: 'active',
+    failed_attempt_count: 0,
+    last_failed_at: null,
+    locked_until: null,
+    password_changed_at: timestamp,
     created_at: timestamp,
     updated_at: timestamp
   });
@@ -61,11 +124,13 @@ function seedLoginFixtures(dbPath, options = {}) {
   insertAccount.run({
     email: 'locked.user@example.com',
     username: 'lockedUser',
+    role: 'student',
     password_hash: passwordHash,
     status: 'locked',
     failed_attempt_count: 5,
     last_failed_at: timestamp,
     locked_until: lockedTimestamp,
+    password_changed_at: timestamp,
     created_at: timestamp,
     updated_at: timestamp
   });
@@ -73,11 +138,13 @@ function seedLoginFixtures(dbPath, options = {}) {
   insertAccount.run({
     email: 'disabled.user@example.com',
     username: 'disabledUser',
+    role: 'student',
     password_hash: passwordHash,
     status: 'disabled',
     failed_attempt_count: 0,
     last_failed_at: null,
     locked_until: null,
+    password_changed_at: timestamp,
     created_at: timestamp,
     updated_at: timestamp
   });
@@ -85,11 +152,13 @@ function seedLoginFixtures(dbPath, options = {}) {
   insertAccount.run({
     email: 'outage.user@example.com',
     username: 'outageUser',
+    role: 'student',
     password_hash: passwordHash,
     status: 'active',
     failed_attempt_count: 0,
     last_failed_at: null,
     locked_until: null,
+    password_changed_at: timestamp,
     created_at: timestamp,
     updated_at: timestamp
   });
@@ -124,6 +193,33 @@ function seedLoginFixtures(dbPath, options = {}) {
     created_at: timestamp
   });
 
+  insertResetToken.run({
+    account_id: activeAccount.lastInsertRowid,
+    token_digest: digestToken(RESET_TOKENS.valid),
+    issued_at: timestamp,
+    expires_at: new Date(now.getTime() + 60 * 60 * 1000).toISOString(),
+    consumed_at: null,
+    revoked_at: null
+  });
+
+  insertResetToken.run({
+    account_id: activeAccount.lastInsertRowid,
+    token_digest: digestToken(RESET_TOKENS.expired),
+    issued_at: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
+    expires_at: new Date(now.getTime() - 60 * 1000).toISOString(),
+    consumed_at: null,
+    revoked_at: null
+  });
+
+  insertResetToken.run({
+    account_id: activeAccount.lastInsertRowid,
+    token_digest: digestToken(RESET_TOKENS.revoked),
+    issued_at: new Date(now.getTime() - 60 * 60 * 1000).toISOString(),
+    expires_at: new Date(now.getTime() + 60 * 60 * 1000).toISOString(),
+    consumed_at: null,
+    revoked_at: timestamp
+  });
+
   return resolvedPath;
 }
 
@@ -133,4 +229,4 @@ if (require.main === module) {
   console.log(`Seeded login fixtures in ${resolvedPath}`);
 }
 
-module.exports = { seedLoginFixtures };
+module.exports = { RESET_TOKENS, seedLoginFixtures };

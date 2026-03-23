@@ -15,9 +15,10 @@ test('POST /login returns 423 for pre-locked accounts with valid credentials', a
   assert.match(response.text, /temporarily locked/);
   assert.equal(context.db.prepare('SELECT COUNT(*) AS count FROM user_sessions').get().count, 0);
 
+  const lockedAccount = context.db.prepare('SELECT id FROM accounts WHERE email = ?').get('locked.user@example.com');
   const attempts = context.db
-    .prepare('SELECT outcome FROM login_attempts WHERE account_id = 2')
-    .all();
+    .prepare('SELECT outcome FROM login_attempts WHERE account_id = ?')
+    .all(lockedAccount.id);
   assert.equal(attempts.at(-1).outcome, 'locked');
 
   context.cleanup();

@@ -21,6 +21,7 @@ function createTestContext(options = {}) {
     db: getDb(dbPath),
     now: () => nowState.value,
     sessionSecret: 'test-session-secret',
+    simulatedPasswordChangeFailureIdentifiers: options.simulatedPasswordChangeFailureIdentifiers || [],
     unavailableIdentifiers: options.unavailableIdentifiers || []
   });
 
