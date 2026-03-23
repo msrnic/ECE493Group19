@@ -7,6 +7,11 @@ function createAccountModel(db) {
   `);
 
   const selectById = db.prepare('SELECT * FROM accounts WHERE id = ?');
+  const selectAllAccounts = db.prepare(`
+    SELECT id, email, username, role, status
+    FROM accounts
+    ORDER BY email ASC
+  `);
   const selectPasswordManagementTargets = db.prepare(`
     SELECT id, email, username, role, status
     FROM accounts
@@ -50,6 +55,10 @@ function createAccountModel(db) {
 
   function findById(accountId) {
     return selectById.get(accountId) || null;
+  }
+
+  function listAccounts() {
+    return selectAllAccounts.all();
   }
 
   function getDashboardAccount(accountId) {
@@ -106,6 +115,7 @@ function createAccountModel(db) {
     findByIdentifier,
     findById,
     getDashboardAccount,
+    listAccounts,
     listPasswordManagementTargets,
     resetFailureState,
     saveFailureState,

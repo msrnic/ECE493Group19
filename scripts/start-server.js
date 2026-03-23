@@ -18,7 +18,7 @@ const accountCount = db.prepare('SELECT COUNT(*) AS count FROM accounts').get().
 if (forceSeedLoginFixtures || accountCount === 0) {
   seedLoginFixtures(dbPath);
   console.log(`Seeded demo accounts into ${path.resolve(dbPath)}.`);
-  console.log('Demo credentials after reset: userA@example.com / CorrectPass!234 and admin@example.com / AdminPass!234.');
+  console.log('Demo credentials after reset: userA@example.com / CorrectPass!234, professor@example.com / CorrectPass!234, and admin@example.com / AdminPass!234.');
   console.log('Password policy: 12+ characters with uppercase, lowercase, number, special character, and no leading or trailing spaces.');
   console.log('Example valid new passwords: NewSecure!234, AdminSet!234, TokenSecure!234.');
 } else {

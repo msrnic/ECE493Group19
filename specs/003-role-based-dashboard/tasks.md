@@ -17,11 +17,11 @@
 
 **Purpose**: Initialize project scaffolding and tooling for dashboard development.
 
-- [ ] T001 Create MVC project directories for dashboard feature in app/controllers/.gitkeep
-- [ ] T002 Initialize Node.js dependencies and scripts for Express, better-sqlite3, express-session, Vitest, Supertest, and Playwright in package.json
-- [ ] T003 [P] Add baseline test runner configuration for unit/integration/contract tests in vitest.config.js
-- [ ] T004 [P] Add browser test configuration for dashboard flows in playwright.config.js
-- [ ] T005 Document UC traceability references (UC-03, UC-09, UC-02) for implementation handoff in specs/003-role-based-dashboard/quickstart.md
+- [X] T001 Create MVC project directories for dashboard feature in app/controllers/.gitkeep
+- [X] T002 Initialize Node.js dependencies and scripts for Express, better-sqlite3, express-session, Vitest, Supertest, and Playwright in package.json
+- [X] T003 [P] Add baseline test runner configuration for unit/integration/contract tests in vitest.config.js
+- [X] T004 [P] Add browser test configuration for dashboard flows in playwright.config.js
+- [X] T005 Document UC traceability references (UC-03, UC-09, UC-02) for implementation handoff in specs/003-role-based-dashboard/quickstart.md
 
 ---
 
@@ -31,14 +31,14 @@
 
 **⚠️ CRITICAL**: Complete this phase before starting user stories.
 
-- [ ] T006 Implement SQLite schema for accounts, courses, roles, modules, dashboard section states, and load events in app/db/schema.sql
-- [ ] T007 Add initial migration script aligned with schema design in app/db/migrations/001_role_based_dashboard.sql
-- [ ] T008 [P] Implement shared SQLite connection/transaction helpers in app/models/db-client.js
-- [ ] T009 [P] Implement session login guard with `returnTo` support for dashboard routes in app/controllers/auth-controller.js
-- [ ] T010 [P] Register auth and dashboard route shells with middleware wiring in app/routes/dashboard-routes.js
-- [ ] T011 Add shared dashboard response/status mapping utility for contract-compliant payloads in app/controllers/dashboard-response.js
-- [ ] T012 Add centralized dashboard error/outcome logging helper used across controllers in app/models/dashboard-load-model.js
-- [ ] T013 Record protected-artifact non-edit check for `Use Cases/` and `Acceptance Tests/` in specs/003-role-based-dashboard/checklists/requirements.md
+- [X] T006 Implement SQLite schema for accounts, courses, roles, modules, dashboard section states, and load events in app/db/schema.sql
+- [X] T007 Add initial migration script aligned with schema design in app/db/migrations/001_role_based_dashboard.sql
+- [X] T008 [P] Implement shared SQLite connection/transaction helpers in app/models/db-client.js
+- [X] T009 [P] Implement session login guard with `returnTo` support for dashboard routes in app/controllers/auth-controller.js
+- [X] T010 [P] Register auth and dashboard route shells with middleware wiring in app/routes/dashboard-routes.js
+- [X] T011 Add shared dashboard response/status mapping utility for contract-compliant payloads in app/controllers/dashboard-response.js
+- [X] T012 Add centralized dashboard error/outcome logging helper used across controllers in app/models/dashboard-load-model.js
+- [X] T013 Record protected-artifact non-edit check for `Use Cases/` and `Acceptance Tests/` in specs/003-role-based-dashboard/checklists/requirements.md
 
 **Checkpoint**: Foundation ready. US1, US2, and US3 can start independently with no cross-story blockers.
 
@@ -52,19 +52,19 @@
 
 ### Tests for User Story 1
 
-- [ ] T014 [P] [US1] Add contract test for `GET /dashboard` success, empty-access, and role-data-error response shapes in tests/contract/dashboard-get.contract.test.js
-- [ ] T015 [P] [US1] Add integration test for login to role-scoped dashboard rendering across single-role and multi-role actors in tests/integration/dashboard-access.integration.test.js
+- [X] T014 [P] [US1] Add contract test for `GET /dashboard` success, empty-access, and role-data-error response shapes in tests/contract/dashboard-get.contract.test.js
+- [X] T015 [P] [US1] Add integration test for login to role-scoped dashboard rendering across single-role and multi-role actors in tests/integration/dashboard-access.integration.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Implement account and active-role lookup queries in app/models/account-model.js
-- [ ] T017 [P] [US1] Implement role-to-module expansion with duplicate elimination in app/models/module-model.js
-- [ ] T018 [P] [US1] Implement enabled dashboard section retrieval by permitted module set in app/models/dashboard-section-model.js
-- [ ] T019 [US1] Implement `GET /dashboard` orchestration for `success|empty_access|role_data_error` outcomes in app/controllers/dashboard-controller.js
-- [ ] T020 [US1] Render role-scoped navigation plus empty-access and role-data-error states in app/views/dashboard/index.ejs
-- [ ] T021 [US1] Add dashboard client bootstrap logic for initial state rendering in app/public/js/dashboard.js
-- [ ] T022 [US1] Wire `GET /dashboard` route to controller/view-model pipeline in app/routes/dashboard-routes.js
-- [ ] T023 [US1] Add dashboard navigation and state styling compliant with style guides in app/public/css/dashboard.css
+- [X] T016 [P] [US1] Implement account and active-role lookup queries in app/models/account-model.js
+- [X] T017 [P] [US1] Implement role-to-module expansion with duplicate elimination in app/models/module-model.js
+- [X] T018 [P] [US1] Implement enabled dashboard section retrieval by permitted module set in app/models/dashboard-section-model.js
+- [X] T019 [US1] Implement `GET /dashboard` orchestration for `success|empty_access|role_data_error` outcomes in app/controllers/dashboard-controller.js
+- [X] T020 [US1] Render role-scoped navigation plus empty-access and role-data-error states in app/views/dashboard/index.ejs
+- [X] T021 [US1] Add dashboard client bootstrap logic for initial state rendering in app/public/js/dashboard.js
+- [X] T022 [US1] Wire `GET /dashboard` route to controller/view-model pipeline in app/routes/dashboard-routes.js
+- [X] T023 [US1] Add dashboard navigation and state styling compliant with style guides in app/public/css/dashboard.css
 
 **Checkpoint**: US1 independently functional and testable.
 
@@ -78,20 +78,20 @@
 
 ### Tests for User Story 2
 
-- [ ] T024 [P] [US2] Add contract test for `POST /dashboard/retry` payload validation and partial/failure/auth-error responses in tests/contract/dashboard-retry.contract.test.js
-- [ ] T025 [P] [US2] Add integration test for partial dashboard load and selective retry behavior in tests/integration/dashboard-retry.integration.test.js
-- [ ] T026 [P] [US2] Add integration test for session-expiry redirect and return-to-dashboard flow during load/retry in tests/integration/dashboard-session-expiry.integration.test.js
+- [X] T024 [P] [US2] Add contract test for `POST /dashboard/retry` payload validation and partial/failure/auth-error responses in tests/contract/dashboard-retry.contract.test.js
+- [X] T025 [P] [US2] Add integration test for partial dashboard load and selective retry behavior in tests/integration/dashboard-retry.integration.test.js
+- [X] T026 [P] [US2] Add integration test for session-expiry redirect and return-to-dashboard flow during load/retry in tests/integration/dashboard-session-expiry.integration.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T027 [P] [US2] Implement per-account dashboard section availability state persistence in app/models/dashboard-section-state-model.js
-- [ ] T028 [P] [US2] Implement dashboard load telemetry writes for `initial_load` and `retry` outcomes in app/models/dashboard-load-model.js
-- [ ] T029 [US2] Implement independent section loading and outcome classification (`success|partial|failure|auth_error`) in app/controllers/dashboard-controller.js
-- [ ] T030 [US2] Implement `POST /dashboard/retry` to accept only currently unavailable section IDs in app/controllers/dashboard-controller.js
-- [ ] T031 [US2] Render unavailable labels and disabled navigation entries for failed sections in app/views/dashboard/index.ejs
-- [ ] T032 [US2] Implement client-side selective retry that preserves already available DOM sections in app/public/js/dashboard.js
-- [ ] T033 [US2] Add auth redirect response handling with `returnTo=/dashboard` for expired sessions in app/routes/auth-routes.js
-- [ ] T034 [US2] Add CSS states for partial/failure/unavailable section presentation in app/public/css/dashboard.css
+- [X] T027 [P] [US2] Implement per-account dashboard section availability state persistence in app/models/dashboard-section-state-model.js
+- [X] T028 [P] [US2] Implement dashboard load telemetry writes for `initial_load` and `retry` outcomes in app/models/dashboard-load-model.js
+- [X] T029 [US2] Implement independent section loading and outcome classification (`success|partial|failure|auth_error`) in app/controllers/dashboard-controller.js
+- [X] T030 [US2] Implement `POST /dashboard/retry` to accept only currently unavailable section IDs in app/controllers/dashboard-controller.js
+- [X] T031 [US2] Render unavailable labels and disabled navigation entries for failed sections in app/views/dashboard/index.ejs
+- [X] T032 [US2] Implement client-side selective retry that preserves already available DOM sections in app/public/js/dashboard.js
+- [X] T033 [US2] Add auth redirect response handling with `returnTo=/dashboard` for expired sessions in app/routes/auth-routes.js
+- [X] T034 [US2] Add CSS states for partial/failure/unavailable section presentation in app/public/css/dashboard.css
 
 **Checkpoint**: US2 independently functional and testable.
 
@@ -105,17 +105,17 @@
 
 ### Tests for User Story 3
 
-- [ ] T035 [P] [US3] Add contract test asserting restricted modules are never emitted in `GET /dashboard` payloads in tests/contract/dashboard-authorization.contract.test.js
-- [ ] T036 [P] [US3] Add integration test covering role changes and zero-enabled-module outcomes without unauthorized links in tests/integration/dashboard-authorization.integration.test.js
-- [ ] T037 [P] [US3] Add unit test for role-module authorization filtering and dedupe invariants in tests/unit/dashboard-authorization.unit.test.js
+- [X] T035 [P] [US3] Add contract test asserting restricted modules are never emitted in `GET /dashboard` payloads in tests/contract/dashboard-authorization.contract.test.js
+- [X] T036 [P] [US3] Add integration test covering role changes and zero-enabled-module outcomes without unauthorized links in tests/integration/dashboard-authorization.integration.test.js
+- [X] T037 [P] [US3] Add unit test for role-module authorization filtering and dedupe invariants in tests/unit/dashboard-authorization.unit.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T038 [P] [US3] Implement strict permission-filter query helpers for active role/module mappings in app/models/role-model.js
-- [ ] T039 [P] [US3] Implement zero-enabled-module lookup path for empty-access decisions in app/models/module-model.js
-- [ ] T040 [US3] Enforce unauthorized-module stripping before response/view rendering in app/controllers/dashboard-controller.js
-- [ ] T041 [US3] Render non-functional navigation for unavailable/unauthorized states with explicit empty-access messaging in app/views/dashboard/index.ejs
-- [ ] T042 [US3] Add client-side guard that blocks stale unauthorized links after retries or role changes in app/public/js/dashboard.js
+- [X] T038 [P] [US3] Implement strict permission-filter query helpers for active role/module mappings in app/models/role-model.js
+- [X] T039 [P] [US3] Implement zero-enabled-module lookup path for empty-access decisions in app/models/module-model.js
+- [X] T040 [US3] Enforce unauthorized-module stripping before response/view rendering in app/controllers/dashboard-controller.js
+- [X] T041 [US3] Render non-functional navigation for unavailable/unauthorized states with explicit empty-access messaging in app/views/dashboard/index.ejs
+- [X] T042 [US3] Add client-side guard that blocks stale unauthorized links after retries or role changes in app/public/js/dashboard.js
 
 **Checkpoint**: US3 independently functional and testable.
 
@@ -125,12 +125,12 @@
 
 **Purpose**: Hardening, documentation, and release readiness across all stories.
 
-- [ ] T043 [P] Add dashboard validator helpers for retry payload sanitation and error code consistency in app/controllers/validators/dashboard-validator.js
-- [ ] T044 [P] Add cross-story Playwright smoke scenario for login -> dashboard -> retry -> auth-return flow in tests/integration/dashboard-smoke.playwright.test.js
-- [ ] T045 Update quickstart with finalized runbook (`npm test && npm run lint`) and verification notes in specs/003-role-based-dashboard/quickstart.md
-- [ ] T046 Capture final acceptance evidence and checklist sign-off for UC-03/UC-09/UC-02 in specs/003-role-based-dashboard/checklists/requirements.md
-- [ ] T047 Add performance verification test for SC-001 (P95 dashboard load <= 3s) in tests/integration/dashboard-performance.integration.test.js
-- [ ] T048 [P] Add dashboard load timing instrumentation and percentile reporting utility in app/models/dashboard-load-model.js
+- [X] T043 [P] Add dashboard validator helpers for retry payload sanitation and error code consistency in app/controllers/validators/dashboard-validator.js
+- [X] T044 [P] Add cross-story Playwright smoke scenario for login -> dashboard -> retry -> auth-return flow in tests/integration/dashboard-smoke.playwright.test.js
+- [X] T045 Update quickstart with finalized runbook (`npm test && npm run lint`) and verification notes in specs/003-role-based-dashboard/quickstart.md
+- [X] T046 Capture final acceptance evidence and checklist sign-off for UC-03/UC-09/UC-02 in specs/003-role-based-dashboard/checklists/requirements.md
+- [X] T047 Add performance verification test for SC-001 (P95 dashboard load <= 3s) in tests/integration/dashboard-performance.integration.test.js
+- [X] T048 [P] Add dashboard load timing instrumentation and percentile reporting utility in app/models/dashboard-load-model.js
 
 ---
 
@@ -229,7 +229,7 @@ Task T039: app/models/module-model.js
 
 ## Notes
 
-- All checklist items follow `- [ ] T### [P?] [US?] Description with file path`
+- All checklist items follow `- [X] T### [P?] [US?] Description with file path`
 - `[US#]` labels appear only on user story tasks
 - Shared infrastructure is isolated to Phase 1-2 to avoid cross-story blockers
 - Protected `Use Cases/` and `Acceptance Tests/` files remain untouched

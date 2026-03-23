@@ -6,25 +6,32 @@
     <title>Main Dashboard</title>
     <link rel="stylesheet" href="/css/login.css">
     <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
   </head>
   <body>
     <main class="login-shell">
-      <section class="login-card">
-        <p class="eyebrow">Authenticated dashboard</p>
+      <section class="login-card dashboard-shell">
+        <p class="eyebrow">Role-based dashboard</p>
         <h1>Welcome, {{username}}</h1>
+        <div class="dashboard-role-row">{{role_badges_html}}</div>
         <p class="help-text">Your session started at {{session_created_at}}.</p>
-        <form class="action-row" method="post" action="/logout">
+        <p id="dashboard-status" class="status-chip dashboard-status" data-status="{{dashboard_status}}">{{dashboard_message}}</p>
+        <div class="dashboard-top-grid">
+          <section class="dashboard-panel">
+            <h2>Available navigation</h2>
+            <div id="dashboard-navigation">{{dashboard_navigation_html}}</div>
+            <div id="dashboard-retry-panel" class="dashboard-retry-panel">{{retry_panel_html}}</div>
+          </section>
+        </div>
+        <div id="dashboard-sections" class="dashboard-sections">
+          {{dashboard_sections_html}}
+        </div>
+        <form class="action-row dashboard-footer-actions" method="post" action="/logout">
           <button class="secondary-button" type="submit">Log out</button>
         </form>
-        <h2>Security actions</h2>
-        <ul class="action-list">
-          {{security_links_html}}
-        </ul>
-        <h2>Permitted account functions</h2>
-        <ul class="course-list">
-          {{course_list}}
-        </ul>
       </section>
     </main>
+    <script id="dashboard-state" type="application/json">{{dashboard_state_json}}</script>
+    <script src="/js/dashboard.js"></script>
   </body>
 </html>

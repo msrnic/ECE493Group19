@@ -14,7 +14,9 @@ function renderHtml(templatePath, replacements) {
 
   for (const [key, value] of Object.entries(replacements)) {
     const escapedValue =
-      key === 'course_list' || key.endsWith('_html') ? String(value) : escapeHtml(value);
+      key === 'course_list' || key.endsWith('_html') || key.endsWith('_json')
+        ? String(value)
+        : escapeHtml(value);
     template = template.replaceAll(`{{${key}}}`, escapedValue);
   }
 

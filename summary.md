@@ -1,80 +1,94 @@
 # Project Summary
 
 ## Repository State
-This repository now contains a working Node.js/Express MVC implementation for feature `002-user-login` in `/home/m_srnic/ece493/group_project/ECE493Group19`.
+This repository now contains a working Node.js/Express MVC application with SQLite persistence for the completed authentication and role-based dashboard work in `/home/m_srnic/ece493/group_project/ECE493Group19`.
 
-The original repo mostly contained specs, use cases, acceptance-test documents, and governance files. We created the application scaffold, runtime code, database schema, seed data, and automated tests.
+The project is no longer just a spec repository. It now includes runtime code, schema/migration logic, seeded demo data, unit/integration/contract tests, and Playwright acceptance coverage.
 
-## Implemented Feature
-Feature implemented: `002-user-login`
+## Features Implemented So Far
+The system currently includes:
+- Login flow with username/email + password authentication
+- Session-based access control with `returnTo` handling
+- Logout and session invalidation behavior
+- Password change and password reset flows
+- Role-based dashboard routing after login
+- Student dashboard modules and sections
+- Professor dashboard modules and sections
+- Admin dashboard modules and sections
+- Multi-role dashboard handling with merged authorized modules
+- Empty-access dashboard state when no modules are assigned
+- Role-data-error dashboard state when role resolution fails
+- Partial dashboard rendering when some sections are unavailable
+- Retry flow for unavailable dashboard sections only
+- Strict filtering so unauthorized modules do not appear in dashboard navigation or content
+- Dashboard telemetry and section-state persistence
 
-Primary behavior now in the system:
-- A title page exists at `/`.
-- The title page contains a login button linking to `/login`.
-- `/login` supports username/email + password authentication.
-- Successful login creates a session and redirects to `/dashboard`.
-- Invalid credentials return a retryable error.
-- Lockout policy is enforced: after 5 failed attempts, the account is locked for 15 minutes.
-- Locked accounts are denied even with valid credentials during the lock period.
-- Disabled accounts are denied with guidance.
-- Simulated authentication-service outage returns `503` and records a failure.
-- `/dashboard` requires an authenticated session.
+## Current Role Dashboards
+### Student
+- Student Academics
+- Financial Summary
+- Security Center
 
-## Important Files
+### Professor
+- Teaching Workload
+- Grading Queue
+- Security Center
+
+### Admin
+- Admin Operations
+- Security Center
+
+### Multi-role / hybrid behavior
+- Authorized modules are merged without duplicates
+- Unauthorized modules remain hidden
+- Partial and retry states preserve authorization filtering
+
+## Important Runtime Files
 ### App/runtime
 - `package.json`
-- `package-lock.json`
 - `scripts/start-server.js`
 - `scripts/run-playwright.js`
 - `src/app.js`
 - `src/routes/auth-routes.js`
-- `src/controllers/home-controller.js`
+- `src/routes/dashboard-routes.js`
 - `src/controllers/auth-controller.js`
 - `src/controllers/dashboard-controller.js`
-- `src/services/auth-service.js`
-- `src/services/lockout-service.js`
-- `src/services/auth-audit-service.js`
+- `src/controllers/dashboard-response.js`
+- `src/controllers/validators/dashboard-validator.js`
 - `src/models/account-model.js`
-- `src/models/login-attempt-model.js`
-- `src/models/session-model.js`
+- `src/models/role-model.js`
+- `src/models/module-model.js`
+- `src/models/dashboard-section-model.js`
+- `src/models/dashboard-section-state-model.js`
+- `src/models/dashboard-load-model.js`
 - `src/db/schema.sql`
 - `src/db/migrations/apply-schema.js`
 - `src/db/migrations/seed-login-fixtures.js`
-- `src/views/home.html`
-- `src/views/login.html`
 - `src/views/dashboard.html`
-- `public/css/login.css`
-- `public/js/login.js`
+- `public/css/dashboard.css`
+- `public/js/dashboard.js`
 
-### Tests
+### Test coverage
 - `tests/unit/*.test.js`
 - `tests/integration/*.test.js`
+- `tests/contract/*.test.js`
+- `tests/e2e/uc01.acceptance.spec.js`
 - `tests/e2e/uc02.acceptance.spec.js`
-- `tests/e2e/start-server.js`
-- `tests/helpers/test-context.js`
-- `playwright.config.js`
-
-### Docs/spec tracking
-- `README.md`
-- `specs/002-user-login/tasks.md`
-- `specs/002-user-login/quickstart.md`
+- `tests/e2e/uc03.acceptance.spec.js`
+- `tests/e2e/uc09.acceptance.spec.js`
 
 ## Current Commands
-### One-time setup
-Run this once after cloning or when resetting the database:
-
+### Install dependencies
 ```bash
 npm install
+```
+
+### Reset and reseed the database
+```bash
 npm run setup
 ```
 
-`npm run setup` runs:
-- `npm run db:migrate`
-- `npm run db:seed:login`
-
-### Start app
-Run this each time you want to start the app:
-
+### Start the app
 ```bash
 npm start
 ```
@@ -83,77 +97,71 @@ App URL:
 - `http://127.0.0.1:3000/`
 
 Optional custom port:
-
 ```bash
 PORT=4000 npm start
 ```
 
-### Validation
-```bash
-npm test
-npm run lint
-```
-
-## Seeded Accounts
-These are the important seeded login fixtures:
-- Active: `userA@example.com` / `CorrectPass!234`
+## Seeded Demo Accounts
+Important seeded accounts after `npm run setup`:
+- Student: `userA@example.com` / `CorrectPass!234`
+- Professor: `professor@example.com` / `CorrectPass!234`
+- Admin: `admin@example.com` / `AdminPass!234`
+- Multi-role staff: `hybrid.staff@example.com` / `CorrectPass!234`
+- No-module student: `nomodule.student@example.com` / `CorrectPass!234`
 - Locked: `locked.user@example.com` / `CorrectPass!234`
 - Disabled: `disabled.user@example.com` / `CorrectPass!234`
 - Outage simulation: `outage.user@example.com` / `CorrectPass!234`
 
-## Coverage and Test Status
-At the end of the work, validation passed with:
-- `npm test`: PASS
+## Validation Status
+Current validation status:
+- `npm run setup`: PASS
+- `npm run test:coverage`: PASS
+- `npm run test:acceptance`: PASS
 - `npm run lint`: PASS
-- Source coverage across `src/**/*.js`: `100.00%` lines, `100.00%` branches, `100.00%` functions
-- Playwright acceptance suite: `5/5` passing
 
-## Acceptance Coverage Implemented
-The acceptance suite currently covers:
-- AT-UC02-01 successful login
-- AT-UC02-02 invalid credentials then retry success
-- AT-UC02-03 repeated failures causing temporary lockout
-- AT-UC02-04 locked and disabled account handling
-- AT-UC02-05 authentication-service outage handling
+Coverage status across `src/**/*.js`:
+- `100.00%` lines
+- `100.00%` branches
+- `100.00%` functions
 
-## Environment-Specific Note
-Playwright Chromium needed local runtime-library workarounds in this environment because system packages were missing and `playwright install-deps` could not be run non-interactively due to sudo/password restrictions.
+Acceptance coverage currently passing:
+- UC-01 password-management acceptance scenarios
+- UC-02 login acceptance scenarios
+- UC-03 role-based dashboard acceptance scenarios
+- UC-09 financial/minimal-dashboard acceptance scenarios
 
-We handled that by:
-- downloading local shared-library packages into `tmp/`
-- using `scripts/run-playwright.js` to inject `LD_LIBRARY_PATH`
+## Important Fixes Already Made
+Useful implementation notes for future work:
+- The dashboard feature is implemented in the existing `src/` app structure, not the spec-template `app/` paths.
+- `npm run setup` was repaired after a migration regression where child-table foreign keys could still point to `accounts_legacy`.
+- The E2E server reset flow now recreates clean seeded dashboard fixtures reliably.
+- Playwright acceptance specs were updated to use stricter, non-ambiguous locators.
+- Dashboard coverage gaps were closed with targeted controller and migration tests.
 
-Important local directories created for this:
-- `tmp/libgbm/`
-- `tmp/chromium-libs/`
+## Spec Tracking
+Feature/task tracking has been updated for the implemented dashboard work:
+- `specs/003-role-based-dashboard/tasks.md` marked complete
+- `specs/003-role-based-dashboard/quickstart.md` updated with final verification notes
+- `specs/003-role-based-dashboard/checklists/requirements.md` updated with implementation validation notes
 
-This means `npm test` already knows how to run the acceptance suite in this repo without manually exporting `LD_LIBRARY_PATH`.
+Protected use-case and acceptance source documents were intentionally left unchanged.
 
-## Notable Fixes Made During Implementation
-These are useful if future work touches the same code:
-- Added `npm run setup` and `npm start` so startup is no longer manual.
-- Added a landing/title page at `/` with a login button.
-- Fixed seed data so it uses actual inserted account IDs rather than hardcoded `account_id = 1`; this mattered when reseeding a reused SQLite file.
-- Fixed deterministic Playwright test-server time by pinning the E2E server clock to the seeded fixture time, so locked-account acceptance behavior is stable.
-- Updated startup message so users are directed to `/` instead of being dropped straight onto `/login`.
+## Next Course Of Action
+Next work should focus on minor UI adjustments for each role dashboard, not on backend behavior changes.
 
-## Spec/Task Tracking State
-`specs/002-user-login/tasks.md` was updated so tasks are marked complete.
-`specs/002-user-login/quickstart.md` was updated with validation evidence and the SC-005 post-release measurement procedure.
-Protected use-case and acceptance documents were intentionally not modified.
-
-## Current User-Facing Behavior
-If a user asks “how do I run the project?”, the current correct answer is:
-- first time: `npm install && npm run setup`
-- after that: `npm start`
-- open `http://127.0.0.1:3000/`
+Immediate direction:
+- Adjust layout and spacing for the Student dashboard
+- Adjust layout and spacing for the Professor dashboard
+- Adjust layout and spacing for the Admin dashboard
+- Rename dashboard labels/headings where needed for clarity
+- Refine navigation wording and section titles per role
+- Preserve current authorization, retry, and empty/error-state behavior while making UI-only changes
 
 ## If Continuing In A New Conversation
 A new conversation should assume:
-- the login feature is already implemented and passing
-- the title page exists at `/`
-- branch coverage is already at 100%
-- acceptance tests are already passing through `npm test`
-- the environment-specific Playwright runtime workaround is already built into `scripts/run-playwright.js`
-
-If further work is requested, it should build on the existing app rather than recreate the scaffold.
+- authentication, password-management, and role-based dashboard flows are already implemented
+- the database setup/reset path is working through `npm run setup`
+- the app starts through `npm start` on port `3000` by default
+- seeded student/professor/admin accounts already exist
+- the codebase is currently in a stable, fully passing state
+- the next requested work is expected to be minor layout/renaming adjustments for the role dashboards

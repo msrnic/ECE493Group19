@@ -1,16 +1,24 @@
 const path = require('path');
 
+const { sanitizeReturnTo } = require('../middleware/require-auth');
 const loginOutcomes = require('../services/login-outcomes');
 const { renderHtml } = require('../views/render');
 
 function createAuthController(services) {
+  function getReturnTo(req) {
+    return sanitizeReturnTo(
+      req.body?.returnTo || req.query?.returnTo || req.session?.returnTo || '/dashboard'
+    );
+  }
+
   function renderLogin(res, statusCode, viewModel = {}) {
     const html = renderHtml(path.resolve(__dirname, '../views/login.html'), {
       heading_suffix: viewModel.headingSuffix || '',
       identifier: viewModel.identifier || '',
       error_message: viewModel.errorMessage || '',
       help_message: viewModel.helpMessage || 'Enter your account credentials to continue.',
-      http_status: String(statusCode)
+      http_status: String(statusCode),
+      return_to: viewModel.returnTo
     });
 
     return res.status(statusCode).send(html);
@@ -42,24 +50,35 @@ function createAuthController(services) {
 
   return {
     getLoginPage(req, res) {
+      const returnTo = getReturnTo(req);
       if (req.session && req.session.accountId) {
-        return res.redirect('/dashboard');
+        return res.redirect(returnTo);
       }
 
-      return renderLogin(res, 200);
+      if (req.session) {
+        req.session.returnTo = returnTo;
+      }
+
+      return renderLogin(res, 200, { returnTo });
     },
 
     async postLogin(req, res, next) {
       try {
         const identifier = (req.body.identifier || '').trim();
         const password = req.body.password || '';
+        const returnTo = getReturnTo(req);
+
+        if (req.session) {
+          req.session.returnTo = returnTo;
+        }
 
         if (!identifier || !password) {
           return renderLogin(res, 400, {
             identifier,
             errorMessage: 'Both username/email and password are required.',
             headingSuffix: 'Fix the highlighted issue',
-            helpMessage: 'Provide both fields before submitting.'
+            helpMessage: 'Provide both fields before submitting.',
+            returnTo
           });
         }
 
@@ -75,8 +94,9 @@ function createAuthController(services) {
         if (result.outcome === loginOutcomes.SUCCESS) {
           req.session.accountId = result.account.id;
           req.session.accountIdentifier = result.account.username;
+          delete req.session.returnTo;
           await saveSession(req);
-          return res.redirect('/dashboard');
+          return res.redirect(returnTo);
         }
 
         if (result.outcome === loginOutcomes.INVALID_CREDENTIALS) {
@@ -84,7 +104,8 @@ function createAuthController(services) {
             identifier,
             errorMessage: 'Invalid username/email or password.',
             headingSuffix: 'Try again',
-            helpMessage: 'Check your credentials and submit another login attempt.'
+            helpMessage: 'Check your credentials and submit another login attempt.',
+            returnTo
           });
         }
 
@@ -93,7 +114,8 @@ function createAuthController(services) {
             identifier,
             errorMessage: 'Your account is temporarily locked. Try again later or contact support.',
             headingSuffix: 'Account locked',
-            helpMessage: 'Wait for the lock period to expire or contact support.'
+            helpMessage: 'Wait for the lock period to expire or contact support.',
+            returnTo
           });
         }
 
@@ -102,7 +124,8 @@ function createAuthController(services) {
             identifier,
             errorMessage: 'Your account is disabled. Please contact support.',
             headingSuffix: 'Access restricted',
-            helpMessage: 'Support can help restore account access.'
+            helpMessage: 'Support can help restore account access.',
+            returnTo
           });
         }
 
@@ -110,7 +133,8 @@ function createAuthController(services) {
           identifier,
           errorMessage: 'Login service is unavailable. Please try again shortly.',
           headingSuffix: 'Service unavailable',
-          helpMessage: 'No session was created. Retry once the authentication service is healthy.'
+          helpMessage: 'No session was created. Retry once the authentication service is healthy.',
+          returnTo
         });
       } catch (error) {
         return next(error);

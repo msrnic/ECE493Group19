@@ -3,12 +3,18 @@ const path = require('path');
 
 const { createSessionMiddleware } = require('./middleware/session-middleware');
 const { createAuthRoutes } = require('./routes/auth-routes');
+const { createDashboardRoutes } = require('./routes/dashboard-routes');
 const { createAccountModel } = require('./models/account-model');
 const { createCourseModel } = require('./models/course-model');
+const { createDashboardLoadModel } = require('./models/dashboard-load-model');
+const { createDashboardSectionModel } = require('./models/dashboard-section-model');
+const { createDashboardSectionStateModel } = require('./models/dashboard-section-state-model');
 const { createLoginAttemptModel } = require('./models/login-attempt-model');
+const { createModuleModel } = require('./models/module-model');
 const { createNotificationModel } = require('./models/notification-model');
 const { createPasswordChangeAttemptModel } = require('./models/password-change-attempt-model');
 const { createResetTokenModel } = require('./models/reset-token-model');
+const { createRoleModel } = require('./models/role-model');
 const { createSessionModel } = require('./models/session-model');
 const { createVerificationCooldownModel } = require('./models/verification-cooldown-model');
 const { createAuthAuditService } = require('./services/auth-audit-service');
@@ -27,7 +33,8 @@ function createApp(options = {}) {
     resetFixtures,
     sessionSecret = process.env.SESSION_SECRET || 'development-session-secret',
     simulatedPasswordChangeFailureIdentifiers = [],
-    unavailableIdentifiers = []
+    unavailableIdentifiers = [],
+    dashboardTestState = { roleFailureIdentifiers: [], unavailableSectionsByIdentifier: {} }
   } = options;
 
   if (!db) {
@@ -36,10 +43,15 @@ function createApp(options = {}) {
 
   const accountModel = createAccountModel(db);
   const courseModel = createCourseModel(db);
+  const dashboardLoadModel = createDashboardLoadModel(db);
+  const dashboardSectionModel = createDashboardSectionModel(db);
+  const dashboardSectionStateModel = createDashboardSectionStateModel(db);
   const loginAttemptModel = createLoginAttemptModel(db);
+  const moduleModel = createModuleModel(db);
   const notificationModel = createNotificationModel(db);
   const passwordChangeAttemptModel = createPasswordChangeAttemptModel(db);
   const resetTokenModel = createResetTokenModel(db);
+  const roleModel = createRoleModel(db);
   const sessionModel = createSessionModel(db);
   const verificationCooldownModel = createVerificationCooldownModel(db);
   const authAuditService = createAuthAuditService(loginAttemptModel, now);
@@ -82,7 +94,12 @@ function createApp(options = {}) {
     authService,
     cooldownService,
     courseModel,
+    dashboardLoadModel,
+    dashboardSectionModel,
+    dashboardSectionStateModel,
+    dashboardTestState,
     lockoutService,
+    moduleModel,
     notificationModel,
     notificationService,
     now,
@@ -91,12 +108,14 @@ function createApp(options = {}) {
     passwordPolicyService,
     resetFixtures,
     resetTokenModel,
+    roleModel,
     sessionModel,
     sessionSecurityService,
     verificationCooldownModel
   };
 
   app.use(createAuthRoutes(app.locals.services));
+  app.use(createDashboardRoutes(app.locals.services));
 
   return app;
 }

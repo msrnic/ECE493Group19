@@ -7,11 +7,9 @@ const path = require('path');
 const request = require('supertest');
 
 const { createApp } = require('../../src/app');
-const { createDashboardController } = require('../../src/controllers/dashboard-controller');
 const { applySchema } = require('../../src/db/migrations/apply-schema');
 const { closeAll, getDb } = require('../../src/db/connection');
 const { seedLoginFixtures } = require('../../src/db/migrations/seed-login-fixtures');
-const { createRequireAuth } = require('../../src/middleware/require-auth');
 const { createAccountModel } = require('../../src/models/account-model');
 const { createNotificationModel } = require('../../src/models/notification-model');
 const { createPasswordChangeAttemptModel } = require('../../src/models/password-change-attempt-model');
@@ -26,137 +24,6 @@ function buildTempDb() {
   seedLoginFixtures(dbPath);
   return { db: getDb(dbPath), tempDir };
 }
-
-test('dashboard controller renders admin reset links and escaped course content', () => {
-  const controller = createDashboardController({
-    accountModel: {
-      getDashboardAccount() {
-        return {
-          id: 2,
-          role: 'admin',
-          username: 'adminA',
-          courses: [{ course_code: 'ECE<493>', title: 'Security & Testing', role: 'student' }]
-        };
-      },
-      listPasswordManagementTargets() {
-        return [{ id: 5, username: 'target<script>' }];
-      }
-    },
-    sessionModel: {
-      findActiveSession() {
-        return { created_at: '2026-03-07T12:00:00.000Z' };
-      }
-    }
-  });
-
-  let responseBody = '';
-  controller.getDashboard(
-    { session: { accountId: 2 }, sessionID: 'session-1' },
-    {
-      status(statusCode) {
-        assert.equal(statusCode, 200);
-        return this;
-      },
-      send(body) {
-        responseBody = body;
-        return body;
-      }
-    }
-  );
-
-  assert.match(responseBody, /Reset target&lt;script&gt; password/);
-  assert.match(responseBody, /ECE&lt;493&gt;/);
-  assert.match(responseBody, /Security &amp; Testing/);
-});
-
-test('dashboard controller falls back to a default non-admin account when no dashboard record exists', () => {
-  const controller = createDashboardController({
-    accountModel: {
-      getDashboardAccount() {
-        return null;
-      },
-      listPasswordManagementTargets() {
-        throw new Error('admin targets should not be loaded for fallback student accounts');
-      }
-    },
-    sessionModel: {
-      findActiveSession() {
-        return null;
-      }
-    }
-  });
-
-  let responseBody = '';
-  controller.getDashboard(
-    { session: { accountId: 77 }, sessionID: 'missing-session' },
-    {
-      status(statusCode) {
-        assert.equal(statusCode, 200);
-        return this;
-      },
-      send(body) {
-        responseBody = body;
-        return body;
-      }
-    }
-  );
-
-  assert.match(responseBody, /Welcome, Account/);
-  assert.match(responseBody, /Change password/);
-  assert.doesNotMatch(responseBody, /Reset .* password/);
-});
-
-test('requireAuth redirects invalid sessions both with and without a destroy function', () => {
-  const middleware = createRequireAuth({
-    sessionModel: {
-      findActiveSession() {
-        return null;
-      }
-    }
-  });
-
-  let redirectPath = '';
-  let destroyed = false;
-  middleware(
-    {
-      session: {
-        accountId: 1,
-        destroy(callback) {
-          destroyed = true;
-          callback();
-        }
-      },
-      sessionID: 'revoked-session'
-    },
-    {
-      redirect(pathname) {
-        redirectPath = pathname;
-      }
-    },
-    () => {
-      throw new Error('next should not be reached');
-    }
-  );
-  assert.equal(destroyed, true);
-  assert.equal(redirectPath, '/login');
-
-  redirectPath = '';
-  middleware(
-    {
-      session: { accountId: 1 },
-      sessionID: 'revoked-session'
-    },
-    {
-      redirect(pathname) {
-        redirectPath = pathname;
-      }
-    },
-    () => {
-      throw new Error('next should not be reached');
-    }
-  );
-  assert.equal(redirectPath, '/login');
-});
 
 test('createApp exposes the e2e reset route for both success and error paths', async () => {
   const successDb = buildTempDb();

@@ -57,7 +57,7 @@ test('self-service password change succeeds, preserves the current session, inva
 
   const secondaryDashboard = await secondaryAgent.get('/dashboard');
   assert.equal(secondaryDashboard.status, 302);
-  assert.equal(secondaryDashboard.headers.location, '/login');
+  assert.equal(secondaryDashboard.headers.location, '/login?returnTo=%2Fdashboard');
 
   const oldLogin = await request(context.app)
     .post('/login')

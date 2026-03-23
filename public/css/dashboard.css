@@ -1,0 +1,126 @@
+.dashboard-shell {
+  width: min(100%, 960px);
+}
+
+.dashboard-top-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 20px;
+}
+
+.dashboard-panel {
+  padding: 18px;
+  border-radius: 18px;
+  background: #f4f9ff;
+}
+
+.dashboard-role-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dashboard-status[data-status="success"] {
+  background: #e6f8ea;
+  color: #174d28;
+}
+
+.dashboard-status[data-status="partial"],
+.dashboard-status[data-status="failure"],
+.dashboard-status[data-status="role_data_error"] {
+  background: #fff0d8;
+  color: #7a4f07;
+}
+
+.dashboard-status[data-status="empty_access"] {
+  background: #eef3f8;
+  color: #304455;
+}
+
+.dashboard-nav-list,
+.dashboard-sections {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-nav-link {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #0a5ea8;
+  color: #fff;
+  text-decoration: none;
+}
+
+.dashboard-nav-link.is-disabled {
+  background: #d4dde6;
+  color: #526272;
+  cursor: not-allowed;
+}
+
+.dashboard-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dcecff;
+  color: #16324f;
+  font-size: 14px;
+}
+
+.dashboard-pill--ok {
+  background: #e6f8ea;
+  color: #174d28;
+}
+
+.dashboard-sections {
+  margin-top: 20px;
+}
+
+.dashboard-section-card {
+  padding: 18px;
+  border-radius: 18px;
+  background: #f9fbfd;
+  border: 1px solid #d9e5ef;
+}
+
+.dashboard-section-card.is-unavailable {
+  border-color: #f0ca8a;
+  background: #fff8ec;
+}
+
+.dashboard-section-card--message {
+  text-align: left;
+}
+
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dashboard-retry-panel {
+  margin-top: 16px;
+}
+
+.dashboard-empty-note,
+.dashboard-unavailable-label {
+  margin: 0;
+}
+
+
+.dashboard-footer-actions {
+  margin-top: 24px;
+  justify-content: flex-end;
+}

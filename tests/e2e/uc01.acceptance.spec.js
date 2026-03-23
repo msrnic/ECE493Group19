@@ -15,7 +15,7 @@ test('AT-UC01-01 logged-in users can navigate from the dashboard and change thei
   await page.getByRole('button', { name: 'Sign in' }).click();
 
   await expect(page).toHaveURL(/\/dashboard$/);
-  await page.getByRole('link', { name: 'Change password' }).click();
+  await page.locator('#security-center').getByRole('link', { name: 'Change password' }).click();
   await expect(page.getByText('Use at least 12 characters.')).toBeVisible();
   await expect(page.getByText('Include at least one uppercase letter.')).toBeVisible();
   await page.getByLabel('Current password').fill('CorrectPass!234');
@@ -62,7 +62,7 @@ test('AT-UC01-03 policy failures and cooldown feedback are shown without changin
   await page.getByLabel('Username or email').fill('userA@example.com');
   await page.getByLabel('Password').fill('CorrectPass!234');
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.getByRole('link', { name: 'Change password' }).click();
+  await page.locator('#security-center').getByRole('link', { name: 'Change password' }).click();
 
   await page.getByLabel('Current password').fill('CorrectPass!234');
   await page.getByLabel('New password').fill('bad');
@@ -86,7 +86,7 @@ test('AT-UC01-04 admins can change another users password without target verific
   await page.getByRole('button', { name: 'Sign in' }).click();
 
   await expect(page).toHaveURL(/\/dashboard$/);
-  await page.getByRole('link', { name: 'Reset userA password' }).click();
+  await page.locator('#security-center').getByRole('link', { name: 'Reset userA password' }).click();
   await expect(page.getByText(/Administrative authorization is sufficient/)).toBeVisible();
   await expect(page.getByLabel('Current password')).toHaveCount(0);
   await expect(page.getByLabel('Reset token')).toHaveCount(0);
@@ -109,7 +109,7 @@ test('AT-UC01-05 cancelling the flow discards unsaved inputs and makes no passwo
   await page.getByLabel('Username or email').fill('userA@example.com');
   await page.getByLabel('Password').fill('CorrectPass!234');
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.getByRole('link', { name: 'Change password' }).click();
+  await page.locator('#security-center').getByRole('link', { name: 'Change password' }).click();
 
   await page.getByLabel('Current password').fill('CorrectPass!234');
   await page.getByLabel('New password').fill('CancelMe!234');

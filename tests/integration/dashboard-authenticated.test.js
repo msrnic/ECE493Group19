@@ -4,46 +4,60 @@ const request = require('supertest');
 
 const { createTestContext } = require('../helpers/test-context');
 
-test('GET /dashboard redirects unauthenticated users to /login', async () => {
+const USER_PASSWORD = 'CorrectPass' + String.fromCharCode(33) + '234';
+
+async function loginAs(agent, identifier, password) {
+  await agent
+    .post('/login')
+    .type('form')
+    .send({ identifier, password: password || USER_PASSWORD })
+    .expect(302);
+}
+
+test('GET /dashboard redirects unauthenticated users to the login page with returnTo', async () => {
   const context = createTestContext();
   const response = await request(context.app).get('/dashboard');
 
   assert.equal(response.status, 302);
-  assert.equal(response.headers.location, '/login');
+  assert.equal(response.headers.location, '/login?returnTo=%2Fdashboard');
 
   context.cleanup();
 });
 
-test('GET /dashboard renders authenticated account data, security actions, and logout control', async () => {
+test('GET /dashboard renders authenticated account data, available navigation, and student dashboard sections', async () => {
   const context = createTestContext();
   const agent = request.agent(context.app);
 
-  await agent
-    .post('/login')
-    .type('form')
-    .send({ identifier: 'userA@example.com', password: 'CorrectPass!234' })
-    .expect(302);
+  await loginAs(agent, 'userA@example.com');
 
   const response = await agent.get('/dashboard');
   assert.equal(response.status, 200);
-  assert.match(response.text, /Welcome, userA/);
-  assert.match(response.text, /ECE493/);
-  assert.match(response.text, /Permitted account functions/);
-  assert.match(response.text, /Change password/);
-  assert.match(response.text, /Log out/);
+  assert.equal(response.text.includes('Welcome, userA'), true);
+  assert.equal(response.text.includes('Available navigation'), true);
+  assert.equal(response.text.includes('Inbox'), true);
+  assert.equal(response.text.includes('Personal Profile'), true);
+  assert.equal(response.text.includes('Academic Records'), true);
+  assert.equal(response.text.includes('Schedule Builder'), true);
+  assert.equal(response.text.includes('Enrollment Hub'), true);
+  assert.equal(response.text.includes('Financial Summary'), true);
+  assert.equal(response.text.includes('Security Center'), false);
+  assert.equal(response.text.includes('Change password'), true);
+  assert.equal(response.text.includes('Log out'), true);
+  assert.equal(response.text.includes('Admin Operations'), false);
+  assert.equal(response.text.indexOf('Inbox') < response.text.indexOf('Personal Profile'), true);
+  assert.equal(response.text.indexOf('Personal Profile') < response.text.indexOf('Academic Records'), true);
+  assert.equal(response.text.indexOf('Academic Records') < response.text.indexOf('Schedule Builder'), true);
+  assert.equal(response.text.indexOf('Schedule Builder') < response.text.indexOf('Enrollment Hub'), true);
+  assert.equal(response.text.indexOf('Enrollment Hub') < response.text.indexOf('Financial Summary'), true);
 
   context.cleanup();
 });
 
-test('POST /logout revokes the current session and redirects future dashboard requests to /login', async () => {
+test('POST /logout revokes the current session and redirects future dashboard requests to the login page with returnTo', async () => {
   const context = createTestContext();
   const agent = request.agent(context.app);
 
-  await agent
-    .post('/login')
-    .type('form')
-    .send({ identifier: 'userA@example.com', password: 'CorrectPass!234' })
-    .expect(302);
+  await loginAs(agent, 'userA@example.com');
 
   const logoutResponse = await agent.post('/logout');
   assert.equal(logoutResponse.status, 302);
@@ -51,13 +65,7 @@ test('POST /logout revokes the current session and redirects future dashboard re
   assert.match((logoutResponse.headers['set-cookie'] || []).join('\n'), /connect\.sid=.*Expires=/);
 
   const sessionRecord = context.db
-    .prepare(
-      `SELECT invalidation_reason, revoked_at
-       FROM user_sessions
-       WHERE account_id = (SELECT id FROM accounts WHERE email = ?)
-       ORDER BY created_at DESC
-       LIMIT 1`
-    )
+    .prepare('SELECT invalidation_reason, revoked_at FROM user_sessions WHERE account_id = (SELECT id FROM accounts WHERE email = ?) ORDER BY created_at DESC LIMIT 1')
     .get('userA@example.com');
 
   assert.equal(sessionRecord.invalidation_reason, 'logout');
@@ -65,7 +73,7 @@ test('POST /logout revokes the current session and redirects future dashboard re
 
   const dashboardResponse = await agent.get('/dashboard');
   assert.equal(dashboardResponse.status, 302);
-  assert.equal(dashboardResponse.headers.location, '/login');
+  assert.equal(dashboardResponse.headers.location, '/login?returnTo=%2Fdashboard');
 
   context.cleanup();
 });

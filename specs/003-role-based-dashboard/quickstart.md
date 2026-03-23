@@ -60,3 +60,13 @@ sqlite3 app/db/app.db < app/db/schema.sql
   - `Acceptance Tests/UC-03-AS.md`
   - `Acceptance Tests/UC-09-AS.md`
   - Relevant login-return flow checks from `Acceptance Tests/UC-02-AS.md`
+
+
+## 9. Final Verification (2026-03-23)
+- Execute `npm run test:coverage` to verify unit, integration, and contract coverage gates.
+- Execute `npm run test:acceptance` to validate the UC-03 and UC-09 acceptance flows alongside the shared login/password scenarios.
+- Execute `npm run lint` before release.
+- Seeded role accounts available after fixture reset:
+  - Student: `userA@example.com` / `CorrectPass!234`
+  - Professor: `professor@example.com` / `CorrectPass!234`
+  - Admin: `admin@example.com` / `AdminPass!234`

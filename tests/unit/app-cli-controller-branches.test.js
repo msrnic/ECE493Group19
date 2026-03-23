@@ -13,7 +13,7 @@ const { createDashboardController } = require('../../src/controllers/dashboard-c
 const { createSessionMiddleware } = require('../../src/middleware/session-middleware');
 const loginOutcomes = require('../../src/services/login-outcomes');
 
-test('createApp throws without a database and uses default now/session settings when provided a db', () => {
+test('createApp throws without a database and exposes dashboard services by default', () => {
   assert.throws(() => createApp(), /database connection/);
 
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-app-'));
@@ -22,6 +22,12 @@ test('createApp throws without a database and uses default now/session settings 
   const app = createApp({ db: getDb(dbPath) });
 
   assert.ok(app.locals.services.now() instanceof Date);
+  assert.equal(typeof app.locals.services.roleModel.listActiveRolesForAccount, 'function');
+  assert.deepEqual(app.locals.services.dashboardTestState, {
+    roleFailureIdentifiers: [],
+    unavailableSectionsByIdentifier: {}
+  });
+
   closeAll();
   fs.rmSync(tempDir, { force: true, recursive: true });
 });
@@ -41,13 +47,17 @@ test('migration entrypoints apply schema and seed fixtures from the command line
   assert.match(seedResult.stdout, /Seeded login fixtures/);
 
   const db = getDb(dbPath);
-  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM accounts').get().count, 5);
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM accounts').get().count, 8);
+  assert.equal(
+    db.prepare('SELECT COUNT(*) AS count FROM role_assignments WHERE role_id = (SELECT id FROM roles WHERE role_key = ?)').get('professor').count,
+    2
+  );
 
   closeAll();
   fs.rmSync(tempDir, { force: true, recursive: true });
 });
 
-test('auth controller forwards session save failures to next', async () => {
+test('auth controller redirects authenticated users to the requested return path and forwards session save failures', async () => {
   const controller = createAuthController({
     now: () => new Date('2026-03-07T12:00:00.000Z'),
     authService: {
@@ -60,9 +70,28 @@ test('auth controller forwards session save failures to next', async () => {
     }
   });
 
+  let redirectPath = '';
+  controller.getLoginPage(
+    {
+      query: { returnTo: '/dashboard#security-center' },
+      session: { accountId: 7 }
+    },
+    {
+      redirect(pathname) {
+        redirectPath = pathname;
+        return pathname;
+      }
+    }
+  );
+  assert.equal(redirectPath, '/dashboard#security-center');
+
   const error = new Error('session save failed');
   const req = {
-    body: { identifier: 'userA@example.com', password: 'CorrectPass!234' },
+    body: {
+      identifier: 'userA@example.com',
+      password: 'CorrectPass!234',
+      returnTo: '/dashboard#security-center'
+    },
     sessionID: 'session-1',
     ip: '127.0.0.1',
     get() {
@@ -190,15 +219,109 @@ test('auth controller forwards logout destroy failures to next', async () => {
   assert.equal(forwardedError, error);
 });
 
-test('dashboard controller renders fallback text when there are no courses or session metadata', () => {
-  const controller = createDashboardController({
+test('dashboard controller handles missing accounts and role-data-error rendering branches', () => {
+  const missingAccountController = createDashboardController({
     accountModel: {
       getDashboardAccount() {
-        return { id: 2, role: 'admin', username: 'userA', courses: [] };
+        return null;
+      }
+    }
+  });
+
+  let redirectPath = '';
+  missingAccountController.getDashboard(
+    {
+      get() {
+        return '';
+      },
+      is() {
+        return false;
+      },
+      method: 'GET',
+      session: { accountId: 1 }
+    },
+    {
+      redirect(pathname) {
+        redirectPath = pathname;
+        return pathname;
+      }
+    }
+  );
+  assert.equal(redirectPath, '/login?returnTo=%2Fdashboard');
+
+  let jsonPayload = null;
+  missingAccountController.postRetry(
+    {
+      body: { sectionIds: [1] },
+      method: 'POST',
+      session: { accountId: 1 }
+    },
+    {
+      status(statusCode) {
+        assert.equal(statusCode, 401);
+        return {
+          json(payload) {
+            jsonPayload = payload;
+            return payload;
+          }
+        };
+      }
+    }
+  );
+  assert.deepEqual(jsonPayload, {
+    loginUrl: '/login',
+    returnTo: '/dashboard',
+    status: 'auth_error'
+  });
+
+  const roleErrorController = createDashboardController({
+    accountModel: {
+      getDashboardAccount() {
+        return {
+          courses: [],
+          email: 'userA@example.com',
+          id: 7,
+          role: 'student',
+          username: 'userA'
+        };
       },
       listPasswordManagementTargets() {
         return [];
       }
+    },
+    dashboardTestState: {
+      roleFailureIdentifiers: ['userA@example.com'],
+      unavailableSectionsByIdentifier: {}
+    },
+    roleModel: {
+      listActiveRolesForAccount() {
+        return [{ id: 1, display_name: 'Student' }];
+      }
+    },
+    moduleModel: {
+      hasEnabledModules() {
+        return true;
+      },
+      listPermittedModulesForRoleIds() {
+        return [];
+      }
+    },
+    dashboardSectionModel: {
+      listEnabledSectionsForModuleIds() {
+        return [];
+      }
+    },
+    dashboardSectionStateModel: {
+      listStatesForAccount() {
+        return [];
+      },
+      listUnavailableSectionIds() {
+        return [];
+      },
+      upsertStates() {}
+    },
+    dashboardLoadModel: {
+      recordEvent() {}
     },
     sessionModel: {
       findActiveSession() {
@@ -208,8 +331,18 @@ test('dashboard controller renders fallback text when there are no courses or se
   });
 
   let responseBody = '';
-  controller.getDashboard(
-    { session: { accountId: 1 }, sessionID: 'missing-session' },
+  roleErrorController.getDashboard(
+    {
+      get() {
+        return '';
+      },
+      is() {
+        return false;
+      },
+      method: 'GET',
+      session: { accountId: 7 },
+      sessionID: 'missing-session'
+    },
     {
       status(statusCode) {
         assert.equal(statusCode, 200);
@@ -222,10 +355,9 @@ test('dashboard controller renders fallback text when there are no courses or se
     }
   );
 
-  assert.match(responseBody, /No courses are assigned/);
+  assert.match(responseBody, /Authorization data error/);
   assert.match(responseBody, /Session metadata unavailable/);
-  assert.match(responseBody, /Change password/);
-  assert.match(responseBody, /Log out/);
+  assert.match(responseBody, /Retry unavailable sections/);
 });
 
 test('session middleware supports both default and explicit secrets', () => {
