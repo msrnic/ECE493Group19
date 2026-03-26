@@ -9,10 +9,12 @@ const { createCourseModel } = require('./models/course-model');
 const { createDashboardLoadModel } = require('./models/dashboard-load-model');
 const { createDashboardSectionModel } = require('./models/dashboard-section-model');
 const { createDashboardSectionStateModel } = require('./models/dashboard-section-state-model');
+const { createContactInfoModel } = require('./models/contact-info-model');
 const { createLoginAttemptModel } = require('./models/login-attempt-model');
 const { createModuleModel } = require('./models/module-model');
 const { createNotificationModel } = require('./models/notification-model');
 const { createPasswordChangeAttemptModel } = require('./models/password-change-attempt-model');
+const { createPersonalDetailsModel } = require('./models/personal-details-model');
 const { createResetTokenModel } = require('./models/reset-token-model');
 const { createRoleModel } = require('./models/role-model');
 const { createSessionModel } = require('./models/session-model');
@@ -25,11 +27,13 @@ const { createNotificationService } = require('./services/notification-service')
 const { createPasswordChangeService } = require('./services/password-change-service');
 const { createPasswordPolicyService } = require('./services/password-policy-service');
 const { createSessionSecurityService } = require('./services/session-security-service');
+const { createProfileRoutes } = require('./routes/profile-routes');
 
 function createApp(options = {}) {
   const {
     db,
     now = () => new Date(),
+    profileTestState = { contactSaveFailureIdentifiers: [], personalSaveFailureIdentifiers: [] },
     resetFixtures,
     sessionSecret = process.env.SESSION_SECRET || 'development-session-secret',
     simulatedPasswordChangeFailureIdentifiers = [],
@@ -42,6 +46,7 @@ function createApp(options = {}) {
   }
 
   const accountModel = createAccountModel(db);
+  const contactInfoModel = createContactInfoModel(db);
   const courseModel = createCourseModel(db);
   const dashboardLoadModel = createDashboardLoadModel(db);
   const dashboardSectionModel = createDashboardSectionModel(db);
@@ -50,6 +55,7 @@ function createApp(options = {}) {
   const moduleModel = createModuleModel(db);
   const notificationModel = createNotificationModel(db);
   const passwordChangeAttemptModel = createPasswordChangeAttemptModel(db);
+  const personalDetailsModel = createPersonalDetailsModel(db);
   const resetTokenModel = createResetTokenModel(db);
   const roleModel = createRoleModel(db);
   const sessionModel = createSessionModel(db);
@@ -92,6 +98,7 @@ function createApp(options = {}) {
     accountModel,
     authAuditService,
     authService,
+    contactInfoModel,
     cooldownService,
     courseModel,
     dashboardLoadModel,
@@ -106,6 +113,8 @@ function createApp(options = {}) {
     passwordChangeAttemptModel,
     passwordChangeService,
     passwordPolicyService,
+    personalDetailsModel,
+    profileTestState,
     resetFixtures,
     resetTokenModel,
     roleModel,
@@ -116,6 +125,7 @@ function createApp(options = {}) {
 
   app.use(createAuthRoutes(app.locals.services));
   app.use(createDashboardRoutes(app.locals.services));
+  app.use(createProfileRoutes(app.locals.services));
 
   return app;
 }

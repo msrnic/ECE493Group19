@@ -14,6 +14,13 @@ function createDashboardTestState(initialState = {}) {
   };
 }
 
+function createProfileTestState(initialState = {}) {
+  return {
+    contactSaveFailureIdentifiers: [...(initialState.contactSaveFailureIdentifiers || [])],
+    personalSaveFailureIdentifiers: [...(initialState.personalSaveFailureIdentifiers || [])]
+  };
+}
+
 function createTestContext(options = {}) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-login-'));
   const dbPath = path.join(tempDir, 'sis.db');
@@ -21,6 +28,7 @@ function createTestContext(options = {}) {
     value: options.now || new Date('2026-03-07T12:00:00.000Z')
   };
   const dashboardTestState = createDashboardTestState(options.dashboardTestState);
+  const profileTestState = createProfileTestState(options.profileTestState);
 
   applySchema(dbPath);
   seedLoginFixtures(dbPath, { now: nowState.value });
@@ -29,6 +37,7 @@ function createTestContext(options = {}) {
     db: getDb(dbPath),
     dashboardTestState,
     now: () => nowState.value,
+    profileTestState,
     sessionSecret: 'test-session-secret',
     simulatedPasswordChangeFailureIdentifiers: options.simulatedPasswordChangeFailureIdentifiers || [],
     unavailableIdentifiers: options.unavailableIdentifiers || []
@@ -50,9 +59,14 @@ function createTestContext(options = {}) {
     now() {
       return nowState.value;
     },
+    profileTestState,
     resetDashboardTestState() {
       dashboardTestState.roleFailureIdentifiers = [];
       dashboardTestState.unavailableSectionsByIdentifier = {};
+    },
+    resetProfileTestState() {
+      profileTestState.contactSaveFailureIdentifiers = [];
+      profileTestState.personalSaveFailureIdentifiers = [];
     }
   };
 }

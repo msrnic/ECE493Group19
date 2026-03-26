@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Update Contact Information</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card profile-card--wide'>
+        <p class='eyebrow'>Personal Profile</p>
+        <h1>Update Contact Information</h1>
+        <p class='help-text'>Update your contact information and emergency contact details in one place.</p>
+        {{status_banner_html}}
+        <form method='post' action='/account/contact-information' data-profile-form>
+          <input type='hidden' name='submittedVersion' value='{{submitted_version}}'>
+
+          <section class='profile-section'>
+            <h2>Contact Information</h2>
+            <label for='contactEmail'>Email</label>
+            <input id='contactEmail' class='{{contact_email_input_class}}' maxlength='{{contact_email_limit}}' name='contactEmail' required type='email' value='{{contact_email}}'>
+            {{contact_email_error_html}}
+
+            <label for='phoneNumber'>Phone Number</label>
+            <input id='phoneNumber' class='{{phone_number_input_class}}' maxlength='{{phone_limit}}' name='phoneNumber' required type='text' value='{{phone_number}}'>
+            {{phone_number_error_html}}
+          </section>
+
+          <section class='profile-section'>
+            <h2>Emergency Contact</h2>
+            <label for='emergencyFullName'>Full Name</label>
+            <input id='emergencyFullName' class='{{emergency_full_name_input_class}}' maxlength='{{emergency_name_limit}}' name='emergencyFullName' required type='text' value='{{emergency_full_name}}'>
+            {{emergency_full_name_error_html}}
+
+            <label for='emergencyPhoneNumber'>Phone Number</label>
+            <input id='emergencyPhoneNumber' class='{{emergency_phone_number_input_class}}' maxlength='{{phone_limit}}' name='emergencyPhoneNumber' required type='text' value='{{emergency_phone_number}}'>
+            {{emergency_phone_number_error_html}}
+
+            <label for='emergencyRelationship'>Relation to You</label>
+            <input id='emergencyRelationship' class='{{emergency_relationship_input_class}}' maxlength='{{relationship_limit}}' name='emergencyRelationship' required type='text' value='{{emergency_relationship}}'>
+            {{emergency_relationship_error_html}}
+          </section>
+
+          <p class='help-text profile-last-updated'>{{last_updated_text}}</p>
+
+          <div class='action-row profile-actions'>
+            <button type='submit'>Save Changes</button>
+            <button class='secondary-button' data-cancel-profile data-return-to='{{return_path}}' type='button'>Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src='/js/profile-form.js'></script>
+  </body>
+</html>

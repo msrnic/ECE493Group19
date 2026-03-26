@@ -187,10 +187,10 @@ test('dashboard controller renders mixed section states, admin actions, and esca
   assert.match(response.capture.body, /Personal Profile/);
   assert.match(response.capture.body, /Change password/);
   assert.equal(response.capture.body.includes('Research Sandbox'), true);
-  assert.match(response.capture.body, /Financial Summary <span class="dashboard-pill">Unavailable/);
+  assert.match(response.capture.body, /Financial Summary <span class=['"]dashboard-pill['"]>Unavailable/);
   assert.match(response.capture.body, /Retry unavailable sections/);
-  assert.match(response.capture.body, /dashboard-nav-link is-disabled">Security Center/);
-  assert.match(response.capture.body, /<span class="dashboard-pill">Professor<\/span><span class="dashboard-pill">Admin<\/span>/);
+  assert.match(response.capture.body, /dashboard-nav-link is-disabled[^>]*>Security Center/);
+  assert.match(response.capture.body, /<span class=['"]dashboard-pill['"]>Professor<\/span><span class=['"]dashboard-pill['"]>Admin<\/span>/);
   assert.equal(upsertedStates.length, 8);
   assert.equal(recordedEvent.outcome, 'partial');
   assert.equal(recordedEvent.failedSections, 2);

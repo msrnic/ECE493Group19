@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Update Personal Information</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card'>
+        <p class='eyebrow'>Personal Profile</p>
+        <h1>Update Personal Information</h1>
+        <p class='help-text'>Review and update your full name, birthday, and country of origin.</p>
+        {{status_banner_html}}
+        <form method='post' action='/account/personal-information' data-profile-form>
+          <input type='hidden' name='submittedVersion' value='{{submitted_version}}'>
+          <label for='firstName'>First Name</label>
+          <input id='firstName' class='{{first_name_input_class}}' name='firstName' maxlength='{{personal_text_limit}}' required type='text' value='{{first_name}}'>
+          {{first_name_error_html}}
+
+          <label for='lastName'>Last Name</label>
+          <input id='lastName' class='{{last_name_input_class}}' name='lastName' maxlength='{{personal_text_limit}}' required type='text' value='{{last_name}}'>
+          {{last_name_error_html}}
+
+          <label for='birthday'>Birthday (dd/mm/yyyy)</label>
+          <input id='birthday' class='{{birthday_input_class}}' name='birthday' placeholder='dd/mm/yyyy' required type='text' value='{{birthday}}'>
+          {{birthday_error_html}}
+
+          <label for='countryOfOrigin'>Country of Origin</label>
+          <input id='countryOfOrigin' class='{{country_of_origin_input_class}}' name='countryOfOrigin' maxlength='{{personal_text_limit}}' required type='text' value='{{country_of_origin}}'>
+          {{country_of_origin_error_html}}
+
+          <p class='help-text profile-last-updated'>{{last_updated_text}}</p>
+
+          <div class='action-row profile-actions'>
+            <button type='submit'>Save Changes</button>
+            <button class='secondary-button' data-cancel-profile data-return-to='{{return_path}}' type='button'>Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src='/js/profile-form.js'></script>
+  </body>
+</html>

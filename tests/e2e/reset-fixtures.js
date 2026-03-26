@@ -14,4 +14,13 @@ async function setDashboardFixtures(request, state) {
   }
 }
 
-module.exports = { resetFixtures, setDashboardFixtures };
+async function setProfileFixtures(request, state) {
+  const response = await request.post('/__profile-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure profile fixtures: ' + response.status());
+  }
+}
+
+module.exports = { resetFixtures, setDashboardFixtures, setProfileFixtures };

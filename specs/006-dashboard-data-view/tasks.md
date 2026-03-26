@@ -17,13 +17,13 @@
 
 **Purpose**: Initialize project scaffolding and tooling for dashboard data view delivery.
 
-- [ ] T001 Create Node project manifest and scripts for app/test/lint in /home/m_srnic/ece493/group_project/ECE493Group19/package.json
-- [ ] T002 [P] Create server MVC scaffold notes and required module list in /home/m_srnic/ece493/group_project/ECE493Group19/server/README.md
-- [ ] T003 [P] Create test suite scaffold notes for unit/integration/contract/e2e in /home/m_srnic/ece493/group_project/ECE493Group19/tests/README.md
-- [ ] T004 [P] Configure ESLint and Google style rules in /home/m_srnic/ece493/group_project/ECE493Group19/.eslintrc.cjs
-- [ ] T005 [P] Add Vitest configuration for model/controller tests in /home/m_srnic/ece493/group_project/ECE493Group19/vitest.config.js
-- [ ] T006 [P] Add Playwright configuration for dashboard page flows in /home/m_srnic/ece493/group_project/ECE493Group19/playwright.config.js
-- [ ] T007 Map in-scope traceability references (`UC-06`, `UC-20`, `UC-21`, `UC-33`, `UC-36`) in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T001 Create Node project manifest and scripts for app/test/lint in /home/m_srnic/ece493/group_project/ECE493Group19/package.json
+- [X] T002 [P] Create server MVC scaffold notes and required module list in /home/m_srnic/ece493/group_project/ECE493Group19/server/README.md
+- [X] T003 [P] Create test suite scaffold notes for unit/integration/contract/e2e in /home/m_srnic/ece493/group_project/ECE493Group19/tests/README.md
+- [X] T004 [P] Configure ESLint and Google style rules in /home/m_srnic/ece493/group_project/ECE493Group19/.eslintrc.cjs
+- [X] T005 [P] Add Vitest configuration for model/controller tests in /home/m_srnic/ece493/group_project/ECE493Group19/vitest.config.js
+- [X] T006 [P] Add Playwright configuration for dashboard page flows in /home/m_srnic/ece493/group_project/ECE493Group19/playwright.config.js
+- [X] T007 Map in-scope traceability references (`UC-06`, `UC-20`, `UC-21`, `UC-33`, `UC-36`) in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
 
 ---
 
@@ -33,17 +33,17 @@
 
 **⚠️ CRITICAL**: Complete this phase before starting any user story.
 
-- [ ] T008 Create SQLite schema for account/course/enrollment/dashboard_page/page_data_item/access_audit_log in /home/m_srnic/ece493/group_project/ECE493Group19/server/db/schema.sql
-- [ ] T009 [P] Implement SQLite connection and prepared-statement helpers in /home/m_srnic/ece493/group_project/ECE493Group19/server/db/connection.js
-- [ ] T010 [P] Seed baseline accounts, pages, courses, enrollments, and page data items in /home/m_srnic/ece493/group_project/ECE493Group19/server/db/seed.sql
-- [ ] T011 [P] Define shared role/page/field authorization policy map for UC-06/20/21/33/36 in /home/m_srnic/ece493/group_project/ECE493Group19/server/config/dashboardAccessPolicy.js
-- [ ] T012 [P] Implement session authentication and request actor-context middleware in /home/m_srnic/ece493/group_project/ECE493Group19/server/middleware/authContext.js
-- [ ] T013 [P] Implement shared API error formatter for 401/403/404 contract responses in /home/m_srnic/ece493/group_project/ECE493Group19/server/middleware/apiErrorHandler.js
-- [ ] T014 Wire Express app, session middleware, dashboard routes, and shared error middleware in /home/m_srnic/ece493/group_project/ECE493Group19/server/app.js
-- [ ] T015 Create route registration for dashboard API and page-render endpoints in /home/m_srnic/ece493/group_project/ECE493Group19/server/routes/dashboardRoutes.js
-- [ ] T016 [P] Implement base dashboard layout and shared page shell in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/layout.ejs
-- [ ] T017 [P] Add base dashboard styling and state badge classes in /home/m_srnic/ece493/group_project/ECE493Group19/server/public/css/dashboard.css
-- [ ] T018 [P] Add dashboard client bootstrap utilities for page-state rendering hooks in /home/m_srnic/ece493/group_project/ECE493Group19/server/public/js/dashboard.js
+- [X] T008 Create SQLite schema for account/course/enrollment/dashboard_page/page_data_item/access_audit_log in /home/m_srnic/ece493/group_project/ECE493Group19/server/db/schema.sql
+- [X] T009 [P] Implement SQLite connection and prepared-statement helpers in /home/m_srnic/ece493/group_project/ECE493Group19/server/db/connection.js
+- [X] T010 [P] Seed baseline accounts, pages, courses, enrollments, and page data items in /home/m_srnic/ece493/group_project/ECE493Group19/server/db/seed.sql
+- [X] T011 [P] Define shared role/page/field authorization policy map for UC-06/20/21/33/36 in /home/m_srnic/ece493/group_project/ECE493Group19/server/config/dashboardAccessPolicy.js
+- [X] T012 [P] Implement session authentication and request actor-context middleware in /home/m_srnic/ece493/group_project/ECE493Group19/server/middleware/authContext.js
+- [X] T013 [P] Implement shared API error formatter for 401/403/404 contract responses in /home/m_srnic/ece493/group_project/ECE493Group19/server/middleware/apiErrorHandler.js
+- [X] T014 Wire Express app, session middleware, dashboard routes, and shared error middleware in /home/m_srnic/ece493/group_project/ECE493Group19/server/app.js
+- [X] T015 Create route registration for dashboard API and page-render endpoints in /home/m_srnic/ece493/group_project/ECE493Group19/server/routes/dashboardRoutes.js
+- [X] T016 [P] Implement base dashboard layout and shared page shell in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/layout.ejs
+- [X] T017 [P] Add base dashboard styling and state badge classes in /home/m_srnic/ece493/group_project/ECE493Group19/server/public/css/dashboard.css
+- [X] T018 [P] Add dashboard client bootstrap utilities for page-state rendering hooks in /home/m_srnic/ece493/group_project/ECE493Group19/server/public/js/dashboard.js
 
 **Checkpoint**: Shared foundation complete; all user stories can now proceed independently without cross-story blockers.
 
@@ -57,22 +57,22 @@
 
 ### Tests for User Story 1
 
-- [ ] T019 [P] [US1] Add contract test for `GET /api/dashboard/pages/{pageId}` success payload shape in /home/m_srnic/ece493/group_project/ECE493Group19/tests/contract/dashboard-data-view-api.test.js
-- [ ] T020 [P] [US1] Add integration test for authorized actor page data retrieval in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-controller.test.js
-- [ ] T021 [P] [US1] Add model unit test for page item retrieval by `pageId` and subject filters in /home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/models/dashboardDataModel.test.js
+- [X] T019 [P] [US1] Add contract test for `GET /api/dashboard/pages/{pageId}` success payload shape in /home/m_srnic/ece493/group_project/ECE493Group19/tests/contract/dashboard-data-view-api.test.js
+- [X] T020 [P] [US1] Add integration test for authorized actor page data retrieval in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-controller.test.js
+- [X] T021 [P] [US1] Add model unit test for page item retrieval by `pageId` and subject filters in /home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/models/dashboardDataModel.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T022 [P] [US1] Implement account lookup model methods used by dashboard actor context in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/accountModel.js
-- [ ] T023 [P] [US1] Implement course/enrollment lookup methods for history/transcript/grade pages in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/courseModel.js
-- [ ] T024 [US1] Implement dashboard page-data query model returning contract-aligned item objects in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/dashboardDataModel.js
-- [ ] T025 [US1] Implement dashboard controller `getDashboardPageData` for authorized 200 responses in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
-- [ ] T026 [US1] Implement server-render handler for in-scope page views in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
-- [ ] T027 [P] [US1] Create page template for UC-06 contact info view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/contact-info.ejs
-- [ ] T028 [P] [US1] Create page template for UC-20 course history view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/course-history.ejs
-- [ ] T029 [P] [US1] Create page template for UC-21 transcript view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/transcript.ejs
-- [ ] T030 [P] [US1] Create page template for UC-33 student basic info view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/student-basic-info.ejs
-- [ ] T031 [P] [US1] Create page template for UC-36 grade summary view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/grade-summary.ejs
+- [X] T022 [P] [US1] Implement account lookup model methods used by dashboard actor context in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/accountModel.js
+- [X] T023 [P] [US1] Implement course/enrollment lookup methods for history/transcript/grade pages in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/courseModel.js
+- [X] T024 [US1] Implement dashboard page-data query model returning contract-aligned item objects in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/dashboardDataModel.js
+- [X] T025 [US1] Implement dashboard controller `getDashboardPageData` for authorized 200 responses in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
+- [X] T026 [US1] Implement server-render handler for in-scope page views in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
+- [X] T027 [P] [US1] Create page template for UC-06 contact info view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/contact-info.ejs
+- [X] T028 [P] [US1] Create page template for UC-20 course history view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/course-history.ejs
+- [X] T029 [P] [US1] Create page template for UC-21 transcript view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/transcript.ejs
+- [X] T030 [P] [US1] Create page template for UC-33 student basic info view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/student-basic-info.ejs
+- [X] T031 [P] [US1] Create page template for UC-36 grade summary view in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/grade-summary.ejs
 
 **Checkpoint**: US1 is independently functional and testable.
 
@@ -86,18 +86,18 @@
 
 ### Tests for User Story 2
 
-- [ ] T032 [P] [US2] Add contract test coverage for `dataState=partial|none` and missing item fields in /home/m_srnic/ece493/group_project/ECE493Group19/tests/contract/dashboard-data-view-api.test.js
-- [ ] T033 [P] [US2] Add integration test for partial-data rendering and non-blocking page behavior in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-controller.test.js
-- [ ] T034 [P] [US2] Add Playwright flow for no-data and may-be-outdated badges in /home/m_srnic/ece493/group_project/ECE493Group19/tests/e2e/dashboard-data-states.spec.js
+- [X] T032 [P] [US2] Add contract test coverage for `dataState=partial|none` and missing item fields in /home/m_srnic/ece493/group_project/ECE493Group19/tests/contract/dashboard-data-view-api.test.js
+- [X] T033 [P] [US2] Add integration test for partial-data rendering and non-blocking page behavior in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-controller.test.js
+- [X] T034 [P] [US2] Add Playwright flow for no-data and may-be-outdated badges in /home/m_srnic/ece493/group_project/ECE493Group19/tests/e2e/dashboard-data-states.spec.js
 
 ### Implementation for User Story 2
 
-- [ ] T035 [US2] Extend dashboard data model to compute `dataState` (`full|partial|none`) and missing reasons in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/dashboardDataModel.js
-- [ ] T036 [US2] Extend dashboard controller view-model mapping for partial/no-data/outdated item states in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
-- [ ] T037 [P] [US2] Implement shared missing-item badge partial in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/shared/missing-item-badge.ejs
-- [ ] T038 [P] [US2] Implement shared stale-item badge partial in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/shared/stale-item-badge.ejs
-- [ ] T039 [P] [US2] Implement shared no-data state partial with retry guidance in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/shared/no-data-state.ejs
-- [ ] T040 [US2] Update dashboard layout to render missing/no-data/outdated partials consistently for all in-scope pages in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/layout.ejs
+- [X] T035 [US2] Extend dashboard data model to compute `dataState` (`full|partial|none`) and missing reasons in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/dashboardDataModel.js
+- [X] T036 [US2] Extend dashboard controller view-model mapping for partial/no-data/outdated item states in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
+- [X] T037 [P] [US2] Implement shared missing-item badge partial in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/shared/missing-item-badge.ejs
+- [X] T038 [P] [US2] Implement shared stale-item badge partial in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/shared/stale-item-badge.ejs
+- [X] T039 [P] [US2] Implement shared no-data state partial with retry guidance in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/shared/no-data-state.ejs
+- [X] T040 [US2] Update dashboard layout to render missing/no-data/outdated partials consistently for all in-scope pages in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/layout.ejs
 
 **Checkpoint**: US2 is independently functional and testable.
 
@@ -111,16 +111,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T041 [P] [US3] Add contract test coverage for 401/403/404 error responses and reason codes in /home/m_srnic/ece493/group_project/ECE493Group19/tests/contract/dashboard-data-view-api.test.js
-- [ ] T042 [P] [US3] Add integration test for role-based field filtering across actor roles in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-controller.test.js
-- [ ] T043 [P] [US3] Add model unit test for denied access audit-log insertion in /home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/models/accessAuditModel.test.js
+- [X] T041 [P] [US3] Add contract test coverage for 401/403/404 error responses and reason codes in /home/m_srnic/ece493/group_project/ECE493Group19/tests/contract/dashboard-data-view-api.test.js
+- [X] T042 [P] [US3] Add integration test for role-based field filtering across actor roles in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-controller.test.js
+- [X] T043 [P] [US3] Add model unit test for denied access audit-log insertion in /home/m_srnic/ece493/group_project/ECE493Group19/tests/unit/models/accessAuditModel.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T044 [P] [US3] Implement access-audit model insert/query methods in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/accessAuditModel.js
-- [ ] T045 [US3] Implement page-level and field-level authorization service functions in /home/m_srnic/ece493/group_project/ECE493Group19/server/services/dashboardAuthorizationService.js
-- [ ] T046 [US3] Integrate authorization checks and deny-audit logging into API/page handlers in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
-- [ ] T047 [US3] Implement denied-access response rendering with no restricted data leakage in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/access-denied.ejs
+- [X] T044 [P] [US3] Implement access-audit model insert/query methods in /home/m_srnic/ece493/group_project/ECE493Group19/server/models/accessAuditModel.js
+- [X] T045 [US3] Implement page-level and field-level authorization service functions in /home/m_srnic/ece493/group_project/ECE493Group19/server/services/dashboardAuthorizationService.js
+- [X] T046 [US3] Integrate authorization checks and deny-audit logging into API/page handlers in /home/m_srnic/ece493/group_project/ECE493Group19/server/controllers/dashboardController.js
+- [X] T047 [US3] Implement denied-access response rendering with no restricted data leakage in /home/m_srnic/ece493/group_project/ECE493Group19/server/views/dashboard/access-denied.ejs
 
 **Checkpoint**: US3 is independently functional and testable.
 
@@ -130,19 +130,19 @@
 
 **Purpose**: Final verification, performance hardening, and documentation updates across stories.
 
-- [ ] T048 [P] Add performance integration test validating 95% of page loads under 5s in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-performance.test.js
-- [ ] T049 [P] Add quickstart verification script for schema bootstrap, seed, and smoke checks in /home/m_srnic/ece493/group_project/ECE493Group19/scripts/validate-dashboard-feature.sh
-- [ ] T050 Run full lint and automated test suites and document outcomes in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T051 Update feature documentation with final endpoint/role/data-state behavior notes in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/spec.md
-- [ ] T052 Execute acceptance validation for UC-06 and document evidence against UC-06-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T053 Execute acceptance validation for UC-20 and document evidence against UC-20-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T054 Execute acceptance validation for UC-21 and document evidence against UC-21-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T055 Execute acceptance validation for UC-33 and document evidence against UC-33-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T056 Execute acceptance validation for UC-36 and document evidence against UC-36-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T057 [P] Add timed usability scenario test for SC-001 (identify information within 60 seconds) in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-usability-metric.test.js
-- [ ] T058 Analyze SC-001 timing outcomes and document pass/fail summary in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T059 Define SC-004 pilot protocol (sample size, role mix, survey prompt, threshold) in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
-- [ ] T060 Document SC-004 pilot results and pass/fail conclusion in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T048 [P] Add performance integration test validating 95% of page loads under 5s in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-performance.test.js
+- [X] T049 [P] Add quickstart verification script for schema bootstrap, seed, and smoke checks in /home/m_srnic/ece493/group_project/ECE493Group19/scripts/validate-dashboard-feature.sh
+- [X] T050 Run full lint and automated test suites and document outcomes in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T051 Update feature documentation with final endpoint/role/data-state behavior notes in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/spec.md
+- [X] T052 Execute acceptance validation for UC-06 and document evidence against UC-06-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T053 Execute acceptance validation for UC-20 and document evidence against UC-20-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T054 Execute acceptance validation for UC-21 and document evidence against UC-21-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T055 Execute acceptance validation for UC-33 and document evidence against UC-33-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T056 Execute acceptance validation for UC-36 and document evidence against UC-36-AS in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T057 [P] Add timed usability scenario test for SC-001 (identify information within 60 seconds) in /home/m_srnic/ece493/group_project/ECE493Group19/tests/integration/dashboard-usability-metric.test.js
+- [X] T058 Analyze SC-001 timing outcomes and document pass/fail summary in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T059 Define SC-004 pilot protocol (sample size, role mix, survey prompt, threshold) in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
+- [X] T060 Document SC-004 pilot results and pass/fail conclusion in /home/m_srnic/ece493/group_project/ECE493Group19/specs/006-dashboard-data-view/quickstart.md
 
 ---
 

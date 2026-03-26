@@ -17,11 +17,11 @@
 
 **Purpose**: Project initialization and implementation scaffolding
 
-- [ ] T001 Create dashboard feature route registration and module exports in server/routes/dashboard-data-routes.js
-- [ ] T002 [P] Create dashboard controller skeleton with request lifecycle placeholders in server/controllers/dashboard-data-controller.js
-- [ ] T003 [P] Create dashboard data model module skeleton for SQLite reads in server/models/dashboard-data-model.js
-- [ ] T004 [P] Create dashboard view directory placeholders and shared partial placeholders in web/views/dashboard-data/ and web/views/shared/
-- [ ] T005 [P] Create feature traceability matrix template mapping FR/UC/Acceptance IDs in tests/traceability/dashboard-data-traceability.md
+- [X] T001 Create dashboard feature route registration and module exports in server/routes/dashboard-data-routes.js
+- [X] T002 [P] Create dashboard controller skeleton with request lifecycle placeholders in server/controllers/dashboard-data-controller.js
+- [X] T003 [P] Create dashboard data model module skeleton for SQLite reads in server/models/dashboard-data-model.js
+- [X] T004 [P] Create dashboard view directory placeholders and shared partial placeholders in web/views/dashboard-data/ and web/views/shared/
+- [X] T005 [P] Create feature traceability matrix template mapping FR/UC/Acceptance IDs in tests/traceability/dashboard-data-traceability.md
 
 ---
 
@@ -31,13 +31,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Implement SQLite schema/migration updates for Account, Course, Enrollment, TeachingAssignment, DashboardPage, DataItemDefinition, and RetrievalSnapshot in server/db/schema.sql
-- [ ] T007 Implement SQLite seed data for in-scope pages, UC mappings, and role visibility metadata in server/db/seeds/dashboard-data-seed.sql
-- [ ] T008 Implement reusable sqlite query helpers for dashboard data retrieval in server/db/sqlite-client.js
-- [ ] T009 [P] Implement account and course model read methods required by dashboard data joins in server/models/account-model.js and server/models/course-model.js
-- [ ] T010 [P] Implement page-level and field-level authorization service methods in server/services/authorization-service.js
-- [ ] T011 Implement common response view-model builder for complete/partial/none states in server/controllers/dashboard-data-controller.js
-- [ ] T012 Add dashboard route wiring into Express app bootstrap in server/routes/dashboard-data-routes.js
+- [X] T006 Implement SQLite schema/migration updates for Account, Course, Enrollment, TeachingAssignment, DashboardPage, DataItemDefinition, and RetrievalSnapshot in server/db/schema.sql
+- [X] T007 Implement SQLite seed data for in-scope pages, UC mappings, and role visibility metadata in server/db/seeds/dashboard-data-seed.sql
+- [X] T008 Implement reusable sqlite query helpers for dashboard data retrieval in server/db/sqlite-client.js
+- [X] T009 [P] Implement account and course model read methods required by dashboard data joins in server/models/account-model.js and server/models/course-model.js
+- [X] T010 [P] Implement page-level and field-level authorization service methods in server/services/authorization-service.js
+- [X] T011 Implement common response view-model builder for complete/partial/none states in server/controllers/dashboard-data-controller.js
+- [X] T012 Add dashboard route wiring into Express app bootstrap in server/routes/dashboard-data-routes.js
 
 **Checkpoint**: Foundation complete; each user story can proceed without depending on another user story
 
@@ -51,18 +51,18 @@
 
 ### Tests for User Story 1
 
-- [ ] T013 [P] [US1] Add contract test for `GET /dashboard/pages/{pageId}` success payload shape in tests/contract/dashboard-data.contract.test.js
-- [ ] T014 [P] [US1] Add integration test for authorized full-data render flow mapped to UC-06 and UC-33 in tests/integration/dashboard-data.us1.test.js
+- [X] T013 [P] [US1] Add contract test for `GET /dashboard/pages/{pageId}` success payload shape in tests/contract/dashboard-data.contract.test.js
+- [X] T014 [P] [US1] Add integration test for authorized full-data render flow mapped to UC-06 and UC-33 in tests/integration/dashboard-data.us1.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T015 [P] [US1] Implement DashboardPage and DataItemDefinition repository reads in server/models/dashboard-data-model.js
-- [ ] T016 [US1] Implement controller flow for authenticate -> authorize page -> retrieve visible items -> return `status=complete` in server/controllers/dashboard-data-controller.js
-- [ ] T017 [US1] Implement server-rendered dashboard page templates for contact-info and student-info in web/views/dashboard-data/contact-info.ejs and web/views/dashboard-data/student-info.ejs
-- [ ] T018 [P] [US1] Implement server-rendered templates for course-history, transcript, and grade-summary in web/views/dashboard-data/course-history.ejs, web/views/dashboard-data/transcript.ejs, and web/views/dashboard-data/grade-summary.ejs
-- [ ] T019 [US1] Add dashboard page presentation styles for readable data layout in web/css/dashboard-data.css
-- [ ] T020 [US1] Add client-side progressive enhancement for table/list rendering states in web/js/dashboard-data.js
-- [ ] T021 [US1] Update traceability entries for US1 artifacts and tests in tests/traceability/dashboard-data-traceability.md
+- [X] T015 [P] [US1] Implement DashboardPage and DataItemDefinition repository reads in server/models/dashboard-data-model.js
+- [X] T016 [US1] Implement controller flow for authenticate -> authorize page -> retrieve visible items -> return `status=complete` in server/controllers/dashboard-data-controller.js
+- [X] T017 [US1] Implement server-rendered dashboard page templates for contact-info and student-info in web/views/dashboard-data/contact-info.ejs and web/views/dashboard-data/student-info.ejs
+- [X] T018 [P] [US1] Implement server-rendered templates for course-history, transcript, and grade-summary in web/views/dashboard-data/course-history.ejs, web/views/dashboard-data/transcript.ejs, and web/views/dashboard-data/grade-summary.ejs
+- [X] T019 [US1] Add dashboard page presentation styles for readable data layout in web/css/dashboard-data.css
+- [X] T020 [US1] Add client-side progressive enhancement for table/list rendering states in web/js/dashboard-data.js
+- [X] T021 [US1] Update traceability entries for US1 artifacts and tests in tests/traceability/dashboard-data-traceability.md
 
 **Checkpoint**: User Story 1 is independently testable and shippable as MVP
 
@@ -76,19 +76,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T022 [P] [US2] Add contract tests for `status=partial` and `status=none` payload requirements in tests/contract/dashboard-data.partial-none.contract.test.js
-- [ ] T023 [P] [US2] Add integration tests for partial-data and no-data UI behavior mapped to UC-20 and UC-21 in tests/integration/dashboard-data.us2.test.js
+- [X] T022 [P] [US2] Add contract tests for `status=partial` and `status=none` payload requirements in tests/contract/dashboard-data.partial-none.contract.test.js
+- [X] T023 [P] [US2] Add integration tests for partial-data and no-data UI behavior mapped to UC-20 and UC-21 in tests/integration/dashboard-data.us2.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T024 [US2] Implement missing-item classification (`not_found`, `unavailable`, `restricted_by_role`, `stale`) during retrieval assembly in server/models/dashboard-data-model.js
-- [ ] T025 [US2] Implement controller logic for `partial` and `none` response model generation with retry guidance message in server/controllers/dashboard-data-controller.js
-- [ ] T026 [US2] Implement reusable missing-item indicator and no-data partial templates in web/views/shared/missing-items.ejs and web/views/shared/no-data-state.ejs
-- [ ] T027 [US2] Integrate missing-item and no-data components into contact-info and student-info templates in web/views/dashboard-data/contact-info.ejs and web/views/dashboard-data/student-info.ejs
-- [ ] T028 [US2] Add CSS states for missing-item and no-data visuals in web/css/dashboard-data.css
-- [ ] T029 [US2] Add client-side behavior for retry action and missing-item interaction hints in web/js/dashboard-data.js
-- [ ] T030 [US2] Update traceability entries for US2 artifacts and tests in tests/traceability/dashboard-data-traceability.md
-- [ ] T031 [P] [US2] Integrate missing-item and no-data components into course-history, transcript, and grade-summary templates in web/views/dashboard-data/course-history.ejs, web/views/dashboard-data/transcript.ejs, and web/views/dashboard-data/grade-summary.ejs
+- [X] T024 [US2] Implement missing-item classification (`not_found`, `unavailable`, `restricted_by_role`, `stale`) during retrieval assembly in server/models/dashboard-data-model.js
+- [X] T025 [US2] Implement controller logic for `partial` and `none` response model generation with retry guidance message in server/controllers/dashboard-data-controller.js
+- [X] T026 [US2] Implement reusable missing-item indicator and no-data partial templates in web/views/shared/missing-items.ejs and web/views/shared/no-data-state.ejs
+- [X] T027 [US2] Integrate missing-item and no-data components into contact-info and student-info templates in web/views/dashboard-data/contact-info.ejs and web/views/dashboard-data/student-info.ejs
+- [X] T028 [US2] Add CSS states for missing-item and no-data visuals in web/css/dashboard-data.css
+- [X] T029 [US2] Add client-side behavior for retry action and missing-item interaction hints in web/js/dashboard-data.js
+- [X] T030 [US2] Update traceability entries for US2 artifacts and tests in tests/traceability/dashboard-data-traceability.md
+- [X] T031 [P] [US2] Integrate missing-item and no-data components into course-history, transcript, and grade-summary templates in web/views/dashboard-data/course-history.ejs, web/views/dashboard-data/transcript.ejs, and web/views/dashboard-data/grade-summary.ejs
 
 **Checkpoint**: User Story 2 is independently testable without requiring User Story 3 changes
 
@@ -102,18 +102,18 @@
 
 ### Tests for User Story 3
 
-- [ ] T032 [P] [US3] Add contract test for `403` unauthorized response schema in tests/contract/dashboard-data.unauthorized.contract.test.js
-- [ ] T033 [P] [US3] Add integration tests for page-level denial and field-level filtering mapped to UC-21 and UC-36 in tests/integration/dashboard-data.us3.test.js
+- [X] T032 [P] [US3] Add contract test for `403` unauthorized response schema in tests/contract/dashboard-data.unauthorized.contract.test.js
+- [X] T033 [P] [US3] Add integration tests for page-level denial and field-level filtering mapped to UC-21 and UC-36 in tests/integration/dashboard-data.us3.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T034 [US3] Implement role-scope resolution for Enrollment/TeachingAssignment-based access checks in server/services/authorization-service.js
-- [ ] T035 [US3] Implement controller unauthorized response path with zero restricted payload leakage in server/controllers/dashboard-data-controller.js
-- [ ] T036 [US3] Implement field-level visibility filtering against `visible_to_roles` metadata in server/models/dashboard-data-model.js
-- [ ] T037 [US3] Implement unauthorized display page and message partial in web/views/errors/forbidden.ejs and web/views/shared/authorization-message.ejs
-- [ ] T038 [US3] Integrate forbidden handling route-to-view mapping in server/routes/dashboard-data-routes.js
-- [ ] T039 [US3] Update traceability entries for US3 artifacts and tests in tests/traceability/dashboard-data-traceability.md
-- [ ] T040 [P] [US3] Add unit tests for authorization service page-level and field-level filtering logic in tests/unit/authorization-service.test.js
+- [X] T034 [US3] Implement role-scope resolution for Enrollment/TeachingAssignment-based access checks in server/services/authorization-service.js
+- [X] T035 [US3] Implement controller unauthorized response path with zero restricted payload leakage in server/controllers/dashboard-data-controller.js
+- [X] T036 [US3] Implement field-level visibility filtering against `visible_to_roles` metadata in server/models/dashboard-data-model.js
+- [X] T037 [US3] Implement unauthorized display page and message partial in web/views/errors/forbidden.ejs and web/views/shared/authorization-message.ejs
+- [X] T038 [US3] Integrate forbidden handling route-to-view mapping in server/routes/dashboard-data-routes.js
+- [X] T039 [US3] Update traceability entries for US3 artifacts and tests in tests/traceability/dashboard-data-traceability.md
+- [X] T040 [P] [US3] Add unit tests for authorization service page-level and field-level filtering logic in tests/unit/authorization-service.test.js
 
 **Checkpoint**: User Story 3 is independently testable with complete access-control behavior
 
@@ -123,14 +123,14 @@
 
 **Purpose**: Feature hardening, compliance, and final validation
 
-- [ ] T041 [P] Run JavaScript style checks and apply fixes for feature files in server/controllers/dashboard-data-controller.js, server/models/dashboard-data-model.js, server/services/authorization-service.js, server/routes/dashboard-data-routes.js, and web/js/dashboard-data.js
-- [ ] T042 [P] Run HTML/CSS style checks and apply fixes for feature files in web/views/dashboard-data/contact-info.ejs, web/views/dashboard-data/student-info.ejs, web/views/dashboard-data/course-history.ejs, web/views/dashboard-data/transcript.ejs, web/views/dashboard-data/grade-summary.ejs, web/views/shared/missing-items.ejs, web/views/shared/no-data-state.ejs, web/views/shared/authorization-message.ejs, web/views/errors/forbidden.ejs, and web/css/dashboard-data.css
-- [ ] T043 Execute full automated test suite for dashboard feature (unit/integration/contract) in tests/unit/dashboard-data-model.test.js, tests/unit/authorization-service.test.js, tests/integration/dashboard-data.us1.test.js, tests/integration/dashboard-data.us2.test.js, tests/integration/dashboard-data.us3.test.js, tests/contract/dashboard-data.contract.test.js, tests/contract/dashboard-data.partial-none.contract.test.js, and tests/contract/dashboard-data.unauthorized.contract.test.js
-- [ ] T044 Validate quickstart functional checklist evidence and update results in specs/004-display-dashboard-data/quickstart.md
-- [ ] T045 Validate no unauthorized edits to protected `Use Cases/` and `Acceptance Tests/` artifacts and document confirmation in tests/traceability/dashboard-data-traceability.md
-- [ ] T046 Add response-time benchmark test for `GET /dashboard/pages/{pageId}` to verify p95 render time under 2.0 seconds in tests/integration/dashboard-data.performance.test.js
-- [ ] T047 Record p95 benchmark results and verify compliance with plan performance target in tests/traceability/dashboard-data-traceability.md
-- [ ] T048 [P] Add unit tests for dashboard data model retrieval and response mapping logic in tests/unit/dashboard-data-model.test.js
+- [X] T041 [P] Run JavaScript style checks and apply fixes for feature files in server/controllers/dashboard-data-controller.js, server/models/dashboard-data-model.js, server/services/authorization-service.js, server/routes/dashboard-data-routes.js, and web/js/dashboard-data.js
+- [X] T042 [P] Run HTML/CSS style checks and apply fixes for feature files in web/views/dashboard-data/contact-info.ejs, web/views/dashboard-data/student-info.ejs, web/views/dashboard-data/course-history.ejs, web/views/dashboard-data/transcript.ejs, web/views/dashboard-data/grade-summary.ejs, web/views/shared/missing-items.ejs, web/views/shared/no-data-state.ejs, web/views/shared/authorization-message.ejs, web/views/errors/forbidden.ejs, and web/css/dashboard-data.css
+- [X] T043 Execute full automated test suite for dashboard feature (unit/integration/contract) in tests/unit/dashboard-data-model.test.js, tests/unit/authorization-service.test.js, tests/integration/dashboard-data.us1.test.js, tests/integration/dashboard-data.us2.test.js, tests/integration/dashboard-data.us3.test.js, tests/contract/dashboard-data.contract.test.js, tests/contract/dashboard-data.partial-none.contract.test.js, and tests/contract/dashboard-data.unauthorized.contract.test.js
+- [X] T044 Validate quickstart functional checklist evidence and update results in specs/004-display-dashboard-data/quickstart.md
+- [X] T045 Validate no unauthorized edits to protected `Use Cases/` and `Acceptance Tests/` artifacts and document confirmation in tests/traceability/dashboard-data-traceability.md
+- [X] T046 Add response-time benchmark test for `GET /dashboard/pages/{pageId}` to verify p95 render time under 2.0 seconds in tests/integration/dashboard-data.performance.test.js
+- [X] T047 Record p95 benchmark results and verify compliance with plan performance target in tests/traceability/dashboard-data-traceability.md
+- [X] T048 [P] Add unit tests for dashboard data model retrieval and response mapping logic in tests/unit/dashboard-data-model.test.js
 
 ---
 

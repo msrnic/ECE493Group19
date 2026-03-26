@@ -107,6 +107,35 @@ CREATE TABLE IF NOT EXISTS dashboard_load_events (
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS personal_details (
+  account_id INTEGER PRIMARY KEY,
+  first_name TEXT,
+  last_name TEXT,
+  birth_date TEXT,
+  country_of_origin TEXT,
+  version INTEGER NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS contact_profiles (
+  account_id INTEGER PRIMARY KEY,
+  contact_email TEXT,
+  phone_number TEXT,
+  version INTEGER NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS emergency_contacts (
+  account_id INTEGER PRIMARY KEY,
+  full_name TEXT,
+  phone_number TEXT,
+  relationship TEXT,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS login_attempts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   account_id INTEGER,
@@ -189,6 +218,7 @@ CREATE TABLE IF NOT EXISTS notifications (
 );
 
 CREATE INDEX IF NOT EXISTS idx_accounts_identifier ON accounts(email, username);
+CREATE INDEX IF NOT EXISTS idx_contact_profiles_email ON contact_profiles(contact_email);
 CREATE INDEX IF NOT EXISTS idx_role_assignments_account ON role_assignments(account_id, is_active);
 CREATE INDEX IF NOT EXISTS idx_role_modules_role ON role_modules(role_id, is_active);
 CREATE INDEX IF NOT EXISTS idx_dashboard_sections_module ON dashboard_sections(module_id, is_enabled);

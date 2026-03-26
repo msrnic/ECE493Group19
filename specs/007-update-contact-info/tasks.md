@@ -11,12 +11,12 @@
 
 **Purpose**: Initialize feature scaffolding and traceability artifacts.
 
-- [ ] T001 Create contact feature route scaffold in app/routes/contactRoutes.js
-- [ ] T002 Create contact controller scaffold in app/controllers/contactController.js
-- [ ] T003 [P] Create contact info view scaffold in app/views/contact-info.html
-- [ ] T004 [P] Create contact page styles scaffold in app/public/css/contact-info.css
-- [ ] T005 [P] Create contact page client script scaffold in app/public/js/contact-info.js
-- [ ] T006 Create feature traceability notes for UC-07 and UC-07-AS in specs/007-update-contact-info/quickstart.md
+- [X] T001 Create contact feature route scaffold in app/routes/contactRoutes.js
+- [X] T002 Create contact controller scaffold in app/controllers/contactController.js
+- [X] T003 [P] Create contact info view scaffold in app/views/contact-info.html
+- [X] T004 [P] Create contact page styles scaffold in app/public/css/contact-info.css
+- [X] T005 [P] Create contact page client script scaffold in app/public/js/contact-info.js
+- [X] T006 Create feature traceability notes for UC-07 and UC-07-AS in specs/007-update-contact-info/quickstart.md
 
 ---
 
@@ -24,13 +24,13 @@
 
 **Purpose**: Core infrastructure required before user story implementation.
 
-- [ ] T007 Add contact schema tables (`contact_profiles`, `emergency_contacts`, `contact_update_events`) in app/db/schema.sql
-- [ ] T008 Create migration for contact tables and indexes in app/db/migrations/001_update_contact_info.sql
-- [ ] T009 Implement shared contact validation helpers (normalize/validate email, phone, address) in app/models/contactValidation.js
-- [ ] T010 Implement contact data-access and transaction primitives in app/models/contactInfoModel.js
-- [ ] T011 [P] Wire `/contact-info` GET and POST routes with auth middleware in app/routes/contactRoutes.js
-- [ ] T012 [P] Register contact routes with the main Express app in app/app.js
-- [ ] T013 Implement shared contact error/response mapper for controllers in app/controllers/contactController.js
+- [X] T007 Add contact schema tables (`contact_profiles`, `emergency_contacts`, `contact_update_events`) in app/db/schema.sql
+- [X] T008 Create migration for contact tables and indexes in app/db/migrations/001_update_contact_info.sql
+- [X] T009 Implement shared contact validation helpers (normalize/validate email, phone, address) in app/models/contactValidation.js
+- [X] T010 Implement contact data-access and transaction primitives in app/models/contactInfoModel.js
+- [X] T011 [P] Wire `/contact-info` GET and POST routes with auth middleware in app/routes/contactRoutes.js
+- [X] T012 [P] Register contact routes with the main Express app in app/app.js
+- [X] T013 Implement shared contact error/response mapper for controllers in app/controllers/contactController.js
 
 **Checkpoint**: Foundational work complete; all user stories can proceed independently with no cross-story blocking.
 
@@ -44,18 +44,18 @@
 
 ### Tests for User Story 1
 
-- [ ] T014 [P] [US1] Add model unit tests for successful read/write transaction path in tests/unit/models/contactInfoModel.test.js
-- [ ] T015 [P] [US1] Add controller unit tests for authenticated own-account access in tests/unit/controllers/contactController.test.js
-- [ ] T016 [US1] Add integration test for successful contact update flow in tests/integration/contact-info-flow.test.js
+- [X] T014 [P] [US1] Add model unit tests for successful read/write transaction path in tests/unit/models/contactInfoModel.test.js
+- [X] T015 [P] [US1] Add controller unit tests for authenticated own-account access in tests/unit/controllers/contactController.test.js
+- [X] T016 [US1] Add integration test for successful contact update flow in tests/integration/contact-info-flow.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Implement GET `/contact-info` load logic for current basic and emergency values in app/controllers/contactController.js
-- [ ] T018 [US1] Implement POST `/contact-info` success path using atomic model transaction in app/controllers/contactController.js
-- [ ] T019 [P] [US1] Implement contact form markup and immutable-field treatment in app/views/contact-info.html
-- [ ] T020 [P] [US1] Implement success-state rendering and section layout styles in app/public/css/contact-info.css
-- [ ] T021 [P] [US1] Implement client-side payload building and submit handling in app/public/js/contact-info.js
-- [ ] T022 [US1] Implement success confirmation response payload mapping in app/controllers/contactController.js
+- [X] T017 [US1] Implement GET `/contact-info` load logic for current basic and emergency values in app/controllers/contactController.js
+- [X] T018 [US1] Implement POST `/contact-info` success path using atomic model transaction in app/controllers/contactController.js
+- [X] T019 [P] [US1] Implement contact form markup and immutable-field treatment in app/views/contact-info.html
+- [X] T020 [P] [US1] Implement success-state rendering and section layout styles in app/public/css/contact-info.css
+- [X] T021 [P] [US1] Implement client-side payload building and submit handling in app/public/js/contact-info.js
+- [X] T022 [US1] Implement success confirmation response payload mapping in app/controllers/contactController.js
 
 **Checkpoint**: User Story 1 is independently functional and testable.
 
@@ -69,17 +69,17 @@
 
 ### Tests for User Story 2
 
-- [ ] T023 [P] [US2] Add validation helper unit tests for invalid/normalized inputs in tests/unit/models/contactValidation.test.js
-- [ ] T024 [P] [US2] Add controller unit tests for 400 validation responses and field error mapping in tests/unit/controllers/contactController.test.js
-- [ ] T025 [US2] Add integration test for invalid submit then corrected resubmit flow in tests/integration/contact-info-flow.test.js
+- [X] T023 [P] [US2] Add validation helper unit tests for invalid/normalized inputs in tests/unit/models/contactValidation.test.js
+- [X] T024 [P] [US2] Add controller unit tests for 400 validation responses and field error mapping in tests/unit/controllers/contactController.test.js
+- [X] T025 [US2] Add integration test for invalid submit then corrected resubmit flow in tests/integration/contact-info-flow.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T026 [US2] Implement server-side normalization + validation gating before save in app/controllers/contactController.js
-- [ ] T027 [US2] Implement all-or-nothing rejection when any field fails validation in app/models/contactInfoModel.js
-- [ ] T028 [P] [US2] Implement field-level validation message rendering in app/views/contact-info.html
-- [ ] T029 [P] [US2] Implement invalid-field highlight and inline guidance styles in app/public/css/contact-info.css
-- [ ] T030 [P] [US2] Implement client-side error highlighting and correction state clearing in app/public/js/contact-info.js
+- [X] T026 [US2] Implement server-side normalization + validation gating before save in app/controllers/contactController.js
+- [X] T027 [US2] Implement all-or-nothing rejection when any field fails validation in app/models/contactInfoModel.js
+- [X] T028 [P] [US2] Implement field-level validation message rendering in app/views/contact-info.html
+- [X] T029 [P] [US2] Implement invalid-field highlight and inline guidance styles in app/public/css/contact-info.css
+- [X] T030 [P] [US2] Implement client-side error highlighting and correction state clearing in app/public/js/contact-info.js
 
 **Checkpoint**: User Story 2 is independently functional and testable.
 
@@ -93,18 +93,18 @@
 
 ### Tests for User Story 3
 
-- [ ] T031 [P] [US3] Add model unit tests for transaction rollback on persistence failure in tests/unit/models/contactInfoModel.test.js
-- [ ] T032 [P] [US3] Add controller unit tests for save-failed response and retry messaging in tests/unit/controllers/contactController.test.js
-- [ ] T033 [US3] Add integration test for cancel/abandon and simulated save failure behaviors in tests/integration/contact-info-flow.test.js
+- [X] T031 [P] [US3] Add model unit tests for transaction rollback on persistence failure in tests/unit/models/contactInfoModel.test.js
+- [X] T032 [P] [US3] Add controller unit tests for save-failed response and retry messaging in tests/unit/controllers/contactController.test.js
+- [X] T033 [US3] Add integration test for cancel/abandon and simulated save failure behaviors in tests/integration/contact-info-flow.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T034 [US3] Implement rollback-safe persistence failure handling in app/models/contactInfoModel.js
-- [ ] T035 [US3] Implement controller save-failure messaging (`status=save_failed`) in app/controllers/contactController.js
-- [ ] T036 [P] [US3] Implement cancel navigation behavior that discards unsaved edits in app/public/js/contact-info.js
-- [ ] T037 [P] [US3] Implement UI retry-later error banner state in app/views/contact-info.html
-- [ ] T038 [US3] Implement last-write-wins conflict notice and event logging in app/models/contactInfoModel.js
-- [ ] T039 [US3] Implement post-save conflict notice mapping in app/controllers/contactController.js
+- [X] T034 [US3] Implement rollback-safe persistence failure handling in app/models/contactInfoModel.js
+- [X] T035 [US3] Implement controller save-failure messaging (`status=save_failed`) in app/controllers/contactController.js
+- [X] T036 [P] [US3] Implement cancel navigation behavior that discards unsaved edits in app/public/js/contact-info.js
+- [X] T037 [P] [US3] Implement UI retry-later error banner state in app/views/contact-info.html
+- [X] T038 [US3] Implement last-write-wins conflict notice and event logging in app/models/contactInfoModel.js
+- [X] T039 [US3] Implement post-save conflict notice mapping in app/controllers/contactController.js
 
 **Checkpoint**: User Story 3 is independently functional and testable.
 
@@ -114,15 +114,15 @@
 
 **Purpose**: Final hardening and feature-wide verification.
 
-- [ ] T040 [P] Run and fix JavaScript lint issues for touched files with output captured in specs/007-update-contact-info/quickstart.md
-- [ ] T041 [P] Run HTML/CSS style-guide compliance review for app/views/contact-info.html and app/public/css/contact-info.css with findings captured in specs/007-update-contact-info/quickstart.md
-- [ ] T042 [P] Run and fix automated unit/integration tests for touched files with output captured in specs/007-update-contact-info/quickstart.md
-- [ ] T043 Add p95 latency instrumentation assertions for GET and POST contact flows in tests/integration/contact-info-flow.test.js
-- [ ] T044 Record p95 performance evidence against <=500ms read and <=800ms save in specs/007-update-contact-info/quickstart.md
-- [ ] T045 Execute manual UC-07 acceptance checklist and record pass/fail notes in specs/007-update-contact-info/quickstart.md
-- [ ] T046 Create FR/SC/UC to task/evidence traceability matrix in specs/007-update-contact-info/traceability.md
-- [ ] T047 Add SC-001 and SC-005 measurement method/status notes in specs/007-update-contact-info/traceability.md
-- [ ] T048 Update feature documentation and implementation notes in specs/007-update-contact-info/plan.md
+- [X] T040 [P] Run and fix JavaScript lint issues for touched files with output captured in specs/007-update-contact-info/quickstart.md
+- [X] T041 [P] Run HTML/CSS style-guide compliance review for app/views/contact-info.html and app/public/css/contact-info.css with findings captured in specs/007-update-contact-info/quickstart.md
+- [X] T042 [P] Run and fix automated unit/integration tests for touched files with output captured in specs/007-update-contact-info/quickstart.md
+- [X] T043 Add p95 latency instrumentation assertions for GET and POST contact flows in tests/integration/contact-info-flow.test.js
+- [X] T044 Record p95 performance evidence against <=500ms read and <=800ms save in specs/007-update-contact-info/quickstart.md
+- [X] T045 Execute manual UC-07 acceptance checklist and record pass/fail notes in specs/007-update-contact-info/quickstart.md
+- [X] T046 Create FR/SC/UC to task/evidence traceability matrix in specs/007-update-contact-info/traceability.md
+- [X] T047 Add SC-001 and SC-005 measurement method/status notes in specs/007-update-contact-info/traceability.md
+- [X] T048 Update feature documentation and implementation notes in specs/007-update-contact-info/plan.md
 
 ---
 

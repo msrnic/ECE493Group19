@@ -5,6 +5,7 @@ const {
   createDashboardResponse,
   createErrorResponse
 } = require('./dashboard-response');
+const { formatBirthdayForDisplay } = require('./validators/profile-validator');
 const { validateRetryRequest } = require('./validators/dashboard-validator');
 const { escapeHtml, renderHtml } = require('../views/render');
 
@@ -105,6 +106,63 @@ function serializeForScriptTag(payload) {
 }
 
 function createDashboardController(services) {
+  function getProfileDetails(account) {
+    if (
+      typeof services.personalDetailsModel?.getByAccountId !== 'function' ||
+      typeof services.contactInfoModel?.getByAccountId !== 'function'
+    ) {
+      return null;
+    }
+
+    return {
+      contactInformation: services.contactInfoModel.getByAccountId(account.id) || {},
+      personalDetails: services.personalDetailsModel.getByAccountId(account.id) || {}
+    };
+  }
+
+  function createProfileFact(label, value) {
+    return `${label}: ${value || 'Not provided'}`;
+  }
+
+  function buildProfileSectionContent(account, options) {
+    const details = getProfileDetails(account);
+    const links = [
+      { href: '/account/personal-information', label: 'Update Personal Information' },
+      { href: '/account/contact-information', label: 'Update Contact Information' }
+    ];
+    links.push({ href: '/account/security/password-change', label: 'Change password' });
+
+    if (!details) {
+      return {
+        items: [options.fallbackItem],
+        links,
+        summary: options.summary
+      };
+    }
+
+    const personal = details.personalDetails;
+    const contact = details.contactInformation;
+    const fullName = [personal.firstName, personal.lastName].filter(Boolean).join(' ').trim();
+
+    return {
+      items: [
+        createProfileFact('Full Name', fullName),
+        createProfileFact(
+          'Birthday',
+          personal.birthDate ? formatBirthdayForDisplay(personal.birthDate) : null
+        ),
+        createProfileFact('Country of Origin', personal.countryOfOrigin),
+        createProfileFact('Phone Number', contact.phoneNumber),
+        createProfileFact('Email', contact.contactEmail),
+        createProfileFact('Emergency Contact Name', contact.emergencyFullName),
+        createProfileFact('Emergency Contact Phone Number', contact.emergencyPhoneNumber),
+        createProfileFact('Emergency Contact Relation', contact.emergencyRelationship)
+      ],
+      links,
+      summary: options.summary
+    };
+  }
+
   function normalizeRoleKey(role) {
     if (!role || typeof role === 'string') {
       return toIdentifierKey(role);
@@ -288,13 +346,11 @@ function createDashboardController(services) {
           summary: 'Grading workflows are enabled for your professor dashboard.'
         };
       case 'personal-profile':
-        return {
-          items: ['Your account profile and password tools remain available from this page.'],
-          links: [
-            { href: '/account/security/password-change', label: 'Change password' }
-          ],
+        return buildProfileSectionContent(account, {
+          fallbackItem: 'Your account profile and password tools remain available from this page.',
+          includePasswordLink: true,
           summary: 'Review your own account details and update your password from one place.'
-        };
+        });
       case 'admin-operations':
         return {
           items: [
@@ -306,13 +362,11 @@ function createDashboardController(services) {
         };
       case 'security-center': {
         if (account.role === 'student' || account.role === 'professor') {
-          return {
-            items: ['Profile details and password tools remain available from this page.'],
-            links: [
-              { href: '/account/security/password-change', label: 'Change password' }
-            ],
+          return buildProfileSectionContent(account, {
+            fallbackItem: 'Profile details and password tools remain available from this page.',
+            includePasswordLink: true,
             summary: 'Review your personal information and keep your account secure from one place.'
-          };
+          });
         }
 
         const links = [];
@@ -510,23 +564,23 @@ function createDashboardController(services) {
 
   function renderModuleNavigation(modules) {
     if (!modules.length) {
-      return '<p class="dashboard-empty-note">No dashboard modules are available for this account.</p>';
+      return '<p class=\'dashboard-empty-note\'>No dashboard modules are available for this account.</p>';
     }
 
-    return `<ul class="dashboard-nav-list">${modules
+    return `<ul class='dashboard-nav-list'>${modules
       .map((module) => {
         if (module.navigationState === 'disabled_unavailable') {
-          return `<li><span class="dashboard-nav-link is-disabled">${escapeHtml(module.displayName)} <span class="dashboard-pill">Unavailable</span></span></li>`;
+          return `<li><span class='dashboard-nav-link is-disabled'>${escapeHtml(module.displayName)} <span class='dashboard-pill'>Unavailable</span></span></li>`;
         }
 
-        return `<li><a class="dashboard-nav-link" href="${escapeHtml(module.routePath)}">${escapeHtml(module.displayName)}</a></li>`;
+        return `<li><a class='dashboard-nav-link' href='${escapeHtml(module.routePath)}'>${escapeHtml(module.displayName)}</a></li>`;
       })
       .join('')}</ul>`;
   }
 
   function renderSectionContent(section) {
     if (section.availabilityStatus === 'unavailable') {
-      return `<p class="dashboard-unavailable-label">${escapeHtml(section.unavailableLabel)}</p><p class="help-text">Retry the unavailable section when dashboard data recovers.</p>`;
+      return `<p class='dashboard-unavailable-label'>${escapeHtml(section.unavailableLabel)}</p><p class='help-text'>Retry the unavailable section when dashboard data recovers.</p>`;
     }
 
     const itemsHtml = (section.content?.items || [])
@@ -534,11 +588,11 @@ function createDashboardController(services) {
       .join('');
     const linksHtml = (section.content?.links || [])
       .map(
-        (link) => `<a class="login-button-link secondary-link" href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`
+        (link) => `<a class='login-button-link secondary-link' href='${escapeHtml(link.href)}'>${escapeHtml(link.label)}</a>`
       )
       .join('');
 
-    return `${section.content?.summary ? `<p class="help-text">${escapeHtml(section.content.summary)}</p>` : ''}${itemsHtml ? `<ul class="course-list">${itemsHtml}</ul>` : ''}${linksHtml ? `<div class="action-row">${linksHtml}</div>` : ''}`;
+    return `${section.content?.summary ? `<p class='help-text'>${escapeHtml(section.content.summary)}</p>` : ''}${itemsHtml ? `<ul class='course-list'>${itemsHtml}</ul>` : ''}${linksHtml ? `<div class='action-row'>${linksHtml}</div>` : ''}`;
   }
 
   function renderSections(payload) {
@@ -546,12 +600,12 @@ function createDashboardController(services) {
       const heading = payload.status === 'empty_access'
         ? 'Minimal dashboard'
         : 'Authorization data error';
-      return `<section class="dashboard-section-card dashboard-section-card--message"><h2>${escapeHtml(heading)}</h2><p class="help-text">${escapeHtml(payload.message)}</p></section>`;
+      return `<section class='dashboard-section-card dashboard-section-card--message'><h2>${escapeHtml(heading)}</h2><p class='help-text'>${escapeHtml(payload.message)}</p></section>`;
     }
 
     return payload.sections
       .map(
-        (section) => `<section class="dashboard-section-card${section.availabilityStatus === 'unavailable' ? ' is-unavailable' : ''}" id="${escapeHtml(section.sectionKey)}" data-section-id="${section.sectionId}"><div class="dashboard-section-header"><h2>${escapeHtml(section.title)}</h2>${section.availabilityStatus === 'unavailable' ? '<span class="dashboard-pill">Unavailable</span>' : '<span class="dashboard-pill dashboard-pill--ok">Available</span>'}</div>${renderSectionContent(section)}</section>`
+        (section) => `<section class='dashboard-section-card${section.availabilityStatus === 'unavailable' ? ' is-unavailable' : ''}' id='${escapeHtml(section.sectionKey)}' data-section-id='${section.sectionId}'><div class='dashboard-section-header'><h2>${escapeHtml(section.title)}</h2>${section.availabilityStatus === 'unavailable' ? '<span class=\'dashboard-pill\'>Unavailable</span>' : '<span class=\'dashboard-pill dashboard-pill--ok\'>Available</span>'}</div>${renderSectionContent(section)}</section>`
       )
       .join('');
   }
@@ -561,7 +615,7 @@ function createDashboardController(services) {
       return '';
     }
 
-    return '<button id="dashboard-retry" class="secondary-button" type="button">Retry unavailable sections</button>';
+    return '<button id=\'dashboard-retry\' class=\'secondary-button\' type=\'button\'>Retry unavailable sections</button>';
   }
 
   function renderDashboardPage(req, res, account, roles, payload) {
@@ -574,8 +628,8 @@ function createDashboardController(services) {
       dashboard_status: payload.status,
       retry_panel_html: renderRetryPanel(payload),
       role_badges_html: roles.length
-        ? roles.map((role) => `<span class="dashboard-pill">${escapeHtml(role.display_name)}</span>`).join('')
-        : `<span class="dashboard-pill">${escapeHtml(account.role)}</span>`,
+        ? roles.map((role) => `<span class='dashboard-pill'>${escapeHtml(role.display_name)}</span>`).join('')
+        : `<span class='dashboard-pill'>${escapeHtml(account.role)}</span>`,
       session_created_at: sessionRecord ? sessionRecord.created_at : 'Session metadata unavailable.',
       username: account.username
     });

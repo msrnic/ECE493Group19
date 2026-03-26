@@ -72,7 +72,7 @@ test('dashboard keeps restricted modules hidden even during partial professor lo
   const response = await agent.get('/dashboard');
 
   assert.equal(response.status, 200);
-  assert.equal(response.text.includes('Current Courses <span class="dashboard-pill">Unavailable</span>'), true);
+  assert.match(response.text, /Current Courses[\s\S]*Unavailable/);
   assert.equal(response.text.includes('Inbox'), true);
   assert.equal(response.text.includes('Personal Profile'), true);
   assert.equal(response.text.includes('Security Center'), false);

@@ -23,6 +23,9 @@ function seedLoginFixtures(dbPath, options = {}) {
   db.exec(`
     DELETE FROM dashboard_section_states;
     DELETE FROM dashboard_load_events;
+    DELETE FROM emergency_contacts;
+    DELETE FROM contact_profiles;
+    DELETE FROM personal_details;
     DELETE FROM role_assignments;
     DELETE FROM role_modules;
     DELETE FROM dashboard_sections;
@@ -110,6 +113,55 @@ function seedLoginFixtures(dbPath, options = {}) {
   const insertSection = db.prepare(`
     INSERT INTO dashboard_sections (module_id, section_key, section_title, sort_order, is_enabled)
     VALUES (@module_id, @section_key, @section_title, @sort_order, 1)
+  `);
+  const insertPersonalDetails = db.prepare(`
+    INSERT INTO personal_details (
+      account_id,
+      first_name,
+      last_name,
+      birth_date,
+      country_of_origin,
+      version,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @first_name,
+      @last_name,
+      @birth_date,
+      @country_of_origin,
+      @version,
+      @updated_at
+    )
+  `);
+  const insertContactProfile = db.prepare(`
+    INSERT INTO contact_profiles (
+      account_id,
+      contact_email,
+      phone_number,
+      version,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @contact_email,
+      @phone_number,
+      @version,
+      @updated_at
+    )
+  `);
+  const insertEmergencyContact = db.prepare(`
+    INSERT INTO emergency_contacts (
+      account_id,
+      full_name,
+      phone_number,
+      relationship,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @full_name,
+      @phone_number,
+      @relationship,
+      @updated_at
+    )
   `);
 
   const timestamp = isoNow(now);
@@ -290,7 +342,7 @@ function seedLoginFixtures(dbPath, options = {}) {
       route_path: '/dashboard#inbox',
       sort_order: 5
     },
-        {
+    {
       module_key: 'personal-profile',
       display_name: 'Personal Profile',
       route_path: '/dashboard#personal-profile',
@@ -376,7 +428,7 @@ function seedLoginFixtures(dbPath, options = {}) {
       section_title: 'Inbox',
       sort_order: 5
     },
-        {
+    {
       moduleKey: 'personal-profile',
       section_key: 'personal-profile',
       section_title: 'Personal Profile',
@@ -463,6 +515,129 @@ function seedLoginFixtures(dbPath, options = {}) {
     consumed_at: null,
     revoked_at: timestamp
   });
+
+  for (const details of [
+    {
+      accountId: accountIds['userA@example.com'],
+      birthDate: '2001-04-15',
+      contactEmail: 'userA.contact@example.com',
+      countryOfOrigin: 'Canada',
+      emergencyFullName: 'Jordan Example',
+      emergencyPhoneNumber: '+1 780 555 2234',
+      emergencyRelationship: 'Parent',
+      firstName: 'Alex',
+      lastName: 'Example',
+      phoneNumber: '+1 780 555 1234'
+    },
+    {
+      accountId: accountIds['professor@example.com'],
+      birthDate: '1983-10-08',
+      contactEmail: 'professor.contact@example.com',
+      countryOfOrigin: 'Canada',
+      emergencyFullName: 'Casey Example',
+      emergencyPhoneNumber: '+1 780 555 3234',
+      emergencyRelationship: 'Sibling',
+      firstName: 'Morgan',
+      lastName: 'Faculty',
+      phoneNumber: '+1 780 555 2234'
+    },
+    {
+      accountId: accountIds['admin@example.com'],
+      birthDate: '1979-02-20',
+      contactEmail: 'admin.contact@example.com',
+      countryOfOrigin: 'Canada',
+      emergencyFullName: 'Riley Admin',
+      emergencyPhoneNumber: '+1 780 555 4234',
+      emergencyRelationship: 'Partner',
+      firstName: 'Taylor',
+      lastName: 'Admin',
+      phoneNumber: '+1 780 555 3234'
+    },
+    {
+      accountId: accountIds['hybrid.staff@example.com'],
+      birthDate: '1988-06-12',
+      contactEmail: 'hybrid.contact@example.com',
+      countryOfOrigin: 'United Kingdom',
+      emergencyFullName: 'Dana Hybrid',
+      emergencyPhoneNumber: '+1 780 555 5234',
+      emergencyRelationship: 'Spouse',
+      firstName: 'Harper',
+      lastName: 'Hybrid',
+      phoneNumber: '+1 780 555 4234'
+    },
+    {
+      accountId: accountIds['nomodule.student@example.com'],
+      birthDate: '2000-09-01',
+      contactEmail: 'nomodule.contact@example.com',
+      countryOfOrigin: 'India',
+      emergencyFullName: 'Avery NoModule',
+      emergencyPhoneNumber: '+1 780 555 6234',
+      emergencyRelationship: 'Guardian',
+      firstName: 'Jordan',
+      lastName: 'NoModule',
+      phoneNumber: '+1 780 555 5234'
+    },
+    {
+      accountId: accountIds['locked.user@example.com'],
+      birthDate: '1999-01-18',
+      contactEmail: 'locked.contact@example.com',
+      countryOfOrigin: 'Canada',
+      emergencyFullName: 'Kai Locked',
+      emergencyPhoneNumber: '+1 780 555 7234',
+      emergencyRelationship: 'Parent',
+      firstName: 'Parker',
+      lastName: 'Locked',
+      phoneNumber: '+1 780 555 6234'
+    },
+    {
+      accountId: accountIds['disabled.user@example.com'],
+      birthDate: '2002-07-07',
+      contactEmail: 'disabled.contact@example.com',
+      countryOfOrigin: 'Mexico',
+      emergencyFullName: 'Sky Disabled',
+      emergencyPhoneNumber: '+1 780 555 8234',
+      emergencyRelationship: 'Sibling',
+      firstName: 'Drew',
+      lastName: 'Disabled',
+      phoneNumber: '+1 780 555 7234'
+    },
+    {
+      accountId: accountIds['outage.user@example.com'],
+      birthDate: '2001-11-23',
+      contactEmail: 'outage.contact@example.com',
+      countryOfOrigin: 'Canada',
+      emergencyFullName: 'Robin Outage',
+      emergencyPhoneNumber: '+1 780 555 9234',
+      emergencyRelationship: 'Friend',
+      firstName: 'Sam',
+      lastName: 'Outage',
+      phoneNumber: '+1 780 555 8234'
+    }
+  ]) {
+    insertPersonalDetails.run({
+      account_id: details.accountId,
+      first_name: details.firstName,
+      last_name: details.lastName,
+      birth_date: details.birthDate,
+      country_of_origin: details.countryOfOrigin,
+      version: 1,
+      updated_at: timestamp
+    });
+    insertContactProfile.run({
+      account_id: details.accountId,
+      contact_email: details.contactEmail,
+      phone_number: details.phoneNumber,
+      version: 1,
+      updated_at: timestamp
+    });
+    insertEmergencyContact.run({
+      account_id: details.accountId,
+      full_name: details.emergencyFullName,
+      phone_number: details.emergencyPhoneNumber,
+      relationship: details.emergencyRelationship,
+      updated_at: timestamp
+    });
+  }
 
   return resolvedPath;
 }

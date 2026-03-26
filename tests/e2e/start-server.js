@@ -13,6 +13,15 @@ const dashboardTestState = {
   roleFailureIdentifiers: [],
   unavailableSectionsByIdentifier: {}
 };
+const profileTestState = {
+  contactSaveFailureIdentifiers: [],
+  personalSaveFailureIdentifiers: []
+};
+let db = null;
+
+function normalizeIdentifier(value) {
+  return String(value || '').trim().toLowerCase();
+}
 
 function applyDashboardState(nextState) {
   const requestedState = nextState || {};
@@ -22,23 +31,156 @@ function applyDashboardState(nextState) {
   dashboardTestState.unavailableSectionsByIdentifier = {};
 
   for (const entry of Object.entries(requestedState.unavailableSectionsByIdentifier || {})) {
-    const identifier = String(entry[0]).toLowerCase();
+    const identifier = normalizeIdentifier(entry[0]);
     dashboardTestState.unavailableSectionsByIdentifier[identifier] = [...(entry[1] || [])];
+  }
+}
+
+function applyProfileState(nextState) {
+  const requestedState = nextState || {};
+  profileTestState.contactSaveFailureIdentifiers = [
+    ...((requestedState.contactSaveFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  profileTestState.personalSaveFailureIdentifiers = [
+    ...((requestedState.personalSaveFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+
+  const selectAccount = db.prepare(`
+    SELECT id
+    FROM accounts
+    WHERE lower(email) = lower(?) OR lower(username) = lower(?)
+    LIMIT 1
+  `);
+  const selectPersonalVersion = db.prepare(
+    'SELECT version FROM personal_details WHERE account_id = ?'
+  );
+  const selectContactVersion = db.prepare(
+    'SELECT version FROM contact_profiles WHERE account_id = ?'
+  );
+  const upsertPersonalDetails = db.prepare(`
+    INSERT INTO personal_details (
+      account_id,
+      first_name,
+      last_name,
+      birth_date,
+      country_of_origin,
+      version,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @first_name,
+      @last_name,
+      @birth_date,
+      @country_of_origin,
+      @version,
+      @updated_at
+    )
+    ON CONFLICT(account_id) DO UPDATE SET
+      first_name = excluded.first_name,
+      last_name = excluded.last_name,
+      birth_date = excluded.birth_date,
+      country_of_origin = excluded.country_of_origin,
+      version = excluded.version,
+      updated_at = excluded.updated_at
+  `);
+  const upsertContactProfile = db.prepare(`
+    INSERT INTO contact_profiles (
+      account_id,
+      contact_email,
+      phone_number,
+      version,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @contact_email,
+      @phone_number,
+      @version,
+      @updated_at
+    )
+    ON CONFLICT(account_id) DO UPDATE SET
+      contact_email = excluded.contact_email,
+      phone_number = excluded.phone_number,
+      version = excluded.version,
+      updated_at = excluded.updated_at
+  `);
+  const upsertEmergencyContact = db.prepare(`
+    INSERT INTO emergency_contacts (
+      account_id,
+      full_name,
+      phone_number,
+      relationship,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @full_name,
+      @phone_number,
+      @relationship,
+      @updated_at
+    )
+    ON CONFLICT(account_id) DO UPDATE SET
+      full_name = excluded.full_name,
+      phone_number = excluded.phone_number,
+      relationship = excluded.relationship,
+      updated_at = excluded.updated_at
+  `);
+  const updatedAt = fixedNow.toISOString();
+
+  for (const [identifier, records] of Object.entries(requestedState.recordsByIdentifier || {})) {
+    const account = selectAccount.get(identifier, identifier);
+    if (!account) {
+      throw new Error(`Unknown profile fixture account: ${identifier}`);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(records || {}, 'personalDetails')) {
+      const personalDetails = records.personalDetails || {};
+      const currentVersion = Number(selectPersonalVersion.get(account.id)?.version || 1);
+      upsertPersonalDetails.run({
+        account_id: account.id,
+        birth_date: personalDetails.birthDate ?? null,
+        country_of_origin: personalDetails.countryOfOrigin ?? null,
+        first_name: personalDetails.firstName ?? null,
+        last_name: personalDetails.lastName ?? null,
+        updated_at: updatedAt,
+        version: Number(personalDetails.version || currentVersion)
+      });
+    }
+
+    if (Object.prototype.hasOwnProperty.call(records || {}, 'contactInformation')) {
+      const contactInformation = records.contactInformation || {};
+      const currentVersion = Number(selectContactVersion.get(account.id)?.version || 1);
+      upsertContactProfile.run({
+        account_id: account.id,
+        contact_email: contactInformation.contactEmail ?? null,
+        phone_number: contactInformation.phoneNumber ?? null,
+        updated_at: updatedAt,
+        version: Number(contactInformation.version || currentVersion)
+      });
+      upsertEmergencyContact.run({
+        account_id: account.id,
+        full_name: contactInformation.emergencyFullName ?? null,
+        phone_number: contactInformation.emergencyPhoneNumber ?? null,
+        relationship: contactInformation.emergencyRelationship ?? null,
+        updated_at: updatedAt
+      });
+    }
   }
 }
 
 function resetFixtures() {
   seedLoginFixtures(dbPath, { now: fixedNow });
+  db = getDb(dbPath);
   applyDashboardState();
+  applyProfileState();
 }
 
 fs.rmSync(dbPath, { force: true });
 resetFixtures();
 
 const app = createApp({
-  db: getDb(dbPath),
+  db,
   dashboardTestState,
   now: () => fixedNow,
+  profileTestState,
   resetFixtures,
   sessionSecret: 'acceptance-session-secret',
   unavailableIdentifiers: ['outage.user@example.com']
@@ -47,6 +189,15 @@ const app = createApp({
 app.post('/__dashboard-fixtures', (req, res) => {
   applyDashboardState(req.body || {});
   return res.status(204).end();
+});
+
+app.post('/__profile-fixtures', (req, res, next) => {
+  try {
+    applyProfileState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
 });
 
 http.createServer(app).listen(port, () => {
