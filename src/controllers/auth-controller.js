@@ -96,7 +96,11 @@ function createAuthController(services) {
           req.session.accountIdentifier = result.account.username;
           delete req.session.returnTo;
           await saveSession(req);
-          return res.redirect(returnTo);
+          return res.redirect(
+            result.account.must_change_password
+              ? '/account/security/password-change?required=1'
+              : returnTo
+          );
         }
 
         if (result.outcome === loginOutcomes.INVALID_CREDENTIALS) {

@@ -10,6 +10,7 @@ const ACCOUNTS_SCHEMA = `
     username TEXT NOT NULL UNIQUE,
     role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'professor', 'admin')),
     password_hash TEXT NOT NULL,
+    must_change_password INTEGER NOT NULL DEFAULT 0 CHECK (must_change_password IN (0, 1)),
     status TEXT NOT NULL CHECK (status IN ('active', 'locked', 'disabled')),
     failed_attempt_count INTEGER NOT NULL DEFAULT 0,
     last_failed_at TEXT,
@@ -62,6 +63,7 @@ function recreateAccountsTable(db) {
       username,
       role,
       password_hash,
+      must_change_password,
       status,
       failed_attempt_count,
       last_failed_at,
@@ -79,6 +81,7 @@ function recreateAccountsTable(db) {
         ELSE 'student'
       END,
       password_hash,
+      0,
       status,
       COALESCE(failed_attempt_count, 0),
       last_failed_at,
@@ -141,18 +144,37 @@ function ensureAccountsColumns(db) {
     db.exec('ALTER TABLE accounts ADD COLUMN password_changed_at TEXT');
   }
 
+  if (!columns.has('must_change_password')) {
+    db.exec('ALTER TABLE accounts ADD COLUMN must_change_password INTEGER NOT NULL DEFAULT 0');
+  }
+
   db.exec(`
     UPDATE accounts
     SET
       role = COALESCE(role, 'student'),
-      password_changed_at = COALESCE(password_changed_at, updated_at, created_at)
-    WHERE role IS NULL OR password_changed_at IS NULL
+      password_changed_at = COALESCE(password_changed_at, updated_at, created_at),
+      must_change_password = COALESCE(must_change_password, 0)
+    WHERE role IS NULL OR password_changed_at IS NULL OR must_change_password IS NULL
   `);
 
   const tableSql = getTableSql(db, 'accounts');
   if (tableSql.includes("CHECK (role IN ('student', 'admin'))")) {
     recreateAccountsTable(db);
   }
+}
+
+function ensureRoleColumns(db) {
+  const columns = getColumnNames(db, 'roles');
+
+  if (!columns.has('is_assignable')) {
+    db.exec('ALTER TABLE roles ADD COLUMN is_assignable INTEGER NOT NULL DEFAULT 1');
+  }
+
+  db.exec(`
+    UPDATE roles
+    SET is_assignable = COALESCE(is_assignable, 1)
+    WHERE is_assignable IS NULL
+  `);
 }
 
 function ensureUserSessionColumns(db) {
@@ -179,6 +201,7 @@ function applySchema(dbPath) {
 
   db.exec(schema);
   ensureAccountsColumns(db);
+  ensureRoleColumns(db);
   ensureUserSessionColumns(db);
   ensureDashboardLoadEventColumns(db);
 
@@ -188,6 +211,7 @@ function applySchema(dbPath) {
 
   ensureUserSessionColumns(db);
   ensureDashboardLoadEventColumns(db);
+  ensureRoleColumns(db);
   return resolvedPath;
 }
 

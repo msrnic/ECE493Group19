@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS accounts (
   username TEXT NOT NULL UNIQUE,
   role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'professor', 'admin')),
   password_hash TEXT NOT NULL,
+  must_change_password INTEGER NOT NULL DEFAULT 0 CHECK (must_change_password IN (0, 1)),
   status TEXT NOT NULL CHECK (status IN ('active', 'locked', 'disabled')),
   failed_attempt_count INTEGER NOT NULL DEFAULT 0,
   last_failed_at TEXT,
@@ -38,6 +39,7 @@ CREATE TABLE IF NOT EXISTS roles (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   role_key TEXT NOT NULL UNIQUE,
   display_name TEXT NOT NULL,
+  is_assignable INTEGER NOT NULL DEFAULT 1 CHECK (is_assignable IN (0, 1)),
   is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1))
 );
 
@@ -217,7 +219,19 @@ CREATE TABLE IF NOT EXISTS notifications (
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS notification_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  channel TEXT NOT NULL CHECK (channel IN ('email')),
+  status TEXT NOT NULL CHECK (status IN ('sent', 'failed', 'skipped_disabled')),
+  error_code TEXT,
+  error_message TEXT,
+  attempted_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS idx_accounts_identifier ON accounts(email, username);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_accounts_normalized_email ON accounts(lower(trim(email)));
 CREATE INDEX IF NOT EXISTS idx_contact_profiles_email ON contact_profiles(contact_email);
 CREATE INDEX IF NOT EXISTS idx_role_assignments_account ON role_assignments(account_id, is_active);
 CREATE INDEX IF NOT EXISTS idx_role_modules_role ON role_modules(role_id, is_active);
@@ -229,3 +243,4 @@ CREATE INDEX IF NOT EXISTS idx_user_sessions_account ON user_sessions(account_id
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_account ON password_reset_tokens(account_id, expires_at);
 CREATE INDEX IF NOT EXISTS idx_password_change_attempts_target ON password_change_attempts(target_account_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_notifications_account ON notifications(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_notification_attempts_account ON notification_attempts(account_id, attempted_at);

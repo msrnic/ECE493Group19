@@ -3,6 +3,7 @@ const path = require('path');
 
 const { createSessionMiddleware } = require('./middleware/session-middleware');
 const { createAuthRoutes } = require('./routes/auth-routes');
+const { createAdminAccountRoutes } = require('./routes/admin-account-routes');
 const { createDashboardRoutes } = require('./routes/dashboard-routes');
 const { createAccountModel } = require('./models/account-model');
 const { createCourseModel } = require('./models/course-model');
@@ -13,12 +14,15 @@ const { createContactInfoModel } = require('./models/contact-info-model');
 const { createLoginAttemptModel } = require('./models/login-attempt-model');
 const { createModuleModel } = require('./models/module-model');
 const { createNotificationModel } = require('./models/notification-model');
+const { createNotificationAttemptModel } = require('./models/notification-attempt-model');
 const { createPasswordChangeAttemptModel } = require('./models/password-change-attempt-model');
 const { createPersonalDetailsModel } = require('./models/personal-details-model');
 const { createResetTokenModel } = require('./models/reset-token-model');
 const { createRoleModel } = require('./models/role-model');
 const { createSessionModel } = require('./models/session-model');
+const { createUserAccountModel } = require('./models/user-account-model');
 const { createVerificationCooldownModel } = require('./models/verification-cooldown-model');
+const { createAccountCreationService } = require('./services/account-creation-service');
 const { createAuthAuditService } = require('./services/auth-audit-service');
 const { createAuthService } = require('./services/auth-service');
 const { createCooldownService } = require('./services/cooldown-service');
@@ -32,6 +36,11 @@ const { createProfileRoutes } = require('./routes/profile-routes');
 function createApp(options = {}) {
   const {
     db,
+    accountCreationTestState = {
+      createFailureIdentifiers: [],
+      notificationFailureIdentifiers: [],
+      notificationsEnabled: true
+    },
     now = () => new Date(),
     profileTestState = { contactSaveFailureIdentifiers: [], personalSaveFailureIdentifiers: [] },
     resetFixtures,
@@ -54,18 +63,34 @@ function createApp(options = {}) {
   const loginAttemptModel = createLoginAttemptModel(db);
   const moduleModel = createModuleModel(db);
   const notificationModel = createNotificationModel(db);
+  const notificationAttemptModel = createNotificationAttemptModel(db);
   const passwordChangeAttemptModel = createPasswordChangeAttemptModel(db);
   const personalDetailsModel = createPersonalDetailsModel(db);
   const resetTokenModel = createResetTokenModel(db);
   const roleModel = createRoleModel(db);
   const sessionModel = createSessionModel(db);
+  const userAccountModel = createUserAccountModel(db);
   const verificationCooldownModel = createVerificationCooldownModel(db);
   const authAuditService = createAuthAuditService(loginAttemptModel, now);
   const lockoutService = createLockoutService({ now });
   const passwordPolicyService = createPasswordPolicyService();
   const cooldownService = createCooldownService({ now, verificationCooldownModel });
   const sessionSecurityService = createSessionSecurityService({ now, sessionModel });
-  const notificationService = createNotificationService({ notificationModel, now });
+  const notificationService = createNotificationService({
+    accountCreationTestState,
+    notificationAttemptModel,
+    notificationModel,
+    now
+  });
+  const accountCreationService = createAccountCreationService({
+    accountCreationTestState,
+    accountModel,
+    notificationService,
+    now,
+    passwordPolicyService,
+    roleModel,
+    userAccountModel
+  });
   const authService = createAuthService({
     accountModel,
     sessionModel,
@@ -95,6 +120,8 @@ function createApp(options = {}) {
   app.use(createSessionMiddleware({ secret: sessionSecret }));
 
   app.locals.services = {
+    accountCreationService,
+    accountCreationTestState,
     accountModel,
     authAuditService,
     authService,
@@ -108,6 +135,7 @@ function createApp(options = {}) {
     lockoutService,
     moduleModel,
     notificationModel,
+    notificationAttemptModel,
     notificationService,
     now,
     passwordChangeAttemptModel,
@@ -120,10 +148,12 @@ function createApp(options = {}) {
     roleModel,
     sessionModel,
     sessionSecurityService,
+    userAccountModel,
     verificationCooldownModel
   };
 
   app.use(createAuthRoutes(app.locals.services));
+  app.use(createAdminAccountRoutes(app.locals.services));
   app.use(createDashboardRoutes(app.locals.services));
   app.use(createProfileRoutes(app.locals.services));
 

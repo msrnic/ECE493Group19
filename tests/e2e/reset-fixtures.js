@@ -23,4 +23,18 @@ async function setProfileFixtures(request, state) {
   }
 }
 
-module.exports = { resetFixtures, setDashboardFixtures, setProfileFixtures };
+async function setAccountCreationFixtures(request, state) {
+  const response = await request.post('/__account-creation-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure account-creation fixtures: ' + response.status());
+  }
+}
+
+module.exports = {
+  resetFixtures,
+  setAccountCreationFixtures,
+  setDashboardFixtures,
+  setProfileFixtures
+};

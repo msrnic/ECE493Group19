@@ -40,6 +40,7 @@ function createAccountModel(db) {
     UPDATE accounts
     SET
       password_hash = @password_hash,
+      must_change_password = 0,
       password_changed_at = @password_changed_at,
       updated_at = @updated_at
     WHERE id = @id

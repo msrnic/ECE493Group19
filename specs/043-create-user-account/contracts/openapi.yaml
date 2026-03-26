@@ -1,35 +1,27 @@
 openapi: 3.0.3
 info:
   title: Admin Account Creation API
-  version: 0.1.0
+  version: 0.2.0
   description: >-
-    Contracts for UC-43 administrative account creation using MVC controllers
-    and SQLite-backed persistence.
+    Contracts for the implemented UC-43 administrative account creation flow.
+    This delivery follows the requested preset-password scope: administrators
+    create accounts by supplying an email address, an assignable role, and a
+    password that satisfies the active password policy.
 servers:
   - url: https://example.edu
 paths:
   /api/admin/accounts/form-metadata:
     get:
-      summary: Fetch assignable roles and password policy for the create-account form
+      summary: Fetch assignable roles and password policy for the create-user form
       operationId: getAccountFormMetadata
       tags: [Admin Accounts]
       responses:
         '200':
-          description: Form metadata returned
+          description: Form metadata returned for an authorized administrator.
           content:
             application/json:
               schema:
-                type: object
-                required: [roles, passwordPolicy, notificationsEnabled]
-                properties:
-                  roles:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/AssignableRole'
-                  passwordPolicy:
-                    $ref: '#/components/schemas/PasswordPolicy'
-                  notificationsEnabled:
-                    type: boolean
+                $ref: '#/components/schemas/GetFormMetadataResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -37,7 +29,7 @@ paths:
 
   /api/admin/accounts:
     post:
-      summary: Create a new user account with role assignment and password setup
+      summary: Create a new user account with an email, role, and preset password
       operationId: createUserAccount
       tags: [Admin Accounts]
       requestBody:
@@ -48,13 +40,13 @@ paths:
               $ref: '#/components/schemas/CreateAccountRequest'
       responses:
         '201':
-          description: Account created
+          description: Account created successfully.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateAccountSuccessResponse'
         '400':
-          description: Validation failure (identity, role format, password policy)
+          description: Validation failure for email, role, or password.
           content:
             application/json:
               schema:
@@ -62,19 +54,15 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
-          description: Authenticated but lacks account-management permission
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/Forbidden'
         '409':
-          description: Duplicate normalized login identifier
+          description: Duplicate email after trim-and-lowercase normalization.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictErrorResponse'
         '500':
-          description: System failure; no account created
+          description: System failure. No account is created.
           content:
             application/json:
               schema:
@@ -83,25 +71,40 @@ paths:
 components:
   responses:
     Unauthorized:
-      description: Unauthenticated
+      description: Unauthenticated request. The client is told where to sign in again.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: '#/components/schemas/AuthRedirectResponse'
     Forbidden:
-      description: Action not permitted
+      description: Authenticated request without administrative authorization.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
 
   schemas:
+    AuthRedirectResponse:
+      type: object
+      required: [loginUrl, returnTo, status]
+      properties:
+        loginUrl:
+          type: string
+          example: /login
+        returnTo:
+          type: string
+          example: /admin/users/new
+        status:
+          type: string
+          enum: [auth_error]
+
     AssignableRole:
       type: object
       required: [id, name]
       properties:
         id:
           type: integer
+          minimum: 1
         name:
           type: string
           example: Student
@@ -112,47 +115,67 @@ components:
       properties:
         minLength:
           type: integer
-          minimum: 8
+          minimum: 12
+          example: 12
         requiresUpper:
           type: boolean
+          example: true
         requiresLower:
           type: boolean
+          example: true
         requiresDigit:
           type: boolean
+          example: true
         requiresSpecial:
           type: boolean
+          example: true
+
+    GetFormMetadataResponse:
+      type: object
+      required: [notificationsEnabled, passwordPolicy, roles]
+      properties:
+        notificationsEnabled:
+          type: boolean
+        passwordPolicy:
+          $ref: '#/components/schemas/PasswordPolicy'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignableRole'
 
     CreateAccountRequest:
       type: object
-      required:
-        - fullName
-        - institutionalId
-        - loginIdentifier
-        - roleId
-        - passwordMode
+      required: [email, password, roleId]
       properties:
-        fullName:
+        email:
           type: string
-          minLength: 1
-        institutionalId:
+          format: email
+          description: >-
+            Unique account identifier. The server trims surrounding whitespace and
+            compares case-insensitively.
+          example: new.user@example.com
+        password:
           type: string
-          minLength: 1
-        loginIdentifier:
-          type: string
-          description: Email or username; uniqueness checked using trim+lowercase normalization.
-          minLength: 1
+          minLength: 12
+          description: Preset password supplied by the administrator.
+          example: ValidPass!234
         roleId:
           type: integer
           minimum: 1
-        passwordMode:
-          type: string
-          enum: [preset, generated]
-        presetPassword:
-          type: string
-          description: Required when passwordMode=preset.
-        sendNotification:
+          example: 2
+
+    NotificationResult:
+      type: object
+      required: [enabled, status]
+      properties:
+        enabled:
           type: boolean
-          default: true
+        status:
+          type: string
+          enum: [sent, failed, skipped_disabled]
+        warning:
+          type: string
+          description: Present only when notification delivery fails.
 
     CreateAccountSuccessResponse:
       type: object
@@ -168,9 +191,10 @@ components:
           type: integer
         accountIdentifier:
           type: string
-          description: Created account login identifier.
+          example: new.user@example.com
         assignedRole:
           type: string
+          example: Student
         accountStatus:
           type: string
           enum: [active]
@@ -178,30 +202,34 @@ components:
           type: boolean
           enum: [true]
         notification:
-          type: object
-          required: [enabled, status]
-          properties:
-            enabled:
-              type: boolean
-            status:
-              type: string
-              enum: [sent, failed, skipped_disabled]
-            warning:
-              type: string
-              description: Present when status=failed; no resend/copy actions in this feature.
+          $ref: '#/components/schemas/NotificationResult'
 
     ValidationError:
       type: object
-      required: [field, message, code]
+      required: [code, field, message]
       properties:
-        field:
-          type: string
-          example: fullName
-        message:
-          type: string
         code:
           type: string
-          example: REQUIRED
+          example: INVALID_EMAIL
+        field:
+          type: string
+          enum: [email, password, roleId]
+        message:
+          type: string
+
+    PreservedValues:
+      type: object
+      required: [email, roleId]
+      properties:
+        email:
+          type: string
+          example: bad-email
+        roleId:
+          oneOf:
+            - type: integer
+              minimum: 1
+            - type: string
+              enum: ['']
 
     ValidationErrorResponse:
       type: object
@@ -209,49 +237,34 @@ components:
       properties:
         error:
           type: string
-          example: Validation failed
+          enum: [Validation failed]
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ValidationError'
         preservedValues:
-          type: object
-          description: Non-sensitive values that can repopulate the form.
-          properties:
-            fullName:
-              type: string
-            institutionalId:
-              type: string
-            loginIdentifier:
-              type: string
-            roleId:
-              type: integer
-            passwordMode:
-              type: string
-              enum: [preset, generated]
-            sendNotification:
-              type: boolean
+          $ref: '#/components/schemas/PreservedValues'
 
     ConflictErrorResponse:
       type: object
-      required: [error, code, field]
+      required: [code, error, field]
       properties:
-        error:
-          type: string
-          example: Login identifier already in use
         code:
           type: string
           enum: [DUPLICATE_IDENTIFIER]
+        error:
+          type: string
+          example: An account with that email already exists.
         field:
           type: string
-          example: loginIdentifier
+          enum: [email]
 
     ErrorResponse:
       type: object
-      required: [error, code]
+      required: [code, error]
       properties:
-        error:
-          type: string
         code:
           type: string
           example: INTERNAL_ERROR
+        error:
+          type: string

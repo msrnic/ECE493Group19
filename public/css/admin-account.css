@@ -1,0 +1,35 @@
+.admin-account-card {
+  width: min(100%, 480px);
+}
+
+#create-user-form select,
+.admin-account-card input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#create-user-form select {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #aac5d9;
+  background: #fff;
+  color: #16324f;
+}
+
+.field-error {
+  margin: -4px 0 4px;
+  color: #8b2214;
+}
+
+.input-error {
+  border-color: #d95c47;
+  background: #fff4f1;
+}
+
+.admin-account-card .action-row {
+  margin-top: 8px;
+}
+
+.admin-account-card .secondary-link {
+  text-align: center;
+}

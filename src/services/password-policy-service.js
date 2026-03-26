@@ -1,4 +1,11 @@
 function createPasswordPolicyService() {
+  const policy = Object.freeze({
+    minLength: 12,
+    requiresDigit: true,
+    requiresLower: true,
+    requiresSpecial: true,
+    requiresUpper: true
+  });
   const ruleMessages = {
     min_length: 'Use at least 12 characters.',
     uppercase: 'Include at least one uppercase letter.',
@@ -18,7 +25,7 @@ function createPasswordPolicyService() {
       failedRules.push('trimmed');
     }
 
-    if (candidate.length < 12) {
+    if (candidate.length < policy.minLength) {
       failedRules.push('min_length');
     }
 
@@ -61,6 +68,9 @@ function createPasswordPolicyService() {
 
   return {
     describeFailedRules,
+    getPolicy() {
+      return { ...policy };
+    },
     validate
   };
 }

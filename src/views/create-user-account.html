@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New User</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/admin-account.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card admin-account-card" aria-labelledby="create-user-title">
+        <p class="eyebrow">Admin Operations</p>
+        <h1 id="create-user-title">Create New User</h1>
+        <p class="help-text">Create a new user account by providing an email, selecting a role, and setting a password.</p>
+        <p class="status-chip">{{notifications_text}}</p>
+        <ul class="rule-list" aria-label="Password requirements">{{password_policy_items_html}}</ul>
+        <p class="help-text">New users will be required to change this password at first sign-in.</p>
+        <div class="error-banner" role="alert">{{error_message}}</div>
+        <ul class="rule-list">{{password_feedback_html}}</ul>
+        <form id="create-user-form" method="post" action="/admin/users" novalidate>
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            class="{{email_input_class}}"
+            required
+            value="{{email_value}}"
+          >
+          {{email_error_html}}
+
+          <label for="roleId">Role</label>
+          <select id="roleId" name="roleId" class="{{role_input_class}}" required>
+            {{role_options_html}}
+          </select>
+          {{role_error_html}}
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            class="{{password_input_class}}"
+            minlength="12"
+            required
+            title="Use 12+ characters with uppercase, lowercase, number, and special character."
+          >
+          {{password_error_html}}
+
+          <div class="action-row">
+            <button type="submit">Create User</button>
+            <a class="login-button-link secondary-link" href="{{return_path}}">Cancel</a>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src="/js/create-account.js"></script>
+  </body>
+</html>

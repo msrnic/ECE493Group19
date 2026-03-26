@@ -21,12 +21,21 @@ function createProfileTestState(initialState = {}) {
   };
 }
 
+function createAccountCreationTestState(initialState = {}) {
+  return {
+    createFailureIdentifiers: [...(initialState.createFailureIdentifiers || [])],
+    notificationFailureIdentifiers: [...(initialState.notificationFailureIdentifiers || [])],
+    notificationsEnabled: initialState.notificationsEnabled !== false
+  };
+}
+
 function createTestContext(options = {}) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-login-'));
   const dbPath = path.join(tempDir, 'sis.db');
   const nowState = {
     value: options.now || new Date('2026-03-07T12:00:00.000Z')
   };
+  const accountCreationTestState = createAccountCreationTestState(options.accountCreationTestState);
   const dashboardTestState = createDashboardTestState(options.dashboardTestState);
   const profileTestState = createProfileTestState(options.profileTestState);
 
@@ -34,6 +43,7 @@ function createTestContext(options = {}) {
   seedLoginFixtures(dbPath, { now: nowState.value });
 
   const app = createApp({
+    accountCreationTestState,
     db: getDb(dbPath),
     dashboardTestState,
     now: () => nowState.value,
@@ -49,6 +59,7 @@ function createTestContext(options = {}) {
       return nowState.value;
     },
     app,
+    accountCreationTestState,
     cleanup() {
       closeAll();
       fs.rmSync(tempDir, { force: true, recursive: true });
@@ -60,6 +71,11 @@ function createTestContext(options = {}) {
       return nowState.value;
     },
     profileTestState,
+    resetAccountCreationTestState() {
+      accountCreationTestState.createFailureIdentifiers = [];
+      accountCreationTestState.notificationFailureIdentifiers = [];
+      accountCreationTestState.notificationsEnabled = true;
+    },
     resetDashboardTestState() {
       dashboardTestState.roleFailureIdentifiers = [];
       dashboardTestState.unavailableSectionsByIdentifier = {};

@@ -355,9 +355,11 @@ function createDashboardController(services) {
         return {
           items: [
             `${Math.max(services.accountModel.listAccounts().length - 1, 0)} managed account(s) are available.`,
-            'Role and module provisioning checks are available from this dashboard.'
+            'New accounts require a password change at first sign-in.'
           ],
-          links: [],
+          links: [
+            { href: '/admin/users/new', label: 'Create New User' }
+          ],
           summary: 'Administrative controls are active for this account.'
         };
       case 'security-center': {

@@ -48,6 +48,7 @@ function seedLoginFixtures(dbPath, options = {}) {
       username,
       role,
       password_hash,
+      must_change_password,
       status,
       failed_attempt_count,
       last_failed_at,
@@ -60,6 +61,7 @@ function seedLoginFixtures(dbPath, options = {}) {
       @username,
       @role,
       @password_hash,
+      @must_change_password,
       @status,
       @failed_attempt_count,
       @last_failed_at,
@@ -95,8 +97,8 @@ function seedLoginFixtures(dbPath, options = {}) {
     )
   `);
   const insertRole = db.prepare(`
-    INSERT INTO roles (role_key, display_name, is_active)
-    VALUES (@role_key, @display_name, 1)
+    INSERT INTO roles (role_key, display_name, is_assignable, is_active)
+    VALUES (@role_key, @display_name, @is_assignable, 1)
   `);
   const insertRoleAssignment = db.prepare(`
     INSERT INTO role_assignments (account_id, role_id, is_active, assigned_at)
@@ -176,6 +178,7 @@ function seedLoginFixtures(dbPath, options = {}) {
       failed_attempt_count: details.failedAttemptCount || 0,
       last_failed_at: details.lastFailedAt || null,
       locked_until: details.lockedUntil || null,
+      must_change_password: details.mustChangePassword || 0,
       password_changed_at: timestamp,
       password_hash: details.passwordHash,
       role: details.role,
@@ -286,9 +289,9 @@ function seedLoginFixtures(dbPath, options = {}) {
 
   const roleIds = {};
   for (const role of [
-    { role_key: 'student', display_name: 'Student' },
-    { role_key: 'professor', display_name: 'Professor' },
-    { role_key: 'admin', display_name: 'Admin' }
+    { role_key: 'student', display_name: 'Student', is_assignable: 1 },
+    { role_key: 'professor', display_name: 'Professor', is_assignable: 1 },
+    { role_key: 'admin', display_name: 'Admin', is_assignable: 1 }
   ]) {
     roleIds[role.role_key] = Number(insertRole.run(role).lastInsertRowid);
   }

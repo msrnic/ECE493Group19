@@ -17,11 +17,11 @@
 
 **Purpose**: Project initialization and feature scaffolding
 
-- [ ] T001 Create feature traceability note mapping FR-001..FR-017 and UC-43 references in specs/043-create-user-account/implementation-notes.md
-- [ ] T002 Create admin account creation route scaffold and router registration in app/routes/adminAccountRoutes.js
-- [ ] T003 [P] Create controller skeleton for form metadata and account creation handlers in app/controllers/adminAccountController.js
-- [ ] T004 [P] Create base admin account creation view shell in app/views/admin/create-account.html
-- [ ] T005 [P] Create base stylesheet and client script scaffolds in app/public/css/admin-account.css and app/public/js/create-account.js
+- [X] T001 Create feature traceability note mapping FR-001..FR-017 and UC-43 references in specs/043-create-user-account/implementation-notes.md
+- [X] T002 Create admin account creation route scaffold and router registration in app/routes/adminAccountRoutes.js
+- [X] T003 [P] Create controller skeleton for form metadata and account creation handlers in app/controllers/adminAccountController.js
+- [X] T004 [P] Create base admin account creation view shell in app/views/admin/create-account.html
+- [X] T005 [P] Create base stylesheet and client script scaffolds in app/public/css/admin-account.css and app/public/js/create-account.js
 
 ---
 
@@ -31,17 +31,17 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Create/extend SQLite schema for user_accounts, roles, user_role_assignments, credentials, notification_attempts, and preserve course tables in app/db/schema.sql
+- [X] T006 Create/extend SQLite schema for user_accounts, roles, user_role_assignments, credentials, notification_attempts, and preserve course tables in app/db/schema.sql
 - [ ] T007 Add migration for account-creation tables, constraints, and foreign keys in app/db/migrations/001_create_user_account.sql
 - [ ] T008 [P] Implement reusable identifier normalization and duplicate-safe lookup utility in app/services/loginIdentifierService.js
 - [ ] T009 [P] Implement password policy validation and temporary password generation service in app/services/passwordPolicyService.js
-- [ ] T010 [P] Implement role existence and assignability permission checks in app/models/roleModel.js
-- [ ] T011 Implement transactional account creation repository operations (account + credential + role assignment) in app/models/userAccountModel.js
+- [X] T010 [P] Implement role existence and assignability permission checks in app/models/roleModel.js
+- [X] T011 Implement transactional account creation repository operations (account + credential + role assignment) in app/models/userAccountModel.js
 - [ ] T012 [P] Implement credential hashing/storage model helpers in app/models/credentialModel.js
-- [ ] T013 [P] Implement notification delivery adapter + notification_attempts persistence helpers in app/services/notificationService.js and app/models/notificationAttemptModel.js
-- [ ] T014 Implement shared request validation chains for create-account payloads in app/validators/adminAccountValidators.js
+- [X] T013 [P] Implement notification delivery adapter + notification_attempts persistence helpers in app/services/notificationService.js and app/models/notificationAttemptModel.js
+- [X] T014 Implement shared request validation chains for create-account payloads in app/validators/adminAccountValidators.js
 - [ ] T015 Implement operational error logging helpers for account creation failures in app/services/accountCreationLogger.js
-- [ ] T016 Wire foundational middleware (auth + permission guard + JSON error response envelope) for admin account routes in app/routes/adminAccountRoutes.js
+- [X] T016 Wire foundational middleware (auth + permission guard + JSON error response envelope) for admin account routes in app/routes/adminAccountRoutes.js
 
 **Checkpoint**: Foundation complete; user stories can proceed independently without cross-story blocking.
 
@@ -55,18 +55,18 @@
 
 ### Tests for User Story 1
 
-- [ ] T017 [P] [US1] Add contract test for GET metadata and POST success responses in tests/contract/admin-account.contract.test.js
-- [ ] T018 [P] [US1] Add integration test for successful preset-password account creation transaction in tests/integration/admin-account.create-success.test.js
+- [X] T017 [P] [US1] Add contract test for GET metadata and POST success responses in tests/contract/admin-account.contract.test.js
+- [X] T018 [P] [US1] Add integration test for successful preset-password account creation transaction in tests/integration/admin-account.create-success.test.js
 - [ ] T019 [P] [US1] Add integration test for generated-password success path in tests/integration/admin-account.generate-password.test.js
-- [ ] T020 [P] [US1] Add E2E test for successful administrator form submission and confirmation display in tests/e2e/admin-account-success.spec.js
+- [X] T020 [P] [US1] Add E2E test for successful administrator form submission and confirmation display in tests/e2e/admin-account-success.spec.js
 
 ### Implementation for User Story 1
 
 - [ ] T023 [US1] Implement role assignment persistence model for single-role mapping in app/models/userRoleAssignmentModel.js
-- [ ] T025 [US1] Enforce first-login password-change flags and active status defaults during creation in app/models/userAccountModel.js and app/models/credentialModel.js
-- [ ] T021 [US1] Implement GET /api/admin/accounts/form-metadata handler returning assignable roles, password policy, and notification toggle in app/controllers/adminAccountController.js
-- [ ] T022 [US1] Implement POST /api/admin/accounts success path orchestration (validation pass -> transactional create -> success payload) in app/controllers/adminAccountController.js
-- [ ] T024 [US1] Implement success confirmation rendering and payload mapping in app/views/admin/create-account.html and app/public/js/create-account.js
+- [X] T025 [US1] Enforce first-login password-change flags and active status defaults during creation in app/models/userAccountModel.js and app/models/credentialModel.js
+- [X] T021 [US1] Implement GET /api/admin/accounts/form-metadata handler returning assignable roles, password policy, and notification toggle in app/controllers/adminAccountController.js
+- [X] T022 [US1] Implement POST /api/admin/accounts success path orchestration (validation pass -> transactional create -> success payload) in app/controllers/adminAccountController.js
+- [X] T024 [US1] Implement success confirmation rendering and payload mapping in app/views/admin/create-account.html and app/public/js/create-account.js
 
 **Checkpoint**: User Story 1 is fully functional and independently testable.
 
@@ -80,17 +80,17 @@
 
 ### Tests for User Story 2
 
-- [ ] T026 [P] [US2] Add contract test for validation error response schema and preserved values in tests/contract/admin-account.validation.contract.test.js
-- [ ] T027 [P] [US2] Add integration tests for missing/malformed identity and correction-resubmission in tests/integration/admin-account.validation-identity.test.js
-- [ ] T028 [P] [US2] Add integration tests for non-assignable role and invalid password policy failures in tests/integration/admin-account.validation-role-password.test.js
-- [ ] T029 [P] [US2] Add E2E test for validation feedback, value preservation, and corrected resubmission in tests/e2e/admin-account-validation-correction.spec.js
+- [X] T026 [P] [US2] Add contract test for validation error response schema and preserved values in tests/contract/admin-account.validation.contract.test.js
+- [X] T027 [P] [US2] Add integration tests for missing/malformed identity and correction-resubmission in tests/integration/admin-account.validation-identity.test.js
+- [X] T028 [P] [US2] Add integration tests for non-assignable role and invalid password policy failures in tests/integration/admin-account.validation-role-password.test.js
+- [X] T029 [P] [US2] Add E2E test for validation feedback, value preservation, and corrected resubmission in tests/e2e/admin-account-validation-correction.spec.js
 
 ### Implementation for User Story 2
 
-- [ ] T031 [US2] Implement request validators for required identity fields, login identifier format, and role/password mode requirements in app/validators/adminAccountValidators.js
-- [ ] T032 [US2] Implement password policy guidance payload generation for failed preset-password checks in app/services/passwordPolicyService.js
-- [ ] T030 [US2] Implement field-level validation failure response formatting with error codes/messages and preserved non-sensitive values in app/controllers/adminAccountController.js
-- [ ] T034 [US2] Ensure sensitive password fields are never echoed or preserved in failure responses in app/controllers/adminAccountController.js
+- [X] T031 [US2] Implement request validators for required identity fields, login identifier format, and role/password mode requirements in app/validators/adminAccountValidators.js
+- [X] T032 [US2] Implement password policy guidance payload generation for failed preset-password checks in app/services/passwordPolicyService.js
+- [X] T030 [US2] Implement field-level validation failure response formatting with error codes/messages and preserved non-sensitive values in app/controllers/adminAccountController.js
+- [X] T034 [US2] Ensure sensitive password fields are never echoed or preserved in failure responses in app/controllers/adminAccountController.js
 - [ ] T033 [US2] Implement client-side rendering for inline validation errors and non-sensitive value repopulation in app/public/js/create-account.js and app/views/admin/create-account.html
 
 **Checkpoint**: User Story 2 is independently functional and testable without relying on User Story 1 completion.
@@ -105,18 +105,18 @@
 
 ### Tests for User Story 3
 
-- [ ] T035 [P] [US3] Add contract test for duplicate conflict and server error response schemas in tests/contract/admin-account.error.contract.test.js
-- [ ] T036 [P] [US3] Add integration test for case/whitespace-insensitive duplicate detection and conflict handling in tests/integration/admin-account.duplicate-conflict.test.js
-- [ ] T037 [P] [US3] Add integration test for transaction rollback on simulated write failure in tests/integration/admin-account.transaction-failure.test.js
-- [ ] T038 [P] [US3] Add integration test for notification failure warning without rollback in tests/integration/admin-account.notification-failure.test.js
+- [X] T035 [P] [US3] Add contract test for duplicate conflict and server error response schemas in tests/contract/admin-account.error.contract.test.js
+- [X] T036 [P] [US3] Add integration test for case/whitespace-insensitive duplicate detection and conflict handling in tests/integration/admin-account.duplicate-conflict.test.js
+- [X] T037 [P] [US3] Add integration test for transaction rollback on simulated write failure in tests/integration/admin-account.transaction-failure.test.js
+- [X] T038 [P] [US3] Add integration test for notification failure warning without rollback in tests/integration/admin-account.notification-failure.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T042 [US3] Persist notification attempt audit rows for success/failure/disabled paths in app/models/notificationAttemptModel.js
-- [ ] T041 [US3] Implement post-commit notification attempt status reporting (`sent`, `failed`, `skipped_disabled`) without create rollback in app/services/notificationService.js and app/controllers/adminAccountController.js
-- [ ] T039 [US3] Implement duplicate detection and `409 DUPLICATE_IDENTIFIER` response using normalized identifier uniqueness in app/controllers/adminAccountController.js and app/services/loginIdentifierService.js
-- [ ] T040 [US3] Implement transaction rollback + `500 INTERNAL_ERROR` response and structured failure logging in app/controllers/adminAccountController.js and app/services/accountCreationLogger.js
-- [ ] T043 [US3] Surface duplicate and operational failure messages in the admin UI form workflow in app/public/js/create-account.js and app/views/admin/create-account.html
+- [X] T042 [US3] Persist notification attempt audit rows for success/failure/disabled paths in app/models/notificationAttemptModel.js
+- [X] T041 [US3] Implement post-commit notification attempt status reporting (`sent`, `failed`, `skipped_disabled`) without create rollback in app/services/notificationService.js and app/controllers/adminAccountController.js
+- [X] T039 [US3] Implement duplicate detection and `409 DUPLICATE_IDENTIFIER` response using normalized identifier uniqueness in app/controllers/adminAccountController.js and app/services/loginIdentifierService.js
+- [X] T040 [US3] Implement transaction rollback + `500 INTERNAL_ERROR` response and structured failure logging in app/controllers/adminAccountController.js and app/services/accountCreationLogger.js
+- [X] T043 [US3] Surface duplicate and operational failure messages in the admin UI form workflow in app/public/js/create-account.js and app/views/admin/create-account.html
 
 **Checkpoint**: User Story 3 is independently functional and testable.
 
@@ -126,14 +126,14 @@
 
 **Purpose**: Improvements spanning all stories
 
-- [ ] T044 [P] Add unit tests for identifier normalization, role permission checks, and password policy edge cases in tests/unit/login-identifier.service.test.js, tests/unit/role-model.test.js, and tests/unit/password-policy.service.test.js
-- [ ] T045 Validate OpenAPI contract coverage for implemented handlers and update discrepancies in specs/043-create-user-account/contracts/openapi.yaml
-- [ ] T046 Run full verification workflow and record results (`npm test && npm run lint`) in specs/043-create-user-account/implementation-notes.md
-- [ ] T047 Verify FR-to-acceptance mapping completeness for UC-43/UC-43-AS and archive checklist in specs/043-create-user-account/checklists/quality-gate.md
+- [X] T044 [P] Add unit tests for identifier normalization, role permission checks, and password policy edge cases in tests/unit/login-identifier.service.test.js, tests/unit/role-model.test.js, and tests/unit/password-policy.service.test.js
+- [X] T045 Validate OpenAPI contract coverage for implemented handlers and update discrepancies in specs/043-create-user-account/contracts/openapi.yaml
+- [X] T046 Run full verification workflow and record results (`npm test && npm run lint`) in specs/043-create-user-account/implementation-notes.md
+- [X] T047 Verify FR-to-acceptance mapping completeness for UC-43/UC-43-AS and archive checklist in specs/043-create-user-account/checklists/quality-gate.md
 - [ ] T048 [P] Add performance integration test to measure valid account-creation latency budget in tests/integration/admin-account.performance.test.js
 - [ ] T049 Implement account-creation latency metrics logging and rolling-window summary output in app/services/accountCreationLogger.js
 - [ ] T050 Implement first-attempt success metric tracking and reporting for create-account flow in app/services/accountCreationMetricsService.js and specs/043-create-user-account/implementation-notes.md
-- [ ] T051 Add post-release admin feedback capture/reporting checklist for error-message clarity in specs/043-create-user-account/checklists/quality-gate.md
+- [X] T051 Add post-release admin feedback capture/reporting checklist for error-message clarity in specs/043-create-user-account/checklists/quality-gate.md
 
 ---
 

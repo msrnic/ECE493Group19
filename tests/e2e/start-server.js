@@ -17,6 +17,11 @@ const profileTestState = {
   contactSaveFailureIdentifiers: [],
   personalSaveFailureIdentifiers: []
 };
+const accountCreationTestState = {
+  createFailureIdentifiers: [],
+  notificationFailureIdentifiers: [],
+  notificationsEnabled: true
+};
 let db = null;
 
 function normalizeIdentifier(value) {
@@ -166,9 +171,37 @@ function applyProfileState(nextState) {
   }
 }
 
+function applyAccountCreationState(nextState) {
+  const requestedState = nextState || {};
+  accountCreationTestState.createFailureIdentifiers = [
+    ...((requestedState.createFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  accountCreationTestState.notificationFailureIdentifiers = [
+    ...((requestedState.notificationFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  accountCreationTestState.notificationsEnabled = requestedState.notificationsEnabled !== false;
+
+  const updateRoleAssignability = db.prepare(`
+    UPDATE roles
+    SET is_assignable = ?
+    WHERE role_key = ?
+  `);
+  const roleAssignabilityByKey = {
+    admin: true,
+    professor: true,
+    student: true,
+    ...(requestedState.roleAssignabilityByKey || {})
+  };
+
+  for (const [roleKey, isAssignable] of Object.entries(roleAssignabilityByKey)) {
+    updateRoleAssignability.run(isAssignable ? 1 : 0, roleKey);
+  }
+}
+
 function resetFixtures() {
   seedLoginFixtures(dbPath, { now: fixedNow });
   db = getDb(dbPath);
+  applyAccountCreationState();
   applyDashboardState();
   applyProfileState();
 }
@@ -177,6 +210,7 @@ fs.rmSync(dbPath, { force: true });
 resetFixtures();
 
 const app = createApp({
+  accountCreationTestState,
   db,
   dashboardTestState,
   now: () => fixedNow,
@@ -194,6 +228,15 @@ app.post('/__dashboard-fixtures', (req, res) => {
 app.post('/__profile-fixtures', (req, res, next) => {
   try {
     applyProfileState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__account-creation-fixtures', (req, res, next) => {
+  try {
+    applyAccountCreationState(req.body || {});
     return res.status(204).end();
   } catch (error) {
     return next(error);
