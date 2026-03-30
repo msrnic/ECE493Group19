@@ -22,6 +22,15 @@ const accountCreationTestState = {
   notificationFailureIdentifiers: [],
   notificationsEnabled: true
 };
+const scheduleBuilderTestState = {
+  constraintSaveFailureIdentifiers: [],
+  dataUnavailableIdentifiers: [],
+  generationFailureIdentifiers: [],
+  presetRenameFailureIdentifiers: [],
+  presetSaveFailureIdentifiers: [],
+  timeoutAfterResultsIdentifiers: [],
+  timeoutBeforeResultsIdentifiers: []
+};
 let db = null;
 
 function normalizeIdentifier(value) {
@@ -198,12 +207,75 @@ function applyAccountCreationState(nextState) {
   }
 }
 
+function applyScheduleBuilderState(nextState) {
+  const requestedState = nextState || {};
+  scheduleBuilderTestState.constraintSaveFailureIdentifiers = [
+    ...((requestedState.constraintSaveFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  scheduleBuilderTestState.dataUnavailableIdentifiers = [
+    ...((requestedState.dataUnavailableIdentifiers || []).map(normalizeIdentifier))
+  ];
+  scheduleBuilderTestState.generationFailureIdentifiers = [
+    ...((requestedState.generationFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  scheduleBuilderTestState.presetRenameFailureIdentifiers = [
+    ...((requestedState.presetRenameFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  scheduleBuilderTestState.presetSaveFailureIdentifiers = [
+    ...((requestedState.presetSaveFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  scheduleBuilderTestState.timeoutAfterResultsIdentifiers = [
+    ...((requestedState.timeoutAfterResultsIdentifiers || []).map(normalizeIdentifier))
+  ];
+  scheduleBuilderTestState.timeoutBeforeResultsIdentifiers = [
+    ...((requestedState.timeoutBeforeResultsIdentifiers || []).map(normalizeIdentifier))
+  ];
+
+  const updateTermAvailability = db.prepare(`
+    UPDATE planning_terms
+    SET is_available = ?
+    WHERE term_code = ?
+  `);
+  const updateCourseActivity = db.prepare(`
+    UPDATE schedule_builder_courses
+    SET is_active = ?
+    WHERE course_code = ?
+  `);
+  const updateCompatibilityStatus = db.prepare(`
+    UPDATE schedule_builder_courses
+    SET compatibility_status = ?
+    WHERE course_code = ?
+  `);
+  const updateOptionSeats = db.prepare(`
+    UPDATE schedule_builder_option_groups
+    SET seats_remaining = ?
+    WHERE option_code = ?
+  `);
+
+  for (const [termCode, isAvailable] of Object.entries(requestedState.termAvailabilityByCode || {})) {
+    updateTermAvailability.run(isAvailable ? 1 : 0, termCode);
+  }
+
+  for (const [courseCode, isActive] of Object.entries(requestedState.courseActivityByCode || {})) {
+    updateCourseActivity.run(isActive ? 1 : 0, courseCode);
+  }
+
+  for (const [courseCode, status] of Object.entries(requestedState.compatibilityStatusByCode || {})) {
+    updateCompatibilityStatus.run(status, courseCode);
+  }
+
+  for (const [optionCode, seatsRemaining] of Object.entries(requestedState.optionSeatsByCode || {})) {
+    updateOptionSeats.run(Number(seatsRemaining), optionCode);
+  }
+}
+
 function resetFixtures() {
   seedLoginFixtures(dbPath, { now: fixedNow });
   db = getDb(dbPath);
   applyAccountCreationState();
   applyDashboardState();
   applyProfileState();
+  applyScheduleBuilderState();
 }
 
 fs.rmSync(dbPath, { force: true });
@@ -216,6 +288,7 @@ const app = createApp({
   now: () => fixedNow,
   profileTestState,
   resetFixtures,
+  scheduleBuilderTestState,
   sessionSecret: 'acceptance-session-secret',
   unavailableIdentifiers: ['outage.user@example.com']
 });
@@ -237,6 +310,15 @@ app.post('/__profile-fixtures', (req, res, next) => {
 app.post('/__account-creation-fixtures', (req, res, next) => {
   try {
     applyAccountCreationState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__schedule-builder-fixtures', (req, res, next) => {
+  try {
+    applyScheduleBuilderState(req.body || {});
     return res.status(204).end();
   } catch (error) {
     return next(error);

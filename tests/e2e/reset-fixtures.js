@@ -32,9 +32,19 @@ async function setAccountCreationFixtures(request, state) {
   }
 }
 
+async function setScheduleBuilderFixtures(request, state) {
+  const response = await request.post('/__schedule-builder-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure schedule-builder fixtures: ' + response.status());
+  }
+}
+
 module.exports = {
   resetFixtures,
   setAccountCreationFixtures,
+  setScheduleBuilderFixtures,
   setDashboardFixtures,
   setProfileFixtures
 };

@@ -35,8 +35,8 @@ test('createApp throws without a database and exposes dashboard services by defa
 test('migration entrypoints apply schema and seed fixtures from the command line', () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-cli-'));
   const dbPath = path.join(tempDir, 'sis.db');
-  const applyPath = path.resolve(__dirname, '../../src/db/migrations/apply-schema.js');
-  const seedPath = path.resolve(__dirname, '../../src/db/migrations/seed-login-fixtures.js');
+  const applyPath = path.resolve(__dirname, '../../scripts/apply-schema.js');
+  const seedPath = path.resolve(__dirname, '../../scripts/seed-login-fixtures.js');
 
   const applyResult = spawnSync(process.execPath, [applyPath, dbPath], { encoding: 'utf8' });
   assert.equal(applyResult.status, 0);

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const { getDb, resolveDbPath } = require('../connection');
+const { getDb } = require('../connection');
 const { digestToken } = require('../../models/reset-token-model');
 const { applySchema } = require('./apply-schema');
 
@@ -10,17 +10,555 @@ const RESET_TOKENS = {
   valid: 'TOKEN_VALID'
 };
 
+const SCHEDULE_BUILDER_FIXTURES = {
+  courses: [
+    {
+      courseCode: 'SCH101',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 600,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 540
+            },
+            {
+              componentType: 'lab',
+              endMinute: 600,
+              meetingDays: 'Fri',
+              sectionCode: 'LAB-A1',
+              startMinute: 540
+            }
+          ],
+          optionCode: 'SCH101-A',
+          professorName: 'Prof. Ada',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 720,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 660
+            },
+            {
+              componentType: 'lab',
+              endMinute: 840,
+              meetingDays: 'Fri',
+              sectionCode: 'LAB-B1',
+              startMinute: 780
+            }
+          ],
+          optionCode: 'SCH101-B',
+          professorName: 'Prof. Baker',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Planning Foundations'
+    },
+    {
+      courseCode: 'SCH111',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 1020,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 960
+            }
+          ],
+          optionCode: 'SCH111-A',
+          professorName: 'Prof. Imani',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 1020,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 960
+            }
+          ],
+          optionCode: 'SCH111-B',
+          professorName: 'Prof. Imani',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Human Factors in Scheduling'
+    },
+    {
+      courseCode: 'SCH150',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 780,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 720
+            }
+          ],
+          optionCode: 'SCH150-A',
+          professorName: 'Prof. Hall',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 960,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 900
+            }
+          ],
+          optionCode: 'SCH150-B',
+          professorName: 'Prof. Hall',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Design Thinking for Timetables'
+    },
+    {
+      courseCode: 'SCH202',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 630,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 570
+            },
+            {
+              componentType: 'seminar',
+              endMinute: 660,
+              meetingDays: 'Thu',
+              sectionCode: 'SEM-A1',
+              startMinute: 600
+            }
+          ],
+          optionCode: 'SCH202-A',
+          professorName: 'Prof. Chen',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 780,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 720
+            },
+            {
+              componentType: 'seminar',
+              endMinute: 900,
+              meetingDays: 'Wed',
+              sectionCode: 'SEM-B1',
+              startMinute: 840
+            }
+          ],
+          optionCode: 'SCH202-B',
+          professorName: 'Prof. Diaz',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Systems Studio'
+    },
+    {
+      courseCode: 'SCH220',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 705,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 630
+            },
+            {
+              componentType: 'tutorial',
+              endMinute: 710,
+              meetingDays: 'Thu',
+              sectionCode: 'TUT-A1',
+              startMinute: 660
+            }
+          ],
+          optionCode: 'SCH220-A',
+          professorName: 'Prof. Jordan',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 855,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 780
+            },
+            {
+              componentType: 'tutorial',
+              endMinute: 710,
+              meetingDays: 'Fri',
+              sectionCode: 'TUT-B1',
+              startMinute: 660
+            }
+          ],
+          optionCode: 'SCH220-B',
+          professorName: 'Prof. Jordan',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Constraint Modeling'
+    },
+    {
+      courseCode: 'SCH303',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 720,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 660
+            }
+          ],
+          optionCode: 'SCH303-A',
+          professorName: 'Prof. Evans',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 900,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 840
+            }
+          ],
+          optionCode: 'SCH303-B',
+          professorName: 'Prof. Evans',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Discrete Systems'
+    },
+    {
+      courseCode: 'SCH330',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 855,
+              meetingDays: 'Mon,Wed',
+              sectionCode: 'LEC-A1',
+              startMinute: 780
+            }
+          ],
+          optionCode: 'SCH330-A',
+          professorName: 'Prof. Kwan',
+          seatsRemaining: 5
+        },
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 555,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-B1',
+              startMinute: 480
+            }
+          ],
+          optionCode: 'SCH330-B',
+          professorName: 'Prof. Kwan',
+          seatsRemaining: 5
+        }
+      ],
+      title: 'Networked Platforms'
+    },
+    {
+      courseCode: 'SCH404',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 660,
+              meetingDays: 'Tue,Thu',
+              sectionCode: 'LEC-A1',
+              startMinute: 600
+            }
+          ],
+          optionCode: 'SCH404-A',
+          professorName: 'Prof. Frost',
+          seatsRemaining: 0
+        }
+      ],
+      title: 'Applied Signals'
+    },
+    {
+      courseCode: 'SCH450',
+      optionGroups: [],
+      title: 'Unavailable Topics'
+    },
+    {
+      compatibilityStatus: 'missing',
+      courseCode: 'SCH460',
+      optionGroups: [],
+      title: 'Compatibility Seminar'
+    },
+    {
+      courseCode: 'XLIST410A',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 840,
+              meetingDays: 'Mon',
+              sectionCode: 'LEC-A1',
+              startMinute: 780
+            },
+            {
+              componentType: 'shared',
+              endMinute: 960,
+              meetingDays: 'Fri',
+              sectionCode: 'SHR-01',
+              sharedComponentKey: 'SHARED-X1',
+              startMinute: 900
+            }
+          ],
+          optionCode: 'XLIST410A-A',
+          professorName: 'Prof. Green',
+          seatsRemaining: 5
+        }
+      ],
+      sharedListingGroup: 'XGROUP-410',
+      title: 'Crosslisted Design A'
+    },
+    {
+      courseCode: 'XLIST410B',
+      optionGroups: [
+        {
+          meetings: [
+            {
+              componentType: 'lecture',
+              endMinute: 840,
+              meetingDays: 'Tue',
+              sectionCode: 'LEC-A1',
+              startMinute: 780
+            },
+            {
+              componentType: 'shared',
+              endMinute: 960,
+              meetingDays: 'Fri',
+              sectionCode: 'SHR-01',
+              sharedComponentKey: 'SHARED-X1',
+              startMinute: 900
+            }
+          ],
+          optionCode: 'XLIST410B-A',
+          professorName: 'Prof. Green',
+          seatsRemaining: 5
+        }
+      ],
+      sharedListingGroup: 'XGROUP-410',
+      title: 'Crosslisted Design B'
+    }
+  ],
+  term: {
+    displayName: 'Fall 2026',
+    isAvailable: 1,
+    termCode: '2026FALL'
+  }
+};
+
 function isoNow(now) {
   return now.toISOString();
 }
 
+function clearScheduleBuilderFixtures(db) {
+  db.exec(`
+    DELETE FROM schedule_generation_events;
+    DELETE FROM saved_constraint_sets;
+    DELETE FROM schedule_constraints;
+    DELETE FROM schedule_constraint_sets;
+    DELETE FROM schedule_builder_option_meetings;
+    DELETE FROM schedule_builder_option_groups;
+    DELETE FROM schedule_builder_courses;
+    DELETE FROM planning_terms;
+  `);
+}
+
+function seedScheduleBuilderTables(db, timestamp) {
+  const insertPlanningTerm = db.prepare(`
+    INSERT INTO planning_terms (
+      term_code,
+      display_name,
+      is_available,
+      created_at,
+      updated_at
+    ) VALUES (
+      @term_code,
+      @display_name,
+      @is_available,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertScheduleBuilderCourse = db.prepare(`
+    INSERT INTO schedule_builder_courses (
+      term_id,
+      course_code,
+      title,
+      is_active,
+      compatibility_status,
+      shared_listing_group,
+      created_at,
+      updated_at
+    ) VALUES (
+      @term_id,
+      @course_code,
+      @title,
+      @is_active,
+      @compatibility_status,
+      @shared_listing_group,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertScheduleBuilderOptionGroup = db.prepare(`
+    INSERT INTO schedule_builder_option_groups (
+      course_id,
+      option_code,
+      professor_name,
+      seats_remaining,
+      is_active,
+      created_at,
+      updated_at
+    ) VALUES (
+      @course_id,
+      @option_code,
+      @professor_name,
+      @seats_remaining,
+      @is_active,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertScheduleBuilderMeeting = db.prepare(`
+    INSERT INTO schedule_builder_option_meetings (
+      option_group_id,
+      component_type,
+      section_code,
+      meeting_days,
+      start_minute,
+      end_minute,
+      shared_component_key
+    ) VALUES (
+      @option_group_id,
+      @component_type,
+      @section_code,
+      @meeting_days,
+      @start_minute,
+      @end_minute,
+      @shared_component_key
+    )
+  `);
+  const termId = Number(insertPlanningTerm.run({
+    created_at: timestamp,
+    display_name: SCHEDULE_BUILDER_FIXTURES.term.displayName,
+    is_available: SCHEDULE_BUILDER_FIXTURES.term.isAvailable,
+    term_code: SCHEDULE_BUILDER_FIXTURES.term.termCode,
+    updated_at: timestamp
+  }).lastInsertRowid);
+
+  for (const course of SCHEDULE_BUILDER_FIXTURES.courses) {
+    const courseId = Number(insertScheduleBuilderCourse.run({
+      compatibility_status: course.compatibilityStatus ?? 'ok',
+      course_code: course.courseCode,
+      created_at: timestamp,
+      is_active: 1,
+      shared_listing_group: course.sharedListingGroup ?? null,
+      term_id: termId,
+      title: course.title,
+      updated_at: timestamp
+    }).lastInsertRowid);
+
+    for (const optionGroup of course.optionGroups) {
+      const optionGroupId = Number(insertScheduleBuilderOptionGroup.run({
+        course_id: courseId,
+        created_at: timestamp,
+        is_active: 1,
+        option_code: optionGroup.optionCode,
+        professor_name: optionGroup.professorName,
+        seats_remaining: optionGroup.seatsRemaining,
+        updated_at: timestamp
+      }).lastInsertRowid);
+
+      for (const meeting of optionGroup.meetings) {
+        insertScheduleBuilderMeeting.run({
+          component_type: meeting.componentType,
+          end_minute: meeting.endMinute,
+          meeting_days: meeting.meetingDays,
+          option_group_id: optionGroupId,
+          section_code: meeting.sectionCode,
+          shared_component_key: meeting.sharedComponentKey || null,
+          start_minute: meeting.startMinute
+        });
+      }
+    }
+  }
+
+  return {
+    courseCount: SCHEDULE_BUILDER_FIXTURES.courses.length,
+    termId
+  };
+}
+
+function seedScheduleBuilderFixtures(dbPath, options = {}) {
+  const { now = new Date('2026-03-07T12:00:00.000Z') } = options;
+  const resolvedPath = applySchema(dbPath);
+  const db = getDb(resolvedPath);
+
+  clearScheduleBuilderFixtures(db);
+  seedScheduleBuilderTables(db, isoNow(now));
+  return resolvedPath;
+}
+
 function seedLoginFixtures(dbPath, options = {}) {
-  const now = options.now || new Date('2026-03-07T12:00:00.000Z');
-  const lockedUntil = options.lockedUntil || new Date(now.getTime() + 15 * 60 * 1000);
+  const {
+    now = new Date('2026-03-07T12:00:00.000Z'),
+    lockedUntil = new Date(now.getTime() + 15 * 60 * 1000)
+  } = options;
   const resolvedPath = applySchema(dbPath);
   const db = getDb(resolvedPath);
 
   db.exec(`
+    DELETE FROM schedule_generation_events;
+    DELETE FROM saved_constraint_sets;
+    DELETE FROM schedule_constraints;
+    DELETE FROM schedule_constraint_sets;
+    DELETE FROM schedule_builder_option_meetings;
+    DELETE FROM schedule_builder_option_groups;
+    DELETE FROM schedule_builder_courses;
+    DELETE FROM planning_terms;
     DELETE FROM dashboard_section_states;
     DELETE FROM dashboard_load_events;
     DELETE FROM emergency_contacts;
@@ -165,7 +703,6 @@ function seedLoginFixtures(dbPath, options = {}) {
       @updated_at
     )
   `);
-
   const timestamp = isoNow(now);
   const passwordHash = bcrypt.hashSync('CorrectPass!234', 10);
   const adminPasswordHash = bcrypt.hashSync('AdminPass!234', 10);
@@ -286,6 +823,8 @@ function seedLoginFixtures(dbPath, options = {}) {
     role: 'instructor',
     created_at: timestamp
   });
+
+  seedScheduleBuilderTables(db, timestamp);
 
   const roleIds = {};
   for (const role of [
@@ -645,10 +1184,9 @@ function seedLoginFixtures(dbPath, options = {}) {
   return resolvedPath;
 }
 
-if (require.main === module) {
-  const resolvedPath = resolveDbPath(process.argv[2]);
-  seedLoginFixtures(resolvedPath);
-  console.log(`Seeded login fixtures in ${resolvedPath}`);
-}
-
-module.exports = { RESET_TOKENS, seedLoginFixtures };
+module.exports = {
+  RESET_TOKENS,
+  SCHEDULE_BUILDER_FIXTURES,
+  seedLoginFixtures,
+  seedScheduleBuilderFixtures
+};

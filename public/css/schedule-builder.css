@@ -1,0 +1,132 @@
+.schedule-builder-shell {
+  width: min(100%, 1100px);
+}
+
+.schedule-builder-header,
+.schedule-builder-section-header,
+.schedule-builder-result-header,
+.schedule-builder-carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.schedule-builder-form,
+.schedule-builder-results-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.schedule-builder-panel {
+  padding: 20px;
+  border-radius: 18px;
+  background: #f9fbfd;
+  border: 1px solid #d9e5ef;
+}
+
+.schedule-builder-grid,
+.schedule-builder-course-list,
+.schedule-builder-result-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.schedule-builder-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.schedule-builder-course-list,
+.schedule-builder-result-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.schedule-builder-course-option,
+.schedule-builder-result-course {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #d7e3ef;
+  background: #ffffff;
+}
+
+.schedule-builder-course-option small,
+.schedule-builder-result-course p,
+.schedule-builder-preset-list span {
+  display: block;
+  color: #4c6174;
+}
+
+.schedule-builder-status--success {
+  background: #e6f8ea;
+  color: #174d28;
+}
+
+.schedule-builder-status--warning {
+  background: #fff1d8;
+  color: #7a4f07;
+}
+
+.schedule-builder-status--error {
+  background: #ffe6e1;
+  color: #8b2214;
+}
+
+.schedule-builder-inline-warning {
+  margin-bottom: 16px;
+}
+
+.schedule-builder-field-error {
+  margin: 6px 0 0;
+  color: #8b2214;
+}
+
+.schedule-builder-action-row {
+  flex-wrap: wrap;
+}
+
+.schedule-builder-preset-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.schedule-builder-result-card {
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid #d9e5ef;
+  background: #ffffff;
+}
+
+.schedule-builder-result-card.is-warning {
+  border-color: #f0ca8a;
+  background: #fffaf1;
+}
+
+.schedule-builder-result-course.is-full {
+  border-color: #f0ca8a;
+  background: #fff7ea;
+}
+
+.schedule-builder-shared-components,
+.schedule-builder-violations {
+  margin-top: 18px;
+}
+
+.schedule-builder-clean-note {
+  margin-top: 18px;
+}
+
+.schedule-builder-carousel-nav {
+  margin: 8px 0 4px;
+}
+
+@media (max-width: 720px) {
+  .schedule-builder-header,
+  .schedule-builder-section-header,
+  .schedule-builder-result-header,
+  .schedule-builder-carousel-nav {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

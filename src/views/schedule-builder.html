@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Builder</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/schedule-builder.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card schedule-builder-shell">
+        <p class="eyebrow">Student Planning</p>
+        <div class="schedule-builder-header">
+          <div>
+            <h1>Schedule Builder</h1>
+            <p class="help-text">Build timetable options, save prioritized restrictions, and reload live course changes without changing enrollment.</p>
+          </div>
+          <a class="login-button-link secondary-link" href="/dashboard#schedule-builder">Return to Dashboard</a>
+        </div>
+        {{status_banner_html}}
+        {{builder_form_html}}
+        {{results_html}}
+      </section>
+    </main>
+    <script id="schedule-builder-state" type="application/json">{{schedule_builder_state_json}}</script>
+    <script src="/js/schedule-builder.js"></script>
+  </body>
+</html>
