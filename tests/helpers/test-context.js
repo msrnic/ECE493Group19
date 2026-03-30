@@ -29,6 +29,18 @@ function createAccountCreationTestState(initialState = {}) {
   };
 }
 
+function createScheduleBuilderTestState(initialState = {}) {
+  return {
+    constraintSaveFailureIdentifiers: [...(initialState.constraintSaveFailureIdentifiers || [])],
+    dataUnavailableIdentifiers: [...(initialState.dataUnavailableIdentifiers || [])],
+    generationFailureIdentifiers: [...(initialState.generationFailureIdentifiers || [])],
+    presetRenameFailureIdentifiers: [...(initialState.presetRenameFailureIdentifiers || [])],
+    presetSaveFailureIdentifiers: [...(initialState.presetSaveFailureIdentifiers || [])],
+    timeoutAfterResultsIdentifiers: [...(initialState.timeoutAfterResultsIdentifiers || [])],
+    timeoutBeforeResultsIdentifiers: [...(initialState.timeoutBeforeResultsIdentifiers || [])]
+  };
+}
+
 function createTestContext(options = {}) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-login-'));
   const dbPath = path.join(tempDir, 'sis.db');
@@ -38,6 +50,7 @@ function createTestContext(options = {}) {
   const accountCreationTestState = createAccountCreationTestState(options.accountCreationTestState);
   const dashboardTestState = createDashboardTestState(options.dashboardTestState);
   const profileTestState = createProfileTestState(options.profileTestState);
+  const scheduleBuilderTestState = createScheduleBuilderTestState(options.scheduleBuilderTestState);
 
   applySchema(dbPath);
   seedLoginFixtures(dbPath, { now: nowState.value });
@@ -48,6 +61,7 @@ function createTestContext(options = {}) {
     dashboardTestState,
     now: () => nowState.value,
     profileTestState,
+    scheduleBuilderTestState,
     sessionSecret: 'test-session-secret',
     simulatedPasswordChangeFailureIdentifiers: options.simulatedPasswordChangeFailureIdentifiers || [],
     unavailableIdentifiers: options.unavailableIdentifiers || []
@@ -71,6 +85,7 @@ function createTestContext(options = {}) {
       return nowState.value;
     },
     profileTestState,
+    scheduleBuilderTestState,
     resetAccountCreationTestState() {
       accountCreationTestState.createFailureIdentifiers = [];
       accountCreationTestState.notificationFailureIdentifiers = [];
@@ -83,6 +98,15 @@ function createTestContext(options = {}) {
     resetProfileTestState() {
       profileTestState.contactSaveFailureIdentifiers = [];
       profileTestState.personalSaveFailureIdentifiers = [];
+    },
+    resetScheduleBuilderTestState() {
+      scheduleBuilderTestState.constraintSaveFailureIdentifiers = [];
+      scheduleBuilderTestState.dataUnavailableIdentifiers = [];
+      scheduleBuilderTestState.generationFailureIdentifiers = [];
+      scheduleBuilderTestState.presetRenameFailureIdentifiers = [];
+      scheduleBuilderTestState.presetSaveFailureIdentifiers = [];
+      scheduleBuilderTestState.timeoutAfterResultsIdentifiers = [];
+      scheduleBuilderTestState.timeoutBeforeResultsIdentifiers = [];
     }
   };
 }

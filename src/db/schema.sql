@@ -230,6 +230,115 @@ CREATE TABLE IF NOT EXISTS notification_attempts (
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS planning_terms (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  term_code TEXT NOT NULL UNIQUE,
+  display_name TEXT NOT NULL,
+  is_available INTEGER NOT NULL DEFAULT 1 CHECK (is_available IN (0, 1)),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS schedule_builder_courses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  term_id INTEGER NOT NULL,
+  course_code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+  compatibility_status TEXT NOT NULL DEFAULT 'ok' CHECK (
+    compatibility_status IN ('ok', 'missing', 'inconsistent')
+  ),
+  shared_listing_group TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(term_id, course_code),
+  FOREIGN KEY (term_id) REFERENCES planning_terms(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS schedule_builder_option_groups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  course_id INTEGER NOT NULL,
+  option_code TEXT NOT NULL,
+  professor_name TEXT NOT NULL,
+  seats_remaining INTEGER NOT NULL DEFAULT 1 CHECK (seats_remaining >= 0),
+  is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(course_id, option_code),
+  FOREIGN KEY (course_id) REFERENCES schedule_builder_courses(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS schedule_builder_option_meetings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  option_group_id INTEGER NOT NULL,
+  component_type TEXT NOT NULL CHECK (
+    component_type IN ('lecture', 'lab', 'tutorial', 'seminar', 'shared')
+  ),
+  section_code TEXT NOT NULL,
+  meeting_days TEXT NOT NULL,
+  start_minute INTEGER NOT NULL CHECK (start_minute >= 0 AND start_minute < 1440),
+  end_minute INTEGER NOT NULL CHECK (end_minute > start_minute AND end_minute <= 1440),
+  shared_component_key TEXT,
+  FOREIGN KEY (option_group_id) REFERENCES schedule_builder_option_groups(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS schedule_constraint_sets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  term_id INTEGER NOT NULL,
+  version INTEGER NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL,
+  UNIQUE(account_id, term_id),
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (term_id) REFERENCES planning_terms(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS schedule_constraints (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  constraint_set_id INTEGER NOT NULL,
+  constraint_type TEXT NOT NULL CHECK (
+    constraint_type IN (
+      'earliest_start',
+      'blocked_time',
+      'professor_whitelist',
+      'professor_blacklist'
+    )
+  ),
+  label TEXT NOT NULL,
+  value_json TEXT NOT NULL,
+  priority_value INTEGER NOT NULL DEFAULT 3 CHECK (priority_value BETWEEN 1 AND 5),
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (constraint_set_id) REFERENCES schedule_constraint_sets(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS saved_constraint_sets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  term_id INTEGER NOT NULL,
+  display_name TEXT NOT NULL,
+  normalized_name TEXT NOT NULL,
+  snapshot_json TEXT NOT NULL,
+  version INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(account_id, term_id, normalized_name),
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (term_id) REFERENCES planning_terms(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS schedule_generation_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  term_id INTEGER,
+  requested_result_count INTEGER,
+  outcome_status TEXT NOT NULL CHECK (outcome_status IN ('success', 'partial', 'blocked', 'error')),
+  details_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (term_id) REFERENCES planning_terms(id) ON DELETE SET NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_accounts_identifier ON accounts(email, username);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_accounts_normalized_email ON accounts(lower(trim(email)));
 CREATE INDEX IF NOT EXISTS idx_contact_profiles_email ON contact_profiles(contact_email);
@@ -244,3 +353,10 @@ CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_account ON password_reset_t
 CREATE INDEX IF NOT EXISTS idx_password_change_attempts_target ON password_change_attempts(target_account_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_notifications_account ON notifications(account_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_notification_attempts_account ON notification_attempts(account_id, attempted_at);
+CREATE INDEX IF NOT EXISTS idx_schedule_builder_courses_term ON schedule_builder_courses(term_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_schedule_builder_groups_course ON schedule_builder_option_groups(course_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_schedule_builder_meetings_group ON schedule_builder_option_meetings(option_group_id);
+CREATE INDEX IF NOT EXISTS idx_schedule_constraint_sets_account_term ON schedule_constraint_sets(account_id, term_id);
+CREATE INDEX IF NOT EXISTS idx_schedule_constraints_set ON schedule_constraints(constraint_set_id, sort_order);
+CREATE INDEX IF NOT EXISTS idx_saved_constraint_sets_account_term ON saved_constraint_sets(account_id, term_id, updated_at);
+CREATE INDEX IF NOT EXISTS idx_schedule_generation_events_account ON schedule_generation_events(account_id, created_at);

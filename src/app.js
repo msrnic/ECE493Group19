@@ -5,6 +5,7 @@ const { createSessionMiddleware } = require('./middleware/session-middleware');
 const { createAuthRoutes } = require('./routes/auth-routes');
 const { createAdminAccountRoutes } = require('./routes/admin-account-routes');
 const { createDashboardRoutes } = require('./routes/dashboard-routes');
+const { createScheduleBuilderRoutes } = require('./routes/schedule-builder-routes');
 const { createAccountModel } = require('./models/account-model');
 const { createCourseModel } = require('./models/course-model');
 const { createDashboardLoadModel } = require('./models/dashboard-load-model');
@@ -19,6 +20,7 @@ const { createPasswordChangeAttemptModel } = require('./models/password-change-a
 const { createPersonalDetailsModel } = require('./models/personal-details-model');
 const { createResetTokenModel } = require('./models/reset-token-model');
 const { createRoleModel } = require('./models/role-model');
+const { createScheduleBuilderModel } = require('./models/schedule-builder-model');
 const { createSessionModel } = require('./models/session-model');
 const { createUserAccountModel } = require('./models/user-account-model');
 const { createVerificationCooldownModel } = require('./models/verification-cooldown-model');
@@ -30,6 +32,7 @@ const { createLockoutService } = require('./services/lockout-service');
 const { createNotificationService } = require('./services/notification-service');
 const { createPasswordChangeService } = require('./services/password-change-service');
 const { createPasswordPolicyService } = require('./services/password-policy-service');
+const { createScheduleBuilderService } = require('./services/schedule-builder-service');
 const { createSessionSecurityService } = require('./services/session-security-service');
 const { createProfileRoutes } = require('./routes/profile-routes');
 
@@ -44,6 +47,15 @@ function createApp(options = {}) {
     now = () => new Date(),
     profileTestState = { contactSaveFailureIdentifiers: [], personalSaveFailureIdentifiers: [] },
     resetFixtures,
+    scheduleBuilderTestState = {
+      constraintSaveFailureIdentifiers: [],
+      dataUnavailableIdentifiers: [],
+      generationFailureIdentifiers: [],
+      presetRenameFailureIdentifiers: [],
+      presetSaveFailureIdentifiers: [],
+      timeoutAfterResultsIdentifiers: [],
+      timeoutBeforeResultsIdentifiers: []
+    },
     sessionSecret = process.env.SESSION_SECRET || 'development-session-secret',
     simulatedPasswordChangeFailureIdentifiers = [],
     unavailableIdentifiers = [],
@@ -68,6 +80,7 @@ function createApp(options = {}) {
   const personalDetailsModel = createPersonalDetailsModel(db);
   const resetTokenModel = createResetTokenModel(db);
   const roleModel = createRoleModel(db);
+  const scheduleBuilderModel = createScheduleBuilderModel(db);
   const sessionModel = createSessionModel(db);
   const userAccountModel = createUserAccountModel(db);
   const verificationCooldownModel = createVerificationCooldownModel(db);
@@ -111,6 +124,13 @@ function createApp(options = {}) {
     sessionSecurityService,
     simulatedFailureIdentifiers: simulatedPasswordChangeFailureIdentifiers
   });
+  const scheduleBuilderService = createScheduleBuilderService({
+    accountModel,
+    now,
+    roleModel,
+    scheduleBuilderModel,
+    scheduleBuilderTestState
+  });
 
   const app = express();
   app.disable('x-powered-by');
@@ -146,6 +166,9 @@ function createApp(options = {}) {
     resetFixtures,
     resetTokenModel,
     roleModel,
+    scheduleBuilderModel,
+    scheduleBuilderService,
+    scheduleBuilderTestState,
     sessionModel,
     sessionSecurityService,
     userAccountModel,
@@ -156,6 +179,7 @@ function createApp(options = {}) {
   app.use(createAdminAccountRoutes(app.locals.services));
   app.use(createDashboardRoutes(app.locals.services));
   app.use(createProfileRoutes(app.locals.services));
+  app.use(createScheduleBuilderRoutes(app.locals.services));
 
   return app;
 }

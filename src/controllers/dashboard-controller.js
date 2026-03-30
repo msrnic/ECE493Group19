@@ -305,7 +305,9 @@ function createDashboardController(services) {
             'Build and compare timetable options before registration opens.',
             'Saved schedule plans remain available from your dashboard.'
           ],
-          links: [],
+          links: [
+            { href: '/schedule-builder', label: 'Open Schedule Builder' }
+          ],
           summary: 'Plan upcoming class schedules in one place.'
         };
       case 'enrollment-hub':

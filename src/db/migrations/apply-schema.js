@@ -110,13 +110,18 @@ function recreateTableFromSchema(db, tableName, createTableSql) {
 }
 
 function repairBrokenAccountReferences(db, schema) {
-  const brokenTables = db.prepare(
-    `SELECT name
-     FROM sqlite_master
-     WHERE type = 'table'
-       AND name NOT LIKE 'sqlite_%'
-       AND sql LIKE '%accounts_legacy%'`
-  ).all().map((row) => row.name).filter((tableName) => tableName !== 'accounts');
+  function listBrokenTables() {
+    return db.prepare(
+      `SELECT name, sql
+       FROM sqlite_master
+       WHERE type = 'table'
+         AND name NOT LIKE 'sqlite_%'`
+    ).all()
+      .filter((row) => row.name !== 'accounts' && /_legacy(_fix)?/.test(row.sql))
+      .map((row) => row.name);
+  }
+
+  const brokenTables = listBrokenTables();
 
   if (brokenTables.length === 0) {
     return false;
@@ -125,8 +130,13 @@ function repairBrokenAccountReferences(db, schema) {
   const createTableStatements = getCreateTableStatements(schema);
   db.exec('PRAGMA foreign_keys = OFF');
 
-  for (const tableName of brokenTables) {
-    recreateTableFromSchema(db, tableName, createTableStatements.get(tableName));
+  let tablesToRepair = brokenTables;
+  while (tablesToRepair.length) {
+    for (const tableName of tablesToRepair) {
+      recreateTableFromSchema(db, tableName, createTableStatements.get(tableName));
+    }
+
+    tablesToRepair = listBrokenTables();
   }
 
   db.exec('PRAGMA foreign_keys = ON');
@@ -214,12 +224,6 @@ function applySchema(dbPath) {
   ensureRoleColumns(db);
   return resolvedPath;
 }
-
-if (require.main === module) {
-  const resolvedPath = applySchema(process.argv[2]);
-  console.log(`Applied schema to ${resolvedPath}`);
-}
-
 module.exports = {
   __private: { getTableSql },
   applySchema
