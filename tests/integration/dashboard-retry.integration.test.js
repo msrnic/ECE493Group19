@@ -26,6 +26,8 @@ test('dashboard renders a partial view and selective retry restores recovered se
   assert.equal(htmlResponse.text.includes('Some dashboard sections are currently unavailable.'), true);
   assert.equal(htmlResponse.text.includes('Retry unavailable sections'), true);
   assert.match(htmlResponse.text, /Financial Summary[\s\S]*Unavailable/);
+  assert.match(htmlResponse.text, /Live financial data is temporarily unavailable\. Showing the last confirmed values\./);
+  assert.match(htmlResponse.text, /Outstanding balance: \$1,245\.67/);
   assert.equal(htmlResponse.text.includes('Academic Records'), true);
 
   const initialPayload = await agent

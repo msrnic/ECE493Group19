@@ -119,6 +119,11 @@
   margin: 0;
 }
 
+.dashboard-stale-note {
+  margin: 12px 0;
+  color: #7a4f07;
+  font-weight: 600;
+}
 
 .dashboard-footer-actions {
   margin-top: 24px;

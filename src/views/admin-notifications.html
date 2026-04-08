@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Notifications</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/profile-editor.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card profile-card profile-card--wide">
+        <p class="eyebrow">Admin Operations</p>
+        <h1>Student Inbox Notifications</h1>
+        <p class="help-text">Compose a message and target individual students, course rosters, or predefined groups.</p>
+        {{status_banner_html}}
+        <form method="post" action="/admin/notifications/preview" class="profile-form">
+          <div class="profile-section">
+            <h2>Individual students</h2>
+            <label class="profile-label" for="individual-students">Student IDs</label>
+            <input id="individual-students" class="profile-input" type="text" name="individualStudentIds" value="{{selected_students}}" placeholder="userA, holdStudent">
+            <p class="help-text">Enter one or more student usernames separated by commas only when needed. Checkbox groups are available below.</p>
+          </div>
+          <div class="profile-section">
+            <h2>Course rosters</h2>
+            <div class="profile-choice-grid">{{course_checkboxes_html}}</div>
+          </div>
+          <div class="profile-section">
+            <h2>Predefined groups</h2>
+            <div class="profile-choice-grid">{{group_checkboxes_html}}</div>
+          </div>
+          <div class="profile-section">
+            <label class="profile-label" for="subject">Subject</label>
+            <input id="subject" class="profile-input" type="text" name="subject" maxlength="120" value="{{subject_value}}">
+            <label class="profile-label" for="body">Message</label>
+            <textarea id="body" class="profile-input" name="body" rows="7" maxlength="5000">{{body_value}}</textarea>
+            <div class="action-row profile-actions">
+              <button class="login-button-link secondary-link" type="submit">Preview recipients</button>
+              <button class="login-button-link" formaction="/admin/notifications/send" type="submit">Send notification</button>
+              <a class="login-button-link secondary-link" href="/dashboard#admin-operations">Back to dashboard</a>
+            </div>
+          </div>
+        </form>
+        {{preview_html}}
+        {{summary_html}}
+        <section class="profile-section">
+          <h2>Recent send requests</h2>
+          <ul class="course-list">{{recent_requests_html}}</ul>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

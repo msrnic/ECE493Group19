@@ -5,11 +5,11 @@ module.exports = defineConfig({
   timeout: 30_000,
   workers: 1,
   use: {
-    baseURL: 'http://127.0.0.1:3111'
+    baseURL: 'http://127.0.0.1:3112'
   },
   webServer: {
     command: 'node tests/e2e/start-server.js',
-    port: 3111,
+    port: 3112,
     reuseExistingServer: false
   }
 });

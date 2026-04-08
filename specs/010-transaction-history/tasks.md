@@ -17,8 +17,8 @@
 
 **Purpose**: Project initialization and baseline scaffolding for UC-10
 
-- [ ] T001 Create MVC directories for this feature in `/Users/ahsanmansoor/ECE493Group19/src/controllers/`, `/Users/ahsanmansoor/ECE493Group19/src/models/`, `/Users/ahsanmansoor/ECE493Group19/src/services/`, and `/Users/ahsanmansoor/ECE493Group19/src/views/`
-- [ ] T002 [P] Create test directory scaffold in `/Users/ahsanmansoor/ECE493Group19/tests/unit/`, `/Users/ahsanmansoor/ECE493Group19/tests/integration/`, and `/Users/ahsanmansoor/ECE493Group19/tests/contract/`
+- [X] T001 Create MVC directories for this feature in `/Users/ahsanmansoor/ECE493Group19/src/controllers/`, `/Users/ahsanmansoor/ECE493Group19/src/models/`, `/Users/ahsanmansoor/ECE493Group19/src/services/`, and `/Users/ahsanmansoor/ECE493Group19/src/views/`
+- [X] T002 [P] Create test directory scaffold in `/Users/ahsanmansoor/ECE493Group19/tests/unit/`, `/Users/ahsanmansoor/ECE493Group19/tests/integration/`, and `/Users/ahsanmansoor/ECE493Group19/tests/contract/`
 - [ ] T003 [P] Add UC-10 traceability header comments to new feature files in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js` and `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
 - [ ] T004 Record style-guide enforcement checklist for this feature in `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/quickstart.md`
 
@@ -30,12 +30,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Define SQLite read-model query contract for transaction history in `/Users/ahsanmansoor/ECE493Group19/src/models/financial-transaction-model.js`
-- [ ] T006 [P] Implement authenticated student ownership guard for history access in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
-- [ ] T007 [P] Implement shared error response mapper aligned to contract `503/401/403/404` in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
-- [ ] T008 Implement transaction DTO mapper (masked identifiers, newest-first, in-scope filtering) in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
-- [ ] T009 Create base history page shell and state placeholders (list/empty/error) in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
-- [ ] T010 Validate OpenAPI alignment assumptions and endpoint path usage against `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/contracts/transaction-history.openapi.yaml`
+- [X] T005 Define SQLite read-model query contract for transaction history in `/Users/ahsanmansoor/ECE493Group19/src/models/financial-transaction-model.js`
+- [X] T006 [P] Implement authenticated student ownership guard for history access in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
+- [X] T007 [P] Implement shared error response mapper aligned to contract `503/401/403/404` in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
+- [X] T008 Implement transaction DTO mapper (masked identifiers, newest-first, in-scope filtering) in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
+- [X] T009 Create base history page shell and state placeholders (list/empty/error) in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
+- [X] T010 Validate OpenAPI alignment assumptions and endpoint path usage against `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/contracts/transaction-history.openapi.yaml`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -49,13 +49,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Implement `StudentAccount` lookup and active-account validation in `/Users/ahsanmansoor/ECE493Group19/src/models/student-account-model.js`
-- [ ] T012 [P] [US1] Implement transaction retrieval query for all in-scope fee payments in `/Users/ahsanmansoor/ECE493Group19/src/models/financial-transaction-model.js`
-- [ ] T013 [US1] Implement controller GET handler for `/api/students/{studentId}/financial-transactions` in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
-- [ ] T014 [US1] Implement record formatting rules (status mapping, masked display, newest-first ordering) in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
-- [ ] T015 [US1] Render populated transaction history list in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
-- [ ] T016 [US1] Add contract conformance checks for success payload fields in `/Users/ahsanmansoor/ECE493Group19/tests/contract/transaction-history-contract.test.js`
-- [ ] T017 [US1] Add unit coverage for fee-only filtering and masking rules in `/Users/ahsanmansoor/ECE493Group19/tests/unit/financial-transaction-model.test.js`
+- [X] T011 [P] [US1] Implement `StudentAccount` lookup and active-account validation in `/Users/ahsanmansoor/ECE493Group19/src/models/student-account-model.js`
+- [X] T012 [P] [US1] Implement transaction retrieval query for all in-scope fee payments in `/Users/ahsanmansoor/ECE493Group19/src/models/financial-transaction-model.js`
+- [X] T013 [US1] Implement controller GET handler for `/api/students/{studentId}/financial-transactions` in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
+- [X] T014 [US1] Implement record formatting rules (status mapping, masked display, newest-first ordering) in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
+- [X] T015 [US1] Render populated transaction history list in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
+- [X] T016 [US1] Add contract conformance checks for success payload fields in `/Users/ahsanmansoor/ECE493Group19/tests/contract/transaction-history-contract.test.js`
+- [X] T017 [US1] Add unit coverage for fee-only filtering and masking rules in `/Users/ahsanmansoor/ECE493Group19/tests/unit/financial-transaction-model.test.js`
 - [ ] T018 [US1] Run UC-10 main-success validation steps and record evidence in `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/quickstart.md`
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
@@ -70,10 +70,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Implement empty-result handling branch in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
-- [ ] T020 [US2] Add explicit no-records view state copy and structure in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
-- [ ] T021 [US2] Ensure model/service return empty list semantics without error mutation in `/Users/ahsanmansoor/ECE493Group19/src/models/financial-transaction-model.js`
-- [ ] T022 [US2] Add integration coverage for empty-state flow in `/Users/ahsanmansoor/ECE493Group19/tests/integration/transaction-history-flow.test.js`
+- [X] T019 [P] [US2] Implement empty-result handling branch in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
+- [X] T020 [US2] Add explicit no-records view state copy and structure in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
+- [X] T021 [US2] Ensure model/service return empty list semantics without error mutation in `/Users/ahsanmansoor/ECE493Group19/src/models/financial-transaction-model.js`
+- [X] T022 [US2] Add integration coverage for empty-state flow in `/Users/ahsanmansoor/ECE493Group19/tests/integration/transaction-history-flow.test.js`
 - [ ] T023 [US2] Run UC-10 optional no-transactions validation steps and record evidence in `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/quickstart.md`
 
 **Checkpoint**: User Stories 1 and 2 should both work independently
@@ -88,11 +88,11 @@
 
 ### Implementation for User Story 3
 
-- [ ] T024 [P] [US3] Implement retrieval-failure branch and retry trigger wiring in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
-- [ ] T025 [US3] Implement dependency-failure mapping to retryable error response in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
-- [ ] T026 [US3] Add error-state and retry UI requirements in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
-- [ ] T027 [US3] Add integration coverage for extension 2a failure-and-recovery path in `/Users/ahsanmansoor/ECE493Group19/tests/integration/transaction-history-flow.test.js`
-- [ ] T028 [US3] Add contract checks for `503` error schema and retryable flag in `/Users/ahsanmansoor/ECE493Group19/tests/contract/transaction-history-contract.test.js`
+- [X] T024 [P] [US3] Implement retrieval-failure branch and retry trigger wiring in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`
+- [X] T025 [US3] Implement dependency-failure mapping to retryable error response in `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`
+- [X] T026 [US3] Add error-state and retry UI requirements in `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
+- [X] T027 [US3] Add integration coverage for extension 2a failure-and-recovery path in `/Users/ahsanmansoor/ECE493Group19/tests/integration/transaction-history-flow.test.js`
+- [X] T028 [US3] Add contract checks for `503` error schema and retryable flag in `/Users/ahsanmansoor/ECE493Group19/tests/contract/transaction-history-contract.test.js`
 - [ ] T029 [US3] Run UC-10 extension 2a validation steps and record evidence in `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/quickstart.md`
 
 **Checkpoint**: All user stories should now be independently functional
@@ -103,9 +103,9 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T030 [P] Consolidate and normalize terminology across feature files in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`, `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`, and `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
-- [ ] T031 Verify style-guide compliance for all modified HTML/CSS/JS files using `/Users/ahsanmansoor/ECE493Group19/Style Guides/google-style-guide-html-css.md` and `/Users/ahsanmansoor/ECE493Group19/Style Guides/google-style-guide-javascript.md`
-- [ ] T032 Verify protected artifacts remain unchanged by checking `/Users/ahsanmansoor/ECE493Group19/Use Cases/UC-10.md` and `/Users/ahsanmansoor/ECE493Group19/Acceptance Tests/UC-10-AS.md`
+- [X] T030 [P] Consolidate and normalize terminology across feature files in `/Users/ahsanmansoor/ECE493Group19/src/controllers/transaction-history-controller.js`, `/Users/ahsanmansoor/ECE493Group19/src/services/payment-status-service.js`, and `/Users/ahsanmansoor/ECE493Group19/src/views/transaction-history-view.html`
+- [X] T031 Verify style-guide compliance for all modified HTML/CSS/JS files using `/Users/ahsanmansoor/ECE493Group19/Style Guides/google-style-guide-html-css.md` and `/Users/ahsanmansoor/ECE493Group19/Style Guides/google-style-guide-javascript.md`
+- [X] T032 Verify protected artifacts remain unchanged by checking `/Users/ahsanmansoor/ECE493Group19/Use Cases/UC-10.md` and `/Users/ahsanmansoor/ECE493Group19/Acceptance Tests/UC-10-AS.md`
 - [ ] T033 Execute full quickstart validation sequence and finalize implementation notes in `/Users/ahsanmansoor/ECE493Group19/specs/010-transaction-history/quickstart.md`
 
 ---

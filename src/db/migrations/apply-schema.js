@@ -203,6 +203,75 @@ function ensureDashboardLoadEventColumns(db) {
   }
 }
 
+function ensurePaymentMethodsSchema(db, schema) {
+  const tableSql = getTableSql(db, 'payment_methods');
+  if (!tableSql) {
+    return;
+  }
+
+  const columns = getColumnNames(db, 'payment_methods');
+  const requiresRebuild =
+    !columns.has('display_label') ||
+    !columns.has('card_brand') ||
+    !columns.has('card_last4') ||
+    !columns.has('expiry_month') ||
+    !columns.has('expiry_year') ||
+    !columns.has('token_reference') ||
+    !columns.has('token_fingerprint') ||
+    tableSql.includes("CHECK (method_type IN ('bank_account'))");
+
+  if (!requiresRebuild) {
+    return;
+  }
+
+  const createTableSql = getCreateTableStatements(schema).get('payment_methods');
+  db.exec('PRAGMA foreign_keys = OFF');
+  db.exec('ALTER TABLE payment_methods RENAME TO payment_methods_legacy_upgrade');
+  db.exec(createTableSql);
+  db.exec(`
+    INSERT INTO payment_methods (
+      id,
+      account_id,
+      method_type,
+      display_label,
+      bank_holder_name,
+      routing_identifier,
+      account_identifier_masked,
+      account_identifier_fingerprint,
+      card_brand,
+      card_last4,
+      expiry_month,
+      expiry_year,
+      token_reference,
+      token_fingerprint,
+      status,
+      created_at,
+      updated_at
+    )
+    SELECT
+      id,
+      account_id,
+      'bank_account',
+      'Bank account',
+      bank_holder_name,
+      routing_identifier,
+      account_identifier_masked,
+      account_identifier_fingerprint,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      status,
+      created_at,
+      updated_at
+    FROM payment_methods_legacy_upgrade
+  `);
+  db.exec('DROP TABLE payment_methods_legacy_upgrade');
+  db.exec('PRAGMA foreign_keys = ON');
+}
+
 function applySchema(dbPath) {
   const resolvedPath = resolveDbPath(dbPath);
   const db = getDb(resolvedPath);
@@ -214,6 +283,7 @@ function applySchema(dbPath) {
   ensureRoleColumns(db);
   ensureUserSessionColumns(db);
   ensureDashboardLoadEventColumns(db);
+  ensurePaymentMethodsSchema(db, schema);
 
   if (repairBrokenAccountReferences(db, schema)) {
     db.exec(schema);
@@ -222,6 +292,7 @@ function applySchema(dbPath) {
   ensureUserSessionColumns(db);
   ensureDashboardLoadEventColumns(db);
   ensureRoleColumns(db);
+  ensurePaymentMethodsSchema(db, schema);
   return resolvedPath;
 }
 module.exports = {

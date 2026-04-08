@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Payment Methods</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card profile-card--wide'>
+        <p class='eyebrow'>Financial Summary</p>
+        <h1>Payment Methods</h1>
+        <p class='help-text'>{{summary_text}}</p>
+        {{status_banner_html}}
+        <div class='profile-section'>
+          <div class='action-row profile-actions'>
+            <a class='login-button-link' href='/account/payment-methods/bank-accounts/new'>Add bank account</a>
+            <a class='login-button-link' href='/account/payment-methods/credit-cards/new'>Add credit card</a>
+            <a class='login-button-link secondary-link' href='/dashboard#financial-summary'>Back to dashboard</a>
+          </div>
+        </div>
+        {{methods_html}}
+      </section>
+    </main>
+  </body>
+</html>

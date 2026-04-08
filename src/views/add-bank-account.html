@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Add Bank Account</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card'>
+        <p class='eyebrow'>Payment Methods</p>
+        <h1>Add Bank Account</h1>
+        <p class='help-text'>Store a bank account for fee payments. Only the holder name and masked account identifier will be shown after save.</p>
+        {{status_banner_html}}
+        <form method='post' action='/account/payment-methods/bank-accounts' data-profile-form>
+          <label for='bankHolderName'>Account Holder Name</label>
+          <input id='bankHolderName' class='{{bank_holder_name_input_class}}' name='bankHolderName' maxlength='{{bank_holder_name_limit}}' required type='text' value='{{bank_holder_name}}'>
+          {{bank_holder_name_error_html}}
+
+          <label for='routingIdentifier'>Routing Number</label>
+          <input id='routingIdentifier' class='{{routing_identifier_input_class}}' inputmode='numeric' name='routingIdentifier' required type='text' value='{{routing_identifier}}'>
+          {{routing_identifier_error_html}}
+
+          <label for='accountIdentifier'>Account Number</label>
+          <input id='accountIdentifier' class='{{account_identifier_input_class}}' inputmode='numeric' name='accountIdentifier' required type='text' value='{{account_identifier}}'>
+          {{account_identifier_error_html}}
+
+          <div class='action-row profile-actions'>
+            <button type='submit'>Save Bank Account</button>
+            <button class='secondary-button' data-cancel-profile data-return-to='{{return_path}}' type='button'>Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src='/js/profile-form.js'></script>
+  </body>
+</html>

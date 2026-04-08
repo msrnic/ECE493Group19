@@ -26,6 +26,10 @@ test('AT-UC09-01 student financial dashboard loads after login with only permitt
   await expect(page.locator('#enrollment-hub').getByRole('heading', { name: 'Enrollment Hub' })).toBeVisible();
   await expect(page.locator('#financial-summary')).toContainText('Financial Summary');
   await expect(page.locator('#financial-summary').getByRole('heading', { name: 'Financial Summary' })).toBeVisible();
+  await expect(page.locator('#financial-summary')).toContainText('Outstanding balance: $1,245.67');
+  await expect(page.locator('#financial-summary')).toContainText('Outstanding fees: $325.00');
+  await expect(page.locator('#financial-summary')).toContainText('Payment status: Pending confirmation');
+  await expect(page.getByRole('button', { name: /pay/i })).toHaveCount(0);
   await expect(page.getByText('Teaching Workload')).toHaveCount(0);
   await expect(page.url()).toContain('/dashboard');
 
@@ -55,6 +59,10 @@ test('AT-UC09-03 financial dashboard faults show a partial view and recover afte
 
   await expect(page.locator('#dashboard-status')).toContainText('Some dashboard sections are currently unavailable.');
   await expect(page.locator('#financial-summary')).toContainText('Unavailable');
+  await expect(page.locator('#financial-summary')).toContainText(
+    'Live financial data is temporarily unavailable. Showing the last confirmed values.'
+  );
+  await expect(page.locator('#financial-summary')).toContainText('Last confirmed: 2026-03-07T12:00:00.000Z');
   await expect(page.locator('#student-academics')).toContainText('Academic Records');
 
   await setDashboardFixtures(request, {});

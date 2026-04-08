@@ -561,6 +561,21 @@ function seedLoginFixtures(dbPath, options = {}) {
     DELETE FROM planning_terms;
     DELETE FROM dashboard_section_states;
     DELETE FROM dashboard_load_events;
+    DELETE FROM enrollment_attempts;
+    DELETE FROM class_enrollments;
+    DELETE FROM registration_holds;
+    DELETE FROM completed_courses;
+    DELETE FROM class_offerings;
+    DELETE FROM financial_summary_snapshots;
+    DELETE FROM financial_transactions;
+    DELETE FROM payment_methods;
+    DELETE FROM inbox_delivery_attempts;
+    DELETE FROM inbox_notifications;
+    DELETE FROM notification_send_requests;
+    DELETE FROM notification_messages;
+    DELETE FROM notification_group_memberships;
+    DELETE FROM notification_recipient_groups;
+    DELETE FROM inbox_access_states;
     DELETE FROM emergency_contacts;
     DELETE FROM contact_profiles;
     DELETE FROM personal_details;
@@ -654,6 +669,167 @@ function seedLoginFixtures(dbPath, options = {}) {
     INSERT INTO dashboard_sections (module_id, section_key, section_title, sort_order, is_enabled)
     VALUES (@module_id, @section_key, @section_title, @sort_order, 1)
   `);
+  const insertFinancialSummarySnapshot = db.prepare(`
+    INSERT INTO financial_summary_snapshots (
+      account_id,
+      balance_due_cents,
+      outstanding_fees_cents,
+      payment_status,
+      source_state,
+      last_confirmed_at,
+      created_at
+    ) VALUES (
+      @account_id,
+      @balance_due_cents,
+      @outstanding_fees_cents,
+      @payment_status,
+      @source_state,
+      @last_confirmed_at,
+      @created_at
+    )
+  `);
+  const insertFinancialTransaction = db.prepare(`
+    INSERT INTO financial_transactions (
+      account_id,
+      transaction_reference,
+      posted_at,
+      amount_cents,
+      currency,
+      payment_method_label,
+      masked_method_identifier,
+      status,
+      transaction_scope,
+      source_system,
+      created_at,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @transaction_reference,
+      @posted_at,
+      @amount_cents,
+      @currency,
+      @payment_method_label,
+      @masked_method_identifier,
+      @status,
+      @transaction_scope,
+      @source_system,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertInboxAccessState = db.prepare(`
+    INSERT INTO inbox_access_states (
+      account_id,
+      access_state,
+      restriction_reason,
+      show_status_indicator,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @access_state,
+      @restriction_reason,
+      @show_status_indicator,
+      @updated_at
+    )
+  `);
+  const insertNotificationRecipientGroup = db.prepare(`
+    INSERT INTO notification_recipient_groups (
+      group_key,
+      display_name,
+      is_active,
+      created_at,
+      updated_at
+    ) VALUES (
+      @group_key,
+      @display_name,
+      @is_active,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertNotificationGroupMembership = db.prepare(`
+    INSERT INTO notification_group_memberships (group_id, account_id, created_at)
+    VALUES (@group_id, @account_id, @created_at)
+  `);
+  const insertNotificationMessage = db.prepare(`
+    INSERT INTO notification_messages (subject, body, created_by, created_at)
+    VALUES (@subject, @body, @created_by, @created_at)
+  `);
+  const insertNotificationSendRequest = db.prepare(`
+    INSERT INTO notification_send_requests (
+      message_id,
+      sender_account_id,
+      status,
+      total_unique_recipients,
+      duplicate_recipients_removed,
+      successful_deliveries,
+      failed_deliveries,
+      sent_at,
+      retry_expires_at,
+      last_error
+    ) VALUES (
+      @message_id,
+      @sender_account_id,
+      @status,
+      @total_unique_recipients,
+      @duplicate_recipients_removed,
+      @successful_deliveries,
+      @failed_deliveries,
+      @sent_at,
+      @retry_expires_at,
+      @last_error
+    )
+  `);
+  const insertInboxNotification = db.prepare(`
+    INSERT INTO inbox_notifications (
+      account_id,
+      source_type,
+      event_type,
+      subject,
+      body,
+      notification_status,
+      deduplication_key,
+      send_request_id,
+      sender_account_id,
+      created_at,
+      available_at,
+      read_at,
+      last_failure_reason
+    ) VALUES (
+      @account_id,
+      @source_type,
+      @event_type,
+      @subject,
+      @body,
+      @notification_status,
+      @deduplication_key,
+      @send_request_id,
+      @sender_account_id,
+      @created_at,
+      @available_at,
+      @read_at,
+      @last_failure_reason
+    )
+  `);
+  const insertInboxDeliveryAttempt = db.prepare(`
+    INSERT INTO inbox_delivery_attempts (
+      inbox_notification_id,
+      attempt_sequence,
+      status,
+      failure_reason,
+      retry_eligible_until,
+      attempted_at,
+      delivered_at
+    ) VALUES (
+      @inbox_notification_id,
+      @attempt_sequence,
+      @status,
+      @failure_reason,
+      @retry_eligible_until,
+      @attempted_at,
+      @delivered_at
+    )
+  `);
   const insertPersonalDetails = db.prepare(`
     INSERT INTO personal_details (
       account_id,
@@ -702,6 +878,49 @@ function seedLoginFixtures(dbPath, options = {}) {
       @relationship,
       @updated_at
     )
+  `);
+  const insertClassOffering = db.prepare(`
+    INSERT INTO class_offerings (
+      offering_code,
+      course_code,
+      title,
+      term_code,
+      meeting_days,
+      start_minute,
+      end_minute,
+      capacity,
+      seats_remaining,
+      prerequisite_course_code,
+      fee_change_cents,
+      created_at,
+      updated_at
+    ) VALUES (
+      @offering_code,
+      @course_code,
+      @title,
+      @term_code,
+      @meeting_days,
+      @start_minute,
+      @end_minute,
+      @capacity,
+      @seats_remaining,
+      @prerequisite_course_code,
+      @fee_change_cents,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertCompletedCourse = db.prepare(`
+    INSERT INTO completed_courses (account_id, course_code, completed_at)
+    VALUES (@account_id, @course_code, @completed_at)
+  `);
+  const insertRegistrationHold = db.prepare(`
+    INSERT INTO registration_holds (account_id, hold_code, reason, is_active, created_at)
+    VALUES (@account_id, @hold_code, @reason, @is_active, @created_at)
+  `);
+  const insertClassEnrollment = db.prepare(`
+    INSERT INTO class_enrollments (account_id, offering_id, created_at)
+    VALUES (@account_id, @offering_id, @created_at)
   `);
   const timestamp = isoNow(now);
   const passwordHash = bcrypt.hashSync('CorrectPass!234', 10);
@@ -778,6 +997,30 @@ function seedLoginFixtures(dbPath, options = {}) {
   createAccount({
     email: 'outage.user@example.com',
     username: 'outageUser',
+    role: 'student',
+    passwordHash
+  });
+  createAccount({
+    email: 'prereq.student@example.com',
+    username: 'prereqStudent',
+    role: 'student',
+    passwordHash
+  });
+  createAccount({
+    email: 'hold.student@example.com',
+    username: 'holdStudent',
+    role: 'student',
+    passwordHash
+  });
+  createAccount({
+    email: 'conflict.student@example.com',
+    username: 'conflictStudent',
+    role: 'student',
+    passwordHash
+  });
+  createAccount({
+    email: 'restricted.inbox@example.com',
+    username: 'restrictedInbox',
     role: 'student',
     passwordHash
   });
@@ -872,6 +1115,26 @@ function seedLoginFixtures(dbPath, options = {}) {
   });
   insertRoleAssignment.run({
     account_id: accountIds['outage.user@example.com'],
+    role_id: roleIds.student,
+    assigned_at: timestamp
+  });
+  insertRoleAssignment.run({
+    account_id: accountIds['prereq.student@example.com'],
+    role_id: roleIds.student,
+    assigned_at: timestamp
+  });
+  insertRoleAssignment.run({
+    account_id: accountIds['hold.student@example.com'],
+    role_id: roleIds.student,
+    assigned_at: timestamp
+  });
+  insertRoleAssignment.run({
+    account_id: accountIds['conflict.student@example.com'],
+    role_id: roleIds.student,
+    assigned_at: timestamp
+  });
+  insertRoleAssignment.run({
+    account_id: accountIds['restricted.inbox@example.com'],
     role_id: roleIds.student,
     assigned_at: timestamp
   });
@@ -1033,6 +1296,406 @@ function seedLoginFixtures(dbPath, options = {}) {
     });
   }
 
+  insertFinancialSummarySnapshot.run({
+    account_id: accountIds['userA@example.com'],
+    balance_due_cents: 124567,
+    created_at: timestamp,
+    last_confirmed_at: timestamp,
+    outstanding_fees_cents: 32500,
+    payment_status: 'pending_confirmation',
+    source_state: 'live'
+  });
+  insertFinancialSummarySnapshot.run({
+    account_id: accountIds['nomodule.student@example.com'],
+    balance_due_cents: 0,
+    created_at: timestamp,
+    last_confirmed_at: timestamp,
+    outstanding_fees_cents: 0,
+    payment_status: 'current',
+    source_state: 'live'
+  });
+  insertFinancialSummarySnapshot.run({
+    account_id: accountIds['outage.user@example.com'],
+    balance_due_cents: 8999,
+    created_at: timestamp,
+    last_confirmed_at: new Date(now.getTime() - 30 * 60 * 1000).toISOString(),
+    outstanding_fees_cents: 8999,
+    payment_status: 'overdue',
+    source_state: 'stale'
+  });
+
+  for (const accessState of [
+    {
+      account_id: accountIds['userA@example.com'],
+      access_state: 'enabled',
+      restriction_reason: null,
+      show_status_indicator: 1,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['outage.user@example.com'],
+      access_state: 'enabled',
+      restriction_reason: null,
+      show_status_indicator: 1,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['restricted.inbox@example.com'],
+      access_state: 'restricted',
+      restriction_reason: 'Inbox access is temporarily restricted while your account is under review.',
+      show_status_indicator: 1,
+      updated_at: timestamp
+    }
+  ]) {
+    insertInboxAccessState.run(accessState);
+  }
+
+  for (const transaction of [
+    {
+      account_id: accountIds['userA@example.com'],
+      amount_cents: 124567,
+      created_at: '2026-03-05T13:00:00.000Z',
+      currency: 'USD',
+      masked_method_identifier: '**** 4242',
+      payment_method_label: 'Visa',
+      posted_at: '2026-03-05T13:00:00.000Z',
+      source_system: 'payment_processor',
+      status: 'pending',
+      transaction_reference: 'TXN-2026-0001',
+      transaction_scope: 'sis_fee_payment',
+      updated_at: '2026-03-05T13:00:00.000Z'
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      amount_cents: 124567,
+      created_at: '2026-03-05T13:00:00.000Z',
+      currency: 'USD',
+      masked_method_identifier: '**** 4242',
+      payment_method_label: 'Visa',
+      posted_at: '2026-03-05T13:00:00.000Z',
+      source_system: 'banking_network',
+      status: 'succeeded',
+      transaction_reference: 'TXN-2026-0001',
+      transaction_scope: 'sis_fee_payment',
+      updated_at: '2026-03-05T15:00:00.000Z'
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      amount_cents: 32500,
+      created_at: '2026-03-06T09:15:00.000Z',
+      currency: 'USD',
+      masked_method_identifier: '**** 0088',
+      payment_method_label: 'Mastercard',
+      posted_at: '2026-03-06T09:15:00.000Z',
+      source_system: 'payment_processor',
+      status: 'pending',
+      transaction_reference: 'TXN-2026-0004',
+      transaction_scope: 'sis_fee_payment',
+      updated_at: '2026-03-06T09:15:00.000Z'
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      amount_cents: 7750,
+      created_at: '2026-02-18T10:30:00.000Z',
+      currency: 'USD',
+      masked_method_identifier: 'Acct ending 1023',
+      payment_method_label: 'Bank Transfer',
+      posted_at: '2026-02-18T10:30:00.000Z',
+      source_system: 'sis',
+      status: 'failed',
+      transaction_reference: 'TXN-2026-0003',
+      transaction_scope: 'sis_fee_payment',
+      updated_at: '2026-02-18T10:31:00.000Z'
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      amount_cents: 4550,
+      created_at: '2026-01-10T08:00:00.000Z',
+      currency: 'USD',
+      masked_method_identifier: '**** 8877',
+      payment_method_label: 'Visa',
+      posted_at: '2026-01-10T08:00:00.000Z',
+      source_system: 'payment_processor',
+      status: 'reversed',
+      transaction_reference: 'TXN-2025-0099',
+      transaction_scope: 'sis_fee_payment',
+      updated_at: '2026-01-12T11:00:00.000Z'
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      amount_cents: 1500,
+      created_at: '2026-02-20T08:00:00.000Z',
+      currency: 'USD',
+      masked_method_identifier: 'Permit 7711',
+      payment_method_label: 'Campus Parking',
+      posted_at: '2026-02-20T08:00:00.000Z',
+      source_system: 'sis',
+      status: 'succeeded',
+      transaction_reference: 'PARK-2026-0008',
+      transaction_scope: 'parking',
+      updated_at: '2026-02-20T08:01:00.000Z'
+    }
+  ]) {
+    insertFinancialTransaction.run(transaction);
+  }
+
+  const groupIds = {};
+  for (const group of [
+    {
+      created_at: timestamp,
+      display_name: 'All Active Students',
+      group_key: 'all-active-students',
+      is_active: 1,
+      updated_at: timestamp
+    },
+    {
+      created_at: timestamp,
+      display_name: 'Students With Financial Holds',
+      group_key: 'financial-holds',
+      is_active: 1,
+      updated_at: timestamp
+    }
+  ]) {
+    groupIds[group.group_key] = Number(insertNotificationRecipientGroup.run(group).lastInsertRowid);
+  }
+
+  for (const membership of [
+    ['all-active-students', 'userA@example.com'],
+    ['all-active-students', 'outage.user@example.com'],
+    ['all-active-students', 'prereq.student@example.com'],
+    ['all-active-students', 'hold.student@example.com'],
+    ['all-active-students', 'conflict.student@example.com'],
+    ['all-active-students', 'restricted.inbox@example.com'],
+    ['financial-holds', 'hold.student@example.com']
+  ]) {
+    insertNotificationGroupMembership.run({
+      group_id: groupIds[membership[0]],
+      account_id: accountIds[membership[1]],
+      created_at: timestamp
+    });
+  }
+
+  const seededMessageId = Number(insertNotificationMessage.run({
+    subject: 'Welcome to the built-in inbox',
+    body: 'This inbox collects course updates, grade changes, and administrative announcements.',
+    created_by: accountIds['admin@example.com'],
+    created_at: timestamp
+  }).lastInsertRowid);
+  const seededSendRequestId = Number(insertNotificationSendRequest.run({
+    message_id: seededMessageId,
+    sender_account_id: accountIds['admin@example.com'],
+    status: 'completed',
+    total_unique_recipients: 1,
+    duplicate_recipients_removed: 0,
+    successful_deliveries: 1,
+    failed_deliveries: 0,
+    sent_at: timestamp,
+    retry_expires_at: new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString(),
+    last_error: null
+  }).lastInsertRowid);
+
+  for (const notification of [
+    {
+      account_id: accountIds['userA@example.com'],
+      source_type: 'academic_event',
+      event_type: 'course_update',
+      subject: 'ECE493 course update',
+      body: 'Project milestone dates were updated for ECE493 Software Engineering.',
+      notification_status: 'delivered',
+      deduplication_key: 'academic:userA:course-update-1',
+      send_request_id: null,
+      sender_account_id: null,
+      created_at: '2026-03-07T08:30:00.000Z',
+      available_at: '2026-03-07T08:30:00.000Z',
+      read_at: null,
+      last_failure_reason: null
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      source_type: 'academic_event',
+      event_type: 'grade_update',
+      subject: 'CMPUT301 grade update',
+      body: 'A new assignment grade was posted in CMPUT301.',
+      notification_status: 'read',
+      deduplication_key: 'academic:userA:grade-update-1',
+      send_request_id: null,
+      sender_account_id: null,
+      created_at: '2026-03-06T10:00:00.000Z',
+      available_at: '2026-03-06T10:00:00.000Z',
+      read_at: '2026-03-06T11:00:00.000Z',
+      last_failure_reason: null
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      source_type: 'admin_message',
+      event_type: 'admin_message',
+      subject: 'Welcome to the built-in inbox',
+      body: 'This inbox collects course updates, grade changes, and administrative announcements.',
+      notification_status: 'delivered',
+      deduplication_key: 'send-request:1:userA',
+      send_request_id: seededSendRequestId,
+      sender_account_id: accountIds['admin@example.com'],
+      created_at: timestamp,
+      available_at: timestamp,
+      read_at: null,
+      last_failure_reason: null
+    },
+    {
+      account_id: accountIds['restricted.inbox@example.com'],
+      source_type: 'academic_event',
+      event_type: 'academic_standing',
+      subject: 'Academic standing notice',
+      body: 'A new academic standing notice is stored and will be visible when inbox access is restored.',
+      notification_status: 'stored_for_later',
+      deduplication_key: 'academic:restricted:standing-1',
+      send_request_id: null,
+      sender_account_id: null,
+      created_at: timestamp,
+      available_at: null,
+      read_at: null,
+      last_failure_reason: null
+    },
+    {
+      account_id: accountIds['outage.user@example.com'],
+      source_type: 'academic_event',
+      event_type: 'course_update',
+      subject: 'Pending inbox delivery',
+      body: 'This notification is waiting for a delivery retry.',
+      notification_status: 'delivery_failed',
+      deduplication_key: 'academic:outage:course-update-1',
+      send_request_id: null,
+      sender_account_id: null,
+      created_at: timestamp,
+      available_at: null,
+      read_at: null,
+      last_failure_reason: 'Inbox delivery is temporarily unavailable.'
+    }
+  ]) {
+    const notificationId = Number(insertInboxNotification.run(notification).lastInsertRowid);
+    insertInboxDeliveryAttempt.run({
+      inbox_notification_id: notificationId,
+      attempt_sequence: 1,
+      status: notification.notification_status === 'delivery_failed' ? 'failed' : 'sent',
+      failure_reason: notification.last_failure_reason,
+      retry_eligible_until:
+        notification.notification_status === 'delivery_failed'
+          ? new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString()
+          : null,
+      attempted_at: notification.created_at,
+      delivered_at: notification.available_at
+    });
+  }
+
+  const offeringIds = {};
+  for (const offering of [
+    {
+      capacity: 30,
+      course_code: 'ENGL210',
+      created_at: timestamp,
+      end_minute: 660,
+      fee_change_cents: 45000,
+      meeting_days: 'Mon,Wed',
+      offering_code: 'O_OPEN',
+      prerequisite_course_code: 'CMPUT301',
+      seats_remaining: 12,
+      start_minute: 600,
+      term_code: '2026FALL',
+      title: 'Technical Communication',
+      updated_at: timestamp
+    },
+    {
+      capacity: 25,
+      course_code: 'STAT252',
+      created_at: timestamp,
+      end_minute: 900,
+      fee_change_cents: 37500,
+      meeting_days: 'Tue,Thu',
+      offering_code: 'O_FULL',
+      prerequisite_course_code: null,
+      seats_remaining: 0,
+      start_minute: 840,
+      term_code: '2026FALL',
+      title: 'Applied Statistics',
+      updated_at: timestamp
+    },
+    {
+      capacity: 20,
+      course_code: 'ECE320',
+      created_at: timestamp,
+      end_minute: 660,
+      fee_change_cents: 41000,
+      meeting_days: 'Mon,Wed',
+      offering_code: 'O_CONFLICT',
+      prerequisite_course_code: null,
+      seats_remaining: 6,
+      start_minute: 600,
+      term_code: '2026FALL',
+      title: 'Embedded Systems',
+      updated_at: timestamp
+    },
+    {
+      capacity: 18,
+      course_code: 'ECE330',
+      created_at: timestamp,
+      end_minute: 780,
+      fee_change_cents: 48000,
+      meeting_days: 'Tue,Thu',
+      offering_code: 'O_ERROR',
+      prerequisite_course_code: 'CMPUT301',
+      seats_remaining: 7,
+      start_minute: 720,
+      term_code: '2026FALL',
+      title: 'Control Systems',
+      updated_at: timestamp
+    }
+  ]) {
+    offeringIds[offering.offering_code] = Number(insertClassOffering.run(offering).lastInsertRowid);
+  }
+
+  for (const completedCourse of [
+    {
+      account_id: accountIds['userA@example.com'],
+      completed_at: '2025-04-20T12:00:00.000Z',
+      course_code: 'CMPUT301'
+    },
+    {
+      account_id: accountIds['hold.student@example.com'],
+      completed_at: '2025-04-20T12:00:00.000Z',
+      course_code: 'CMPUT301'
+    },
+    {
+      account_id: accountIds['conflict.student@example.com'],
+      completed_at: '2025-04-20T12:00:00.000Z',
+      course_code: 'CMPUT301'
+    },
+    {
+      account_id: accountIds['outage.user@example.com'],
+      completed_at: '2025-04-20T12:00:00.000Z',
+      course_code: 'CMPUT301'
+    },
+    {
+      account_id: accountIds['restricted.inbox@example.com'],
+      completed_at: '2025-04-20T12:00:00.000Z',
+      course_code: 'CMPUT301'
+    }
+  ]) {
+    insertCompletedCourse.run(completedCourse);
+  }
+
+  insertRegistrationHold.run({
+    account_id: accountIds['hold.student@example.com'],
+    created_at: timestamp,
+    hold_code: 'FINANCIAL_HOLD',
+    is_active: 1,
+    reason: 'Outstanding fees must be cleared before enrolling in new classes.'
+  });
+
+  insertClassEnrollment.run({
+    account_id: accountIds['conflict.student@example.com'],
+    created_at: timestamp,
+    offering_id: offeringIds.O_CONFLICT
+  });
+
   insertResetToken.run({
     account_id: accountIds['userA@example.com'],
     token_digest: digestToken(RESET_TOKENS.valid),
@@ -1154,6 +1817,18 @@ function seedLoginFixtures(dbPath, options = {}) {
       firstName: 'Sam',
       lastName: 'Outage',
       phoneNumber: '+1 780 555 8234'
+    },
+    {
+      accountId: accountIds['restricted.inbox@example.com'],
+      birthDate: '2002-03-03',
+      contactEmail: 'restricted.contact@example.com',
+      countryOfOrigin: 'Canada',
+      emergencyFullName: 'Jamie Restricted',
+      emergencyPhoneNumber: '+1 780 555 9334',
+      emergencyRelationship: 'Parent',
+      firstName: 'Quinn',
+      lastName: 'Restricted',
+      phoneNumber: '+1 780 555 8334'
     }
   ]) {
     insertPersonalDetails.run({

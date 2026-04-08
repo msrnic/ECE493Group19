@@ -41,10 +41,40 @@ async function setScheduleBuilderFixtures(request, state) {
   }
 }
 
+async function setTransactionHistoryFixtures(request, state) {
+  const response = await request.post('/__transaction-history-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure transaction-history fixtures: ' + response.status());
+  }
+}
+
+async function setInboxFixtures(request, state) {
+  const response = await request.post('/__inbox-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure inbox fixtures: ' + response.status());
+  }
+}
+
+async function setAdminNotificationFixtures(request, state) {
+  const response = await request.post('/__admin-notification-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure admin-notification fixtures: ' + response.status());
+  }
+}
+
 module.exports = {
+  setAdminNotificationFixtures,
+  setInboxFixtures,
   resetFixtures,
   setAccountCreationFixtures,
   setScheduleBuilderFixtures,
   setDashboardFixtures,
-  setProfileFixtures
+  setProfileFixtures,
+  setTransactionHistoryFixtures
 };

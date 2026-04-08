@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Enrollment Hub</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card profile-card--wide'>
+        <p class='eyebrow'>Enrollment Hub</p>
+        <h1>Class Enrollment</h1>
+        <p class='help-text'>Find a class offering and enroll when you meet holds, prerequisite, schedule, and capacity rules.</p>
+        {{result_banner_html}}
+        {{result_details_html}}
+        <form method='get' action='/enrollment' class='profile-section'>
+          <label for='query'>Search Offerings</label>
+          <input id='query' name='q' type='text' value='{{query}}'>
+          <div class='action-row profile-actions'>
+            <button type='submit'>Search</button>
+            <a class='login-button-link secondary-link' href='/dashboard#enrollment-hub'>Back to dashboard</a>
+          </div>
+        </form>
+        {{offerings_html}}
+        <section class='profile-section'>
+          <h2>Current Schedule</h2>
+          <ul class='course-list'>
+            {{schedule_html}}
+          </ul>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

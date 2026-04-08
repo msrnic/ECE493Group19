@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Add Credit Card</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card'>
+        <p class='eyebrow'>Payment Methods</p>
+        <h1>Add Credit Card</h1>
+        <p class='help-text'>Store a credit card for fee payments. Only the card brand, last four digits, and expiry will be shown after save.</p>
+        {{status_banner_html}}
+        <form method='post' action='/account/payment-methods/credit-cards' data-profile-form>
+          <label for='cardHolderName'>Name on Card</label>
+          <input id='cardHolderName' class='{{card_holder_name_input_class}}' name='cardHolderName' maxlength='{{card_holder_name_limit}}' required type='text' value='{{card_holder_name}}'>
+          {{card_holder_name_error_html}}
+
+          <label for='cardNumber'>Card Number</label>
+          <input id='cardNumber' class='{{card_number_input_class}}' inputmode='numeric' name='cardNumber' required type='text' value='{{card_number}}'>
+          {{card_number_error_html}}
+
+          <label for='expiryMonth'>Expiry Month</label>
+          <input id='expiryMonth' class='{{expiry_month_input_class}}' inputmode='numeric' name='expiryMonth' required type='text' value='{{expiry_month}}'>
+          {{expiry_month_error_html}}
+
+          <label for='expiryYear'>Expiry Year</label>
+          <input id='expiryYear' class='{{expiry_year_input_class}}' inputmode='numeric' name='expiryYear' required type='text' value='{{expiry_year}}'>
+          {{expiry_year_error_html}}
+
+          <div class='action-row profile-actions'>
+            <button type='submit'>Save Credit Card</button>
+            <button class='secondary-button' data-cancel-profile data-return-to='{{return_path}}' type='button'>Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src='/js/profile-form.js'></script>
+  </body>
+</html>

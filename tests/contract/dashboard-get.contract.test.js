@@ -80,6 +80,47 @@ test('GET /dashboard returns a success payload matching the contract for a stude
     response.body.sections.map((section) => section.sectionKey),
     ['inbox', 'security-center', 'student-academics', 'schedule-builder', 'enrollment-hub', 'financial-summary']
   );
+  const financialSection = response.body.sections.find(
+    (section) => section.sectionKey === 'financial-summary'
+  );
+  assert.deepEqual(financialSection.content.items, [
+    'Outstanding balance: $1,245.67',
+    'Outstanding fees: $325.00',
+    'Payment status: Pending confirmation',
+    'Last confirmed: 2026-03-07T12:00:00.000Z'
+  ]);
+  assert.equal(financialSection.content.staleNotice, null);
+
+  context.cleanup();
+});
+
+test('GET /dashboard returns stale financial values when the live financial section is unavailable', async () => {
+  const context = createTestContext();
+  const agent = request.agent(context.app);
+  context.dashboardTestState.unavailableSectionsByIdentifier['usera@example.com'] = ['financial-summary'];
+
+  await loginAs(agent, 'userA@example.com');
+  const response = await agent
+    .get('/dashboard')
+    .set('Accept', 'application/json');
+
+  assert.equal(response.status, 200);
+  assertDashboardPayload(response.body);
+  assert.equal(response.body.status, 'partial');
+  const financialSection = response.body.sections.find(
+    (section) => section.sectionKey === 'financial-summary'
+  );
+  assert.equal(financialSection.availabilityStatus, 'unavailable');
+  assert.deepEqual(financialSection.content.items, [
+    'Outstanding balance: $1,245.67',
+    'Outstanding fees: $325.00',
+    'Payment status: Pending confirmation',
+    'Last confirmed: 2026-03-07T12:00:00.000Z'
+  ]);
+  assert.equal(
+    financialSection.content.staleNotice,
+    'Live financial data is temporarily unavailable. Showing the last confirmed values.'
+  );
 
   context.cleanup();
 });

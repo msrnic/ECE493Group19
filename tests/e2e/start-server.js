@@ -6,7 +6,7 @@ const { createApp } = require('../../src/app');
 const { getDb } = require('../../src/db/connection');
 const { seedLoginFixtures } = require('../../src/db/migrations/seed-login-fixtures');
 
-const port = Number(process.env.PORT || '3111');
+const port = Number(process.env.PORT || '3112');
 const dbPath = process.env.DB_PATH || path.resolve('tmp/e2e-sis.db');
 const fixedNow = new Date('2026-03-07T12:00:00.000Z');
 const dashboardTestState = {
@@ -30,6 +30,15 @@ const scheduleBuilderTestState = {
   presetSaveFailureIdentifiers: [],
   timeoutAfterResultsIdentifiers: [],
   timeoutBeforeResultsIdentifiers: []
+};
+const transactionHistoryTestState = {
+  retrievalFailureIdentifiers: []
+};
+const inboxTestState = {
+  deliveryFailureIdentifiers: ['outage.user@example.com']
+};
+const adminNotificationTestState = {
+  loggingFailureSubjects: []
 };
 let db = null;
 
@@ -269,13 +278,146 @@ function applyScheduleBuilderState(nextState) {
   }
 }
 
+function applyTransactionHistoryState(nextState) {
+  const requestedState = nextState || {};
+  transactionHistoryTestState.retrievalFailureIdentifiers = [
+    ...((requestedState.retrievalFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+
+  const selectAccount = db.prepare(`
+    SELECT id
+    FROM accounts
+    WHERE lower(email) = lower(?) OR lower(username) = lower(?)
+    LIMIT 1
+  `);
+  const deleteTransactionsForAccount = db.prepare(`
+    DELETE FROM financial_transactions
+    WHERE account_id = ?
+  `);
+  const insertFinancialTransaction = db.prepare(`
+    INSERT INTO financial_transactions (
+      account_id,
+      transaction_reference,
+      posted_at,
+      amount_cents,
+      currency,
+      payment_method_label,
+      masked_method_identifier,
+      status,
+      transaction_scope,
+      source_system,
+      created_at,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @transaction_reference,
+      @posted_at,
+      @amount_cents,
+      @currency,
+      @payment_method_label,
+      @masked_method_identifier,
+      @status,
+      @transaction_scope,
+      @source_system,
+      @created_at,
+      @updated_at
+    )
+  `);
+
+  for (const [identifier, records] of Object.entries(requestedState.recordsByIdentifier || {})) {
+    const account = selectAccount.get(identifier, identifier);
+    if (!account) {
+      throw new Error(`Unknown transaction fixture account: ${identifier}`);
+    }
+
+    deleteTransactionsForAccount.run(account.id);
+
+    for (const record of records || []) {
+      insertFinancialTransaction.run({
+        account_id: account.id,
+        amount_cents: Number(record.amountCents),
+        created_at: record.createdAt,
+        currency: record.currency || 'USD',
+        masked_method_identifier: record.maskedMethodIdentifier || null,
+        payment_method_label: record.paymentMethodLabel,
+        posted_at: record.postedAt,
+        source_system: record.sourceSystem || 'sis',
+        status: record.status,
+        transaction_reference: record.transactionReference,
+        transaction_scope: record.transactionScope || 'sis_fee_payment',
+        updated_at: record.updatedAt || record.postedAt
+      });
+    }
+  }
+}
+
+function applyInboxState(nextState) {
+  const requestedState = nextState || {};
+  inboxTestState.deliveryFailureIdentifiers = [
+    ...((requestedState.deliveryFailureIdentifiers || ['outage.user@example.com']).map(normalizeIdentifier))
+  ];
+
+  const selectAccount = db.prepare(`
+    SELECT id
+    FROM accounts
+    WHERE lower(email) = lower(?) OR lower(username) = lower(?)
+    LIMIT 1
+  `);
+  const upsertInboxAccess = db.prepare(`
+    INSERT INTO inbox_access_states (
+      account_id,
+      access_state,
+      restriction_reason,
+      show_status_indicator,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @access_state,
+      @restriction_reason,
+      @show_status_indicator,
+      @updated_at
+    )
+    ON CONFLICT(account_id) DO UPDATE SET
+      access_state = excluded.access_state,
+      restriction_reason = excluded.restriction_reason,
+      show_status_indicator = excluded.show_status_indicator,
+      updated_at = excluded.updated_at
+  `);
+
+  for (const [identifier, accessState] of Object.entries(requestedState.accessStatesByIdentifier || {})) {
+    const account = selectAccount.get(identifier, identifier);
+    if (!account) {
+      throw new Error(`Unknown inbox fixture account: ${identifier}`);
+    }
+
+    upsertInboxAccess.run({
+      access_state: accessState.accessState || 'enabled',
+      account_id: account.id,
+      restriction_reason: accessState.restrictionReason || null,
+      show_status_indicator: accessState.showStatusIndicator === false ? 0 : 1,
+      updated_at: fixedNow.toISOString()
+    });
+  }
+}
+
+function applyAdminNotificationState(nextState) {
+  const requestedState = nextState || {};
+  adminNotificationTestState.loggingFailureSubjects = [
+    ...((requestedState.loggingFailureSubjects || []).map((value) => String(value)))
+  ];
+}
+
 function resetFixtures() {
+  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
   seedLoginFixtures(dbPath, { now: fixedNow });
   db = getDb(dbPath);
   applyAccountCreationState();
   applyDashboardState();
   applyProfileState();
   applyScheduleBuilderState();
+  applyTransactionHistoryState();
+  applyInboxState();
+  applyAdminNotificationState();
 }
 
 fs.rmSync(dbPath, { force: true });
@@ -290,6 +432,9 @@ const app = createApp({
   resetFixtures,
   scheduleBuilderTestState,
   sessionSecret: 'acceptance-session-secret',
+  inboxTestState,
+  adminNotificationTestState,
+  transactionHistoryTestState,
   unavailableIdentifiers: ['outage.user@example.com']
 });
 
@@ -319,6 +464,33 @@ app.post('/__account-creation-fixtures', (req, res, next) => {
 app.post('/__schedule-builder-fixtures', (req, res, next) => {
   try {
     applyScheduleBuilderState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__transaction-history-fixtures', (req, res, next) => {
+  try {
+    applyTransactionHistoryState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__inbox-fixtures', (req, res, next) => {
+  try {
+    applyInboxState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__admin-notification-fixtures', (req, res, next) => {
+  try {
+    applyAdminNotificationState(req.body || {});
     return res.status(204).end();
   } catch (error) {
     return next(error);

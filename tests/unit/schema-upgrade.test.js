@@ -247,6 +247,82 @@ test('applySchema is idempotent for databases that already match the current sch
   fs.rmSync(tempDir, { force: true, recursive: true });
 });
 
+test('applySchema rebuilds legacy payment_methods tables so credit-card columns are available', () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc12-upgrade-payment-methods-'));
+  const dbPath = path.join(tempDir, 'sis.db');
+  const db = getDb(dbPath);
+
+  db.exec(`
+    CREATE TABLE accounts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL UNIQUE,
+      username TEXT NOT NULL UNIQUE,
+      role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'professor', 'admin')),
+      password_hash TEXT NOT NULL,
+      must_change_password INTEGER NOT NULL DEFAULT 0,
+      status TEXT NOT NULL,
+      failed_attempt_count INTEGER NOT NULL DEFAULT 0,
+      last_failed_at TEXT,
+      locked_until TEXT,
+      password_changed_at TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE payment_methods (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      account_id INTEGER NOT NULL,
+      method_type TEXT NOT NULL CHECK (method_type IN ('bank_account')),
+      bank_holder_name TEXT NOT NULL,
+      routing_identifier TEXT NOT NULL,
+      account_identifier_masked TEXT NOT NULL,
+      account_identifier_fingerprint TEXT NOT NULL,
+      status TEXT NOT NULL CHECK (status IN ('active')),
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+      UNIQUE(account_id, account_identifier_fingerprint)
+    );
+    INSERT INTO accounts (
+      email, username, role, password_hash, must_change_password, status, failed_attempt_count,
+      last_failed_at, locked_until, password_changed_at, created_at, updated_at
+    ) VALUES (
+      'legacy@example.com', 'legacy', 'student', 'hash', 0, 'active', 0,
+      NULL, NULL, '2026-03-07T12:00:00.000Z', '2026-03-07T12:00:00.000Z', '2026-03-07T12:00:00.000Z'
+    );
+    INSERT INTO payment_methods (
+      account_id, method_type, bank_holder_name, routing_identifier, account_identifier_masked,
+      account_identifier_fingerprint, status, created_at, updated_at
+    ) VALUES (
+      1, 'bank_account', 'Legacy Holder', '021000021', 'Acct ending 6789',
+      'fingerprint-1', 'active', '2026-03-07T12:00:00.000Z', '2026-03-07T12:00:00.000Z'
+    );
+  `);
+
+  applySchema(dbPath);
+
+  const columns = db.prepare('PRAGMA table_info(payment_methods)').all().map((column) => column.name);
+  assert.equal(columns.includes('display_label'), true);
+  assert.equal(columns.includes('token_reference'), true);
+
+  const tableSql = db.prepare(
+    "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'payment_methods'"
+  ).get().sql;
+  assert.match(tableSql, /credit_card/);
+
+  const row = db.prepare(
+    'SELECT method_type, display_label, bank_holder_name, account_identifier_masked FROM payment_methods WHERE id = 1'
+  ).get();
+  assert.deepEqual(row, {
+    account_identifier_masked: 'Acct ending 6789',
+    bank_holder_name: 'Legacy Holder',
+    display_label: 'Bank account',
+    method_type: 'bank_account'
+  });
+
+  closeAll();
+  fs.rmSync(tempDir, { force: true, recursive: true });
+});
+
 test('applySchema exposes getTableSql for missing-table checks used by migrations', () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-upgrade-private-'));
   const dbPath = path.join(tempDir, 'sis.db');

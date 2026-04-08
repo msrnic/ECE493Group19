@@ -41,6 +41,30 @@ function createScheduleBuilderTestState(initialState = {}) {
   };
 }
 
+function createTransactionHistoryTestState(initialState = {}) {
+  return {
+    retrievalFailureIdentifiers: [...(initialState.retrievalFailureIdentifiers || [])]
+  };
+}
+
+function createEnrollmentTestState(initialState = {}) {
+  return {
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])]
+  };
+}
+
+function createInboxTestState(initialState = {}) {
+  return {
+    deliveryFailureIdentifiers: [...(initialState.deliveryFailureIdentifiers || ['outage.user@example.com'])]
+  };
+}
+
+function createAdminNotificationTestState(initialState = {}) {
+  return {
+    loggingFailureSubjects: [...(initialState.loggingFailureSubjects || [])]
+  };
+}
+
 function createTestContext(options = {}) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uc02-login-'));
   const dbPath = path.join(tempDir, 'sis.db');
@@ -51,6 +75,10 @@ function createTestContext(options = {}) {
   const dashboardTestState = createDashboardTestState(options.dashboardTestState);
   const profileTestState = createProfileTestState(options.profileTestState);
   const scheduleBuilderTestState = createScheduleBuilderTestState(options.scheduleBuilderTestState);
+  const transactionHistoryTestState = createTransactionHistoryTestState(options.transactionHistoryTestState);
+  const enrollmentTestState = createEnrollmentTestState(options.enrollmentTestState);
+  const inboxTestState = createInboxTestState(options.inboxTestState);
+  const adminNotificationTestState = createAdminNotificationTestState(options.adminNotificationTestState);
 
   applySchema(dbPath);
   seedLoginFixtures(dbPath, { now: nowState.value });
@@ -60,10 +88,14 @@ function createTestContext(options = {}) {
     db: getDb(dbPath),
     dashboardTestState,
     now: () => nowState.value,
+    enrollmentTestState,
+    inboxTestState,
+    adminNotificationTestState,
     profileTestState,
     scheduleBuilderTestState,
     sessionSecret: 'test-session-secret',
     simulatedPasswordChangeFailureIdentifiers: options.simulatedPasswordChangeFailureIdentifiers || [],
+    transactionHistoryTestState,
     unavailableIdentifiers: options.unavailableIdentifiers || []
   });
 
@@ -84,8 +116,12 @@ function createTestContext(options = {}) {
     now() {
       return nowState.value;
     },
+    enrollmentTestState,
+    inboxTestState,
+    adminNotificationTestState,
     profileTestState,
     scheduleBuilderTestState,
+    transactionHistoryTestState,
     resetAccountCreationTestState() {
       accountCreationTestState.createFailureIdentifiers = [];
       accountCreationTestState.notificationFailureIdentifiers = [];
@@ -107,6 +143,18 @@ function createTestContext(options = {}) {
       scheduleBuilderTestState.presetSaveFailureIdentifiers = [];
       scheduleBuilderTestState.timeoutAfterResultsIdentifiers = [];
       scheduleBuilderTestState.timeoutBeforeResultsIdentifiers = [];
+    },
+    resetEnrollmentTestState() {
+      enrollmentTestState.failureIdentifiers = [];
+    },
+    resetInboxTestState() {
+      inboxTestState.deliveryFailureIdentifiers = ['outage.user@example.com'];
+    },
+    resetAdminNotificationTestState() {
+      adminNotificationTestState.loggingFailureSubjects = [];
+    },
+    resetTransactionHistoryTestState() {
+      transactionHistoryTestState.retrievalFailureIdentifiers = [];
     }
   };
 }

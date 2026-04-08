@@ -1521,3 +1521,196 @@ test('dashboard controller treats omitted active role lists as an empty-access m
   assert.match(response.capture.body, /No dashboard modules are available for this account./);
   assert.match(response.capture.body, /student/i);
 });
+
+test('dashboard controller renders live financial snapshot details for a student dashboard section', () => {
+  const controller = createDashboardController({
+    accountModel: {
+      getDashboardAccount() {
+        return {
+          courses: [],
+          email: 'finance@example.com',
+          id: 60,
+          role: 'student',
+          username: 'financeStudent'
+        };
+      },
+      listPasswordManagementTargets() {
+        return [];
+      }
+    },
+    dashboardLoadModel: {
+      recordEvent() {}
+    },
+    dashboardSectionModel: {
+      listEnabledSectionsForModuleIds() {
+        return [{ id: 1, module_id: 1, section_key: 'financial-summary', section_title: 'Financial Summary' }];
+      }
+    },
+    dashboardSectionStateModel: {
+      listStatesForAccount() {
+        return [];
+      },
+      listUnavailableSectionIds() {
+        return [];
+      },
+      upsertStates() {}
+    },
+    dashboardTestState: {
+      roleFailureIdentifiers: [],
+      unavailableSectionsByIdentifier: {}
+    },
+    financialSummaryModel: {
+      getLatestSnapshotByAccountId() {
+        return {
+          balanceDueCents: 100,
+          lastConfirmedAt: '2026-03-07T12:47:00.000Z',
+          outstandingFeesCents: 200,
+          paymentStatus: 'mystery_status',
+          sourceState: 'live'
+        };
+      }
+    },
+    moduleModel: {
+      hasEnabledModules() {
+        return true;
+      },
+      listPermittedModulesForRoleIds() {
+        return [{ display_name: 'Financial Summary', id: 1, module_key: 'financial-summary', route_path: '/dashboard#financial-summary' }];
+      }
+    },
+    now() {
+      return new Date('2026-03-07T12:47:00.000Z');
+    },
+    roleModel: {
+      listActiveRolesForAccount() {
+        return [{ display_name: 'Student', id: 1, role_key: 'student' }];
+      }
+    },
+    sessionModel: {
+      findActiveSession() {
+        return { created_at: '2026-03-07T12:47:00.000Z' };
+      }
+    }
+  });
+
+  const response = createHtmlResponseCapture();
+  controller.getDashboard(
+    {
+      get() {
+        return '';
+      },
+      is() {
+        return false;
+      },
+      session: { accountId: 60 },
+      sessionID: 'session-finance-live'
+    },
+    response.res
+  );
+
+  assert.equal(response.capture.statusCode, 200);
+  assert.match(response.capture.body, /Outstanding balance: \$1\.00/);
+  assert.match(response.capture.body, /Outstanding fees: \$2\.00/);
+  assert.match(response.capture.body, /Payment status: Unknown/);
+  assert.doesNotMatch(response.capture.body, /Live financial data is temporarily unavailable/);
+});
+
+test('dashboard controller returns stale financial snapshot data in JSON when the financial section is unavailable', () => {
+  const controller = createDashboardController({
+    accountModel: {
+      getDashboardAccount() {
+        return {
+          courses: [],
+          email: 'finance@example.com',
+          id: 61,
+          role: 'student',
+          username: 'financeStudent'
+        };
+      }
+    },
+    dashboardLoadModel: {
+      recordEvent() {}
+    },
+    dashboardSectionModel: {
+      listEnabledSectionsForModuleIds() {
+        return [{ id: 1, module_id: 1, section_key: 'financial-summary', section_title: 'Financial Summary' }];
+      }
+    },
+    dashboardSectionStateModel: {
+      listStatesForAccount() {
+        return [];
+      },
+      listUnavailableSectionIds() {
+        return [1];
+      },
+      upsertStates() {}
+    },
+    dashboardTestState: {
+      roleFailureIdentifiers: [],
+      unavailableSectionsByIdentifier: {
+        'finance@example.com': ['financial-summary']
+      }
+    },
+    financialSummaryModel: {
+      getLatestSnapshotByAccountId() {
+        return {
+          balanceDueCents: 4050,
+          lastConfirmedAt: '2026-03-07T12:48:00.000Z',
+          outstandingFeesCents: 500,
+          paymentStatus: 'overdue',
+          sourceState: 'live'
+        };
+      }
+    },
+    moduleModel: {
+      hasEnabledModules() {
+        return true;
+      },
+      listPermittedModulesForRoleIds() {
+        return [{ display_name: 'Financial Summary', id: 1, module_key: 'financial-summary', route_path: '/dashboard#financial-summary' }];
+      }
+    },
+    now() {
+      return new Date('2026-03-07T12:48:00.000Z');
+    },
+    roleModel: {
+      listActiveRolesForAccount() {
+        return [{ display_name: 'Student', id: 1, role_key: 'student' }];
+      }
+    },
+    sessionModel: {
+      findActiveSession() {
+        return { created_at: '2026-03-07T12:48:00.000Z' };
+      }
+    }
+  });
+
+  const response = createJsonResponseCapture();
+  controller.getDashboard(
+    {
+      get() {
+        return 'application/json';
+      },
+      headers: { accept: 'application/json' },
+      is() {
+        return true;
+      },
+      session: { accountId: 61 },
+      sessionID: 'session-finance-stale'
+    },
+    response.res
+  );
+
+  assert.equal(response.capture.statusCode, 200);
+  assert.equal(response.capture.payload.status, 'failure');
+  assert.deepEqual(response.capture.payload.sections[0].content.items, [
+    'Outstanding balance: $40.50',
+    'Outstanding fees: $5.00',
+    'Payment status: Overdue',
+    'Last confirmed: 2026-03-07T12:48:00.000Z'
+  ]);
+  assert.equal(
+    response.capture.payload.sections[0].content.staleNotice,
+    'Live financial data is temporarily unavailable. Showing the last confirmed values.'
+  );
+});

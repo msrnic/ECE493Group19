@@ -36,7 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderSectionContent(section) {
     if (section.availabilityStatus === 'unavailable') {
-      return `<p class="dashboard-unavailable-label">${escapeHtml(section.unavailableLabel || 'Unavailable')}</p><p class="help-text">Retry the unavailable section when dashboard data recovers.</p>`;
+      const itemsHtml = (section.content?.items || [])
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join('');
+      const staleNotice = section.content?.staleNotice
+        ? `<p class="dashboard-stale-note">${escapeHtml(section.content.staleNotice)}</p>`
+        : '';
+      const summary = section.content?.summary
+        ? `<p class="help-text">${escapeHtml(section.content.summary)}</p>`
+        : '';
+      return `<p class="dashboard-unavailable-label">${escapeHtml(section.unavailableLabel || 'Unavailable')}</p>${staleNotice}${summary}${itemsHtml ? `<ul class="course-list">${itemsHtml}</ul>` : ''}<p class="help-text">Retry the unavailable section when dashboard data recovers.</p>`;
     }
 
     const itemsHtml = (section.content?.items || [])

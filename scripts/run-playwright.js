@@ -15,8 +15,9 @@ const env = {
     .filter(Boolean)
     .join(':')
 };
+const args = process.argv.slice(2);
 
-const result = spawnSync('npx', ['playwright', 'test'], {
+const result = spawnSync('npx', ['playwright', 'test', ...args], {
   env,
   stdio: 'inherit'
 });

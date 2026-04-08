@@ -109,6 +109,209 @@ CREATE TABLE IF NOT EXISTS dashboard_load_events (
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS financial_summary_snapshots (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  balance_due_cents INTEGER NOT NULL DEFAULT 0 CHECK (balance_due_cents >= 0),
+  outstanding_fees_cents INTEGER NOT NULL DEFAULT 0 CHECK (outstanding_fees_cents >= 0),
+  payment_status TEXT NOT NULL CHECK (
+    payment_status IN ('current', 'overdue', 'pending_confirmation')
+  ),
+  source_state TEXT NOT NULL CHECK (source_state IN ('live', 'stale')),
+  last_confirmed_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS financial_transactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  transaction_reference TEXT NOT NULL,
+  posted_at TEXT NOT NULL,
+  amount_cents INTEGER NOT NULL CHECK (amount_cents > 0),
+  currency TEXT NOT NULL,
+  payment_method_label TEXT NOT NULL,
+  masked_method_identifier TEXT,
+  status TEXT NOT NULL CHECK (status IN ('pending', 'succeeded', 'failed', 'reversed')),
+  transaction_scope TEXT NOT NULL CHECK (
+    transaction_scope IN ('sis_fee_payment', 'housing', 'bookstore', 'parking')
+  ),
+  source_system TEXT NOT NULL CHECK (source_system IN ('sis', 'payment_processor', 'banking_network')),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS payment_methods (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  method_type TEXT NOT NULL CHECK (method_type IN ('bank_account', 'credit_card')),
+  display_label TEXT NOT NULL,
+  bank_holder_name TEXT,
+  routing_identifier TEXT,
+  account_identifier_masked TEXT,
+  account_identifier_fingerprint TEXT,
+  card_brand TEXT,
+  card_last4 TEXT,
+  expiry_month INTEGER,
+  expiry_year INTEGER,
+  token_reference TEXT,
+  token_fingerprint TEXT,
+  status TEXT NOT NULL CHECK (status IN ('active')),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  UNIQUE(account_id, account_identifier_fingerprint),
+  UNIQUE(account_id, token_fingerprint)
+);
+
+CREATE TABLE IF NOT EXISTS inbox_access_states (
+  account_id INTEGER PRIMARY KEY,
+  access_state TEXT NOT NULL CHECK (access_state IN ('enabled', 'restricted')),
+  restriction_reason TEXT,
+  show_status_indicator INTEGER NOT NULL DEFAULT 1 CHECK (show_status_indicator IN (0, 1)),
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS notification_recipient_groups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  group_key TEXT NOT NULL UNIQUE,
+  display_name TEXT NOT NULL,
+  is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS notification_group_memberships (
+  group_id INTEGER NOT NULL,
+  account_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL,
+  PRIMARY KEY (group_id, account_id),
+  FOREIGN KEY (group_id) REFERENCES notification_recipient_groups(id) ON DELETE CASCADE,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS notification_messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  subject TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_by INTEGER NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (created_by) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS notification_send_requests (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  message_id INTEGER NOT NULL,
+  sender_account_id INTEGER NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('processing', 'completed', 'completed_with_failures', 'failed')),
+  total_unique_recipients INTEGER NOT NULL DEFAULT 0,
+  duplicate_recipients_removed INTEGER NOT NULL DEFAULT 0,
+  successful_deliveries INTEGER NOT NULL DEFAULT 0,
+  failed_deliveries INTEGER NOT NULL DEFAULT 0,
+  sent_at TEXT NOT NULL,
+  retry_expires_at TEXT NOT NULL,
+  last_error TEXT,
+  FOREIGN KEY (message_id) REFERENCES notification_messages(id) ON DELETE CASCADE,
+  FOREIGN KEY (sender_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS inbox_notifications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  source_type TEXT NOT NULL CHECK (source_type IN ('academic_event', 'admin_message')),
+  event_type TEXT NOT NULL CHECK (
+    event_type IN ('course_update', 'grade_update', 'academic_standing', 'admin_message')
+  ),
+  subject TEXT NOT NULL,
+  body TEXT NOT NULL,
+  notification_status TEXT NOT NULL CHECK (
+    notification_status IN ('generated', 'delivered', 'delivery_failed', 'stored_for_later', 'read')
+  ),
+  deduplication_key TEXT NOT NULL,
+  send_request_id INTEGER,
+  sender_account_id INTEGER,
+  created_at TEXT NOT NULL,
+  available_at TEXT,
+  read_at TEXT,
+  last_failure_reason TEXT,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (send_request_id) REFERENCES notification_send_requests(id) ON DELETE SET NULL,
+  FOREIGN KEY (sender_account_id) REFERENCES accounts(id) ON DELETE SET NULL,
+  UNIQUE (account_id, deduplication_key)
+);
+
+CREATE TABLE IF NOT EXISTS inbox_delivery_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  inbox_notification_id INTEGER NOT NULL,
+  attempt_sequence INTEGER NOT NULL CHECK (attempt_sequence > 0),
+  status TEXT NOT NULL CHECK (status IN ('sent', 'failed')),
+  failure_reason TEXT,
+  retry_eligible_until TEXT,
+  attempted_at TEXT NOT NULL,
+  delivered_at TEXT,
+  FOREIGN KEY (inbox_notification_id) REFERENCES inbox_notifications(id) ON DELETE CASCADE,
+  UNIQUE (inbox_notification_id, attempt_sequence)
+);
+
+CREATE TABLE IF NOT EXISTS class_offerings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  offering_code TEXT NOT NULL UNIQUE,
+  course_code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  term_code TEXT NOT NULL,
+  meeting_days TEXT NOT NULL,
+  start_minute INTEGER NOT NULL CHECK (start_minute >= 0),
+  end_minute INTEGER NOT NULL CHECK (end_minute > start_minute),
+  capacity INTEGER NOT NULL CHECK (capacity >= 0),
+  seats_remaining INTEGER NOT NULL CHECK (seats_remaining >= 0),
+  prerequisite_course_code TEXT,
+  fee_change_cents INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS completed_courses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  course_code TEXT NOT NULL,
+  completed_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  UNIQUE(account_id, course_code)
+);
+
+CREATE TABLE IF NOT EXISTS registration_holds (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  hold_code TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS class_enrollments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE,
+  UNIQUE(account_id, offering_id)
+);
+
+CREATE TABLE IF NOT EXISTS enrollment_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  outcome TEXT NOT NULL CHECK (outcome IN ('enrolled', 'blocked', 'error')),
+  reason_summary TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS personal_details (
   account_id INTEGER PRIMARY KEY,
   first_name TEXT,
@@ -347,6 +550,21 @@ CREATE INDEX IF NOT EXISTS idx_role_modules_role ON role_modules(role_id, is_act
 CREATE INDEX IF NOT EXISTS idx_dashboard_sections_module ON dashboard_sections(module_id, is_enabled);
 CREATE INDEX IF NOT EXISTS idx_dashboard_section_states_account ON dashboard_section_states(account_id, availability_status);
 CREATE INDEX IF NOT EXISTS idx_dashboard_load_events_account ON dashboard_load_events(account_id, occurred_at);
+CREATE INDEX IF NOT EXISTS idx_financial_summary_snapshots_account ON financial_summary_snapshots(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_financial_transactions_account ON financial_transactions(account_id, posted_at);
+CREATE INDEX IF NOT EXISTS idx_payment_methods_account ON payment_methods(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_inbox_access_states_account ON inbox_access_states(access_state, updated_at);
+CREATE INDEX IF NOT EXISTS idx_notification_recipient_groups_key ON notification_recipient_groups(group_key, is_active);
+CREATE INDEX IF NOT EXISTS idx_notification_group_memberships_account ON notification_group_memberships(account_id);
+CREATE INDEX IF NOT EXISTS idx_notification_send_requests_sender ON notification_send_requests(sender_account_id, sent_at);
+CREATE INDEX IF NOT EXISTS idx_inbox_notifications_account ON inbox_notifications(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_inbox_notifications_send_request ON inbox_notifications(send_request_id, notification_status);
+CREATE INDEX IF NOT EXISTS idx_inbox_delivery_attempts_notification ON inbox_delivery_attempts(inbox_notification_id, attempt_sequence);
+CREATE INDEX IF NOT EXISTS idx_class_offerings_term ON class_offerings(term_code, course_code);
+CREATE INDEX IF NOT EXISTS idx_completed_courses_account ON completed_courses(account_id, course_code);
+CREATE INDEX IF NOT EXISTS idx_registration_holds_account ON registration_holds(account_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_class_enrollments_account ON class_enrollments(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_enrollment_attempts_account ON enrollment_attempts(account_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_login_attempts_account_time ON login_attempts(account_id, attempted_at);
 CREATE INDEX IF NOT EXISTS idx_user_sessions_account ON user_sessions(account_id, expires_at);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_account ON password_reset_tokens(account_id, expires_at);

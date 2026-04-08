@@ -40,7 +40,11 @@ test('GET /dashboard renders authenticated account data, available navigation, a
   assert.equal(response.text.includes('Schedule Builder'), true);
   assert.equal(response.text.includes('Enrollment Hub'), true);
   assert.equal(response.text.includes('Financial Summary'), true);
+  assert.equal(response.text.includes('Outstanding balance: $1,245.67'), true);
+  assert.equal(response.text.includes('Outstanding fees: $325.00'), true);
+  assert.equal(response.text.includes('Payment status: Pending confirmation'), true);
   assert.equal(response.text.includes('Security Center'), false);
+  assert.equal(response.text.includes('Make a payment'), false);
   assert.equal(response.text.includes('Change password'), true);
   assert.equal(response.text.includes('Log out'), true);
   assert.equal(response.text.includes('Admin Operations'), false);
@@ -49,6 +53,42 @@ test('GET /dashboard renders authenticated account data, available navigation, a
   assert.equal(response.text.indexOf('Academic Records') < response.text.indexOf('Schedule Builder'), true);
   assert.equal(response.text.indexOf('Schedule Builder') < response.text.indexOf('Enrollment Hub'), true);
   assert.equal(response.text.indexOf('Enrollment Hub') < response.text.indexOf('Financial Summary'), true);
+
+  context.cleanup();
+});
+
+test('GET /dashboard shows only the signed-in student financial snapshot and does not leak another account snapshot', async () => {
+  const context = createTestContext();
+  const outageAccountId = context.db
+    .prepare('SELECT id FROM accounts WHERE email = ?')
+    .get('outage.user@example.com').id;
+  context.db.prepare(`
+    INSERT INTO financial_summary_snapshots (
+      account_id,
+      balance_due_cents,
+      outstanding_fees_cents,
+      payment_status,
+      source_state,
+      last_confirmed_at,
+      created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    outageAccountId,
+    999999,
+    999999,
+    'overdue',
+    'stale',
+    '2026-03-07T11:30:00.000Z',
+    '2026-03-07T12:00:00.000Z'
+  );
+  const agent = request.agent(context.app);
+
+  await loginAs(agent, 'userA@example.com');
+
+  const response = await agent.get('/dashboard');
+  assert.equal(response.status, 200);
+  assert.equal(response.text.includes('Outstanding balance: $1,245.67'), true);
+  assert.equal(response.text.includes('Outstanding balance: $9,999.99'), false);
 
   context.cleanup();
 });

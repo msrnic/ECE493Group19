@@ -70,6 +70,13 @@ test('POST /dashboard/retry returns a partial payload when only some unavailable
 
   assert.equal(initialResponse.body.status, 'partial');
   assert.equal(initialResponse.body.unavailableSectionIds.length, 2);
+  const unavailableFinancialSection = initialResponse.body.sections.find(
+    (section) => section.sectionKey === 'financial-summary'
+  );
+  assert.equal(
+    unavailableFinancialSection.content.staleNotice,
+    'Live financial data is temporarily unavailable. Showing the last confirmed values.'
+  );
 
   context.dashboardTestState.unavailableSectionsByIdentifier['usera@example.com'] = ['financial-summary'];
   const retryResponse = await agent

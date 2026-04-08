@@ -105,6 +105,28 @@ function serializeForScriptTag(payload) {
   return JSON.stringify(payload).replaceAll('<', '\\u003c');
 }
 
+function formatCurrency(cents) {
+  const amount = Number(cents || 0) / 100;
+  return amount.toLocaleString('en-US', {
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    style: 'currency'
+  });
+}
+
+function formatPaymentStatus(status) {
+  switch (status) {
+    case 'current':
+      return 'Current';
+    case 'overdue':
+      return 'Overdue';
+    case 'pending_confirmation':
+      return 'Pending confirmation';
+    default:
+      return 'Unknown';
+  }
+}
+
 function createDashboardController(services) {
   function getProfileDetails(account) {
     if (
@@ -122,6 +144,40 @@ function createDashboardController(services) {
 
   function createProfileFact(label, value) {
     return `${label}: ${value || 'Not provided'}`;
+  }
+
+  function createFinancialSummaryContent(account, options = {}) {
+    const snapshot = services.financialSummaryModel?.getLatestSnapshotByAccountId(account.id);
+    const isStale = options.forceStale || snapshot?.sourceState === 'stale';
+    const links = [
+      { href: '/transactions/history', label: 'Records of past financial transactions' },
+      { href: '/account/payment-methods', label: 'Store banking information' },
+      { href: '/account/payment-methods/credit-cards/new', label: 'Store credit card information' }
+    ];
+
+    if (!snapshot) {
+      return {
+        items: ['No confirmed financial information is available yet.'],
+        links,
+        summary: 'Financial information will appear here when account balances are available.'
+      };
+    }
+
+    return {
+      items: [
+        `Outstanding balance: ${formatCurrency(snapshot.balanceDueCents)}`,
+        `Outstanding fees: ${formatCurrency(snapshot.outstandingFeesCents)}`,
+        `Payment status: ${formatPaymentStatus(snapshot.paymentStatus)}`,
+        `Last confirmed: ${snapshot.lastConfirmedAt}`
+      ],
+      links,
+      staleNotice: isStale
+        ? 'Live financial data is temporarily unavailable. Showing the last confirmed values.'
+        : null,
+      summary: isStale
+        ? 'Review the most recent confirmed financial totals while live data is unavailable.'
+        : 'Review your current balance, fees, and payment status from one place.'
+    };
   }
 
   function buildProfileSectionContent(account, options) {
@@ -277,12 +333,37 @@ function createDashboardController(services) {
   function createSectionContent(account, sectionKey) {
     switch (sectionKey) {
       case 'inbox':
+        if (account.role === 'student') {
+          const student = services.studentAccountModel.findByAccountId(account.id);
+          const inboxView = student ? services.inboxService.getInboxView(student) : null;
+          return {
+            items: inboxView?.accessState.accessState === 'restricted'
+              ? [
+                  inboxView.accessState.restrictionReason ||
+                    'Inbox access is temporarily restricted.',
+                  `${inboxView.storedCount} notification(s) are stored for later viewing.`
+                ]
+              : inboxView && inboxView.notifications.length > 0
+                ? inboxView.notifications
+                    .slice(0, 2)
+                    .map((notification) => `${notification.subject} (${notification.eventType})`)
+                : [
+                    'No unread messages require action right now.',
+                    'New course, grade, and administrative updates will appear here as they arrive.'
+                  ],
+            links: [{ href: '/inbox', label: 'Open Inbox' }],
+            summary: inboxView?.accessState.accessState === 'restricted'
+              ? 'Inbox delivery continues in the background while access is temporarily restricted.'
+              : 'Recent course and administrative updates are collected in one place.'
+          };
+        }
+
         return {
           items: [
             'No unread messages require action right now.',
             'New course, account, and dashboard updates will appear here as they arrive.'
           ],
-          links: [],
+          links: account.role === 'admin' ? [{ href: '/admin/notifications', label: 'Open Notifications Tool' }] : [],
           summary: account.role === 'professor'
             ? 'Your teaching and account updates are collected in one place.'
             : 'Recent course and account updates are collected in one place.'
@@ -316,15 +397,11 @@ function createDashboardController(services) {
             'Browse eligible courses and manage your registration choices.',
             'Enrollment notices and seat updates appear here when available.'
           ],
-          links: [],
+          links: [{ href: '/enrollment', label: 'Open Enrollment Hub' }],
           summary: 'Handle add, drop, and waitlist activity from your dashboard.'
         };
       case 'financial-summary':
-        return {
-          items: ['Outstanding balance: $0.00', 'Next statement refresh: 08:00 daily'],
-          links: [],
-          summary: 'Financial dashboard services are available for your active student account.'
-        };
+        return createFinancialSummaryContent(account);
       case 'teaching-workload': {
         const teachingCourses = account.courses.filter(
           (course) => course.role === 'instructor' || course.role === 'ta'
@@ -360,7 +437,8 @@ function createDashboardController(services) {
             'New accounts require a password change at first sign-in.'
           ],
           links: [
-            { href: '/admin/users/new', label: 'Create New User' }
+            { href: '/admin/users/new', label: 'Create New User' },
+            { href: '/admin/notifications', label: 'Send Inbox Notifications' }
           ],
           summary: 'Administrative controls are active for this account.'
         };
@@ -407,9 +485,12 @@ function createDashboardController(services) {
 
   function buildSectionResponse(account, section, state) {
     const isUnavailable = state.availability_status === 'unavailable';
+    const staleFinancialContent = isUnavailable && section.section_key === 'financial-summary'
+      ? createFinancialSummaryContent(account, { forceStale: true })
+      : undefined;
     return {
       availabilityStatus: isUnavailable ? 'unavailable' : 'available',
-      content: isUnavailable ? undefined : createSectionContent(account, section.section_key),
+      content: isUnavailable ? staleFinancialContent : createSectionContent(account, section.section_key),
       sectionId: section.id,
       sectionKey: section.section_key,
       title: section.section_title,
@@ -584,7 +665,16 @@ function createDashboardController(services) {
 
   function renderSectionContent(section) {
     if (section.availabilityStatus === 'unavailable') {
-      return `<p class='dashboard-unavailable-label'>${escapeHtml(section.unavailableLabel)}</p><p class='help-text'>Retry the unavailable section when dashboard data recovers.</p>`;
+      const itemsHtml = (section.content?.items || [])
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join('');
+      const staleNotice = section.content?.staleNotice
+        ? `<p class='dashboard-stale-note'>${escapeHtml(section.content.staleNotice)}</p>`
+        : '';
+      const summary = section.content?.summary
+        ? `<p class='help-text'>${escapeHtml(section.content.summary)}</p>`
+        : '';
+      return `<p class='dashboard-unavailable-label'>${escapeHtml(section.unavailableLabel)}</p>${staleNotice}${summary}${itemsHtml ? `<ul class='course-list'>${itemsHtml}</ul>` : ''}<p class='help-text'>Retry the unavailable section when dashboard data recovers.</p>`;
     }
 
     const itemsHtml = (section.content?.items || [])

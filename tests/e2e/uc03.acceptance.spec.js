@@ -40,6 +40,7 @@ test('AT-UC03-01 dashboard loads after login and permitted feature navigation wo
   await expect(page.locator('#schedule-builder')).toBeVisible();
   await expect(page.locator('#enrollment-hub')).toBeVisible();
   await expect(page.locator('#financial-summary')).toBeVisible();
+  await expect(page.locator('#financial-summary')).toContainText('Outstanding balance: $1,245.67');
   await expect(page.url()).toContain('/dashboard');
   await expect(page.locator('#dashboard-navigation li')).toHaveText([
     'Inbox',
@@ -79,6 +80,9 @@ test('AT-UC03-02 partial dashboard states are shown and retry restores the full 
   await expect(page.url()).toContain('/dashboard');
   await expect(page.locator('#dashboard-status')).toContainText('Some dashboard sections are currently unavailable.');
   await expect(page.locator('#financial-summary')).toContainText('Unavailable');
+  await expect(page.locator('#financial-summary')).toContainText(
+    'Live financial data is temporarily unavailable. Showing the last confirmed values.'
+  );
   await expect(page.getByRole('button', { name: 'Retry unavailable sections' })).toBeVisible();
 
   await page.getByRole('link', { name: 'Academic Records' }).click();

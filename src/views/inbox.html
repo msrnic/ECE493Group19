@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card dashboard-shell">
+        <p class="eyebrow">Inbox</p>
+        <h1>Built-in Inbox</h1>
+        <p class="help-text">Signed in as {{signed_in_as}}.</p>
+        <p class="status-chip dashboard-status" data-status="{{status_class}}">{{status_message}}</p>
+        <div class="action-row">
+          <a class="login-button-link secondary-link" href="/dashboard#inbox">Back to dashboard</a>
+        </div>
+        <p class="help-text">{{summary_text}}</p>
+        <section class="dashboard-sections">{{inbox_items_html}}</section>
+      </section>
+    </main>
+  </body>
+</html>
