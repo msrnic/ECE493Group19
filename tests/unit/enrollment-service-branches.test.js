@@ -198,3 +198,34 @@ test('enrollment service normalizes missing student identifiers during simulated
   const result = service.enrollStudent({ accountId: 1 }, 1);
   assert.equal(result.status, 'error');
 });
+
+test('enrollment service can hide selected course-capacity fields for degraded-read scenarios', () => {
+  const service = createEnrollmentService({
+    enrollmentModel: {
+      listCurrentSchedule() {
+        return [{
+          capacity: 20,
+          courseCode: 'ECE320',
+          id: 3,
+          offeringCode: 'O_CONFLICT',
+          seatsRemaining: 6,
+          title: 'Embedded Systems'
+        }];
+      }
+    },
+    enrollmentTestState: {
+      capacityUnavailableIdentifiers: ['conflict.student@example.com'],
+      remainingSeatsUnavailableIdentifiers: []
+    },
+    now: () => new Date('2026-03-07T12:00:00.000Z')
+  });
+
+  const rows = service.getCourseCapacityView({
+    accountId: 7,
+    email: 'conflict.student@example.com',
+    studentId: 'conflictStudent'
+  });
+
+  assert.equal(rows[0].capacity, null);
+  assert.equal(rows[0].seatsRemaining, 6);
+});

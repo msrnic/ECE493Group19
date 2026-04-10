@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Join Waitlist</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card profile-card--wide'>
+        <p class='eyebrow'>Enrollment Hub</p>
+        <h1>Join Waitlist</h1>
+        {{result_banner_html}}
+        <section class='profile-section'>
+          <h2>{{course_heading}}</h2>
+          <p class='help-text'>Offering: {{offering_code}}</p>
+          <p class='help-text'>Seat status: {{seat_status}}</p>
+          <p class='help-text'>{{position_note}}</p>
+          {{waitlist_details_html}}
+          {{alternatives_html}}
+        </section>
+        <form method='post' action='/enrollment/waitlist/{{offering_id}}' class='profile-section'>
+          <div class='action-row profile-actions'>
+            <button type='submit' name='action' value='confirm'>Confirm waitlist</button>
+            <button type='submit' name='action' value='cancel'>Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

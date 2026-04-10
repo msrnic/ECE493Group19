@@ -49,6 +49,58 @@ function createTransactionHistoryTestState(initialState = {}) {
 
 function createEnrollmentTestState(initialState = {}) {
   return {
+    capacityUnavailableIdentifiers: [...(initialState.capacityUnavailableIdentifiers || [])],
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])],
+    removalFailureIdentifiers: [...(initialState.removalFailureIdentifiers || [])],
+    remainingSeatsUnavailableIdentifiers: [...(initialState.remainingSeatsUnavailableIdentifiers || [])],
+    waitlistClosedTermIdentifiers: [...(initialState.waitlistClosedTermIdentifiers || [])],
+    waitlistFailureIdentifiers: [...(initialState.waitlistFailureIdentifiers || [])],
+    withdrawalFailureIdentifiers: [...(initialState.withdrawalFailureIdentifiers || [])]
+  };
+}
+
+function createClassSearchTestState(initialState = {}) {
+  return {
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])]
+  };
+}
+
+function createCourseRosterTestState(initialState = {}) {
+  return {
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])]
+  };
+}
+
+function createForceEnrollTestState(initialState = {}) {
+  return {
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])]
+  };
+}
+
+function createForceWithdrawalTestState(initialState = {}) {
+  return {
+    auditFailureIdentifiers: [...(initialState.auditFailureIdentifiers || [])],
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])]
+  };
+}
+
+function createOfferingAdminTestState(initialState = {}) {
+  return {
+    auditFailureIdentifiers: [...(initialState.auditFailureIdentifiers || [])],
+    capacityFailureIdentifiers: [...(initialState.capacityFailureIdentifiers || [])],
+    createFailureIdentifiers: [...(initialState.createFailureIdentifiers || [])],
+    deleteFailureIdentifiers: [...(initialState.deleteFailureIdentifiers || [])]
+  };
+}
+
+function createCourseCapacityTestState(initialState = {}) {
+  return {
+    failureIdentifiers: [...(initialState.failureIdentifiers || [])]
+  };
+}
+
+function createDeadlineTestState(initialState = {}) {
+  return {
     failureIdentifiers: [...(initialState.failureIdentifiers || [])]
   };
 }
@@ -77,6 +129,13 @@ function createTestContext(options = {}) {
   const scheduleBuilderTestState = createScheduleBuilderTestState(options.scheduleBuilderTestState);
   const transactionHistoryTestState = createTransactionHistoryTestState(options.transactionHistoryTestState);
   const enrollmentTestState = createEnrollmentTestState(options.enrollmentTestState);
+  const classSearchTestState = createClassSearchTestState(options.classSearchTestState);
+  const courseRosterTestState = createCourseRosterTestState(options.courseRosterTestState);
+  const forceEnrollTestState = createForceEnrollTestState(options.forceEnrollTestState);
+  const forceWithdrawalTestState = createForceWithdrawalTestState(options.forceWithdrawalTestState);
+  const offeringAdminTestState = createOfferingAdminTestState(options.offeringAdminTestState);
+  const courseCapacityTestState = createCourseCapacityTestState(options.courseCapacityTestState);
+  const deadlineTestState = createDeadlineTestState(options.deadlineTestState);
   const inboxTestState = createInboxTestState(options.inboxTestState);
   const adminNotificationTestState = createAdminNotificationTestState(options.adminNotificationTestState);
 
@@ -88,7 +147,15 @@ function createTestContext(options = {}) {
     db: getDb(dbPath),
     dashboardTestState,
     now: () => nowState.value,
+    classSearchTestState,
+    courseCapacityTestState,
+    courseRosterTestState,
+    deadlineTestState,
     enrollmentTestState,
+    forceEnrollTestState,
+    forceWithdrawalTestState,
+    offeringAdminTestState,
+    courseCapacityTestState,
     inboxTestState,
     adminNotificationTestState,
     profileTestState,
@@ -113,6 +180,13 @@ function createTestContext(options = {}) {
     dashboardTestState,
     db: getDb(dbPath),
     dbPath,
+    classSearchTestState,
+    courseRosterTestState,
+    forceEnrollTestState,
+    forceWithdrawalTestState,
+    offeringAdminTestState,
+    courseCapacityTestState,
+    deadlineTestState,
     now() {
       return nowState.value;
     },
@@ -145,7 +219,38 @@ function createTestContext(options = {}) {
       scheduleBuilderTestState.timeoutBeforeResultsIdentifiers = [];
     },
     resetEnrollmentTestState() {
+      enrollmentTestState.capacityUnavailableIdentifiers = [];
       enrollmentTestState.failureIdentifiers = [];
+      enrollmentTestState.removalFailureIdentifiers = [];
+      enrollmentTestState.remainingSeatsUnavailableIdentifiers = [];
+      enrollmentTestState.waitlistClosedTermIdentifiers = [];
+      enrollmentTestState.waitlistFailureIdentifiers = [];
+      enrollmentTestState.withdrawalFailureIdentifiers = [];
+    },
+    resetClassSearchTestState() {
+      classSearchTestState.failureIdentifiers = [];
+    },
+    resetCourseRosterTestState() {
+      courseRosterTestState.failureIdentifiers = [];
+    },
+    resetForceEnrollTestState() {
+      forceEnrollTestState.failureIdentifiers = [];
+    },
+    resetForceWithdrawalTestState() {
+      forceWithdrawalTestState.auditFailureIdentifiers = [];
+      forceWithdrawalTestState.failureIdentifiers = [];
+    },
+    resetOfferingAdminTestState() {
+      offeringAdminTestState.auditFailureIdentifiers = [];
+      offeringAdminTestState.capacityFailureIdentifiers = [];
+      offeringAdminTestState.createFailureIdentifiers = [];
+      offeringAdminTestState.deleteFailureIdentifiers = [];
+    },
+    resetCourseCapacityTestState() {
+      courseCapacityTestState.failureIdentifiers = [];
+    },
+    resetDeadlineTestState() {
+      deadlineTestState.failureIdentifiers = [];
     },
     resetInboxTestState() {
       inboxTestState.deliveryFailureIdentifiers = ['outage.user@example.com'];
@@ -159,4 +264,4 @@ function createTestContext(options = {}) {
   };
 }
 
-module.exports = { createTestContext };
+module.exports = { createCourseCapacityTestState, createTestContext };

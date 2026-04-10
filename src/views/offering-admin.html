@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Offerings Administration</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/admin-account.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card admin-account-card" aria-labelledby="offering-admin-title">
+        <p class="eyebrow">Admin Operations</p>
+        <h1 id="offering-admin-title">Course Offerings Administration</h1>
+        {{result_banner_html}}
+        <div class="error-banner" role="alert">{{error_message}}</div>
+        <form method="post" action="/admin/offerings" novalidate>
+          <label for="courseCode">Course code</label>
+          <input id="courseCode" name="courseCode" class="{{course_code_input_class}}" value="{{course_code_value}}">
+          {{course_code_error_html}}
+
+          <label for="title">Title</label>
+          <input id="title" name="title" class="{{title_input_class}}" value="{{title_value}}">
+          {{title_error_html}}
+
+          <label for="termCode">Term</label>
+          <input id="termCode" name="termCode" class="{{term_code_input_class}}" value="{{term_code_value}}">
+          {{term_code_error_html}}
+
+          <label for="sectionCode">Section</label>
+          <input id="sectionCode" name="sectionCode" class="{{section_code_input_class}}" value="{{section_code_value}}">
+          {{section_code_error_html}}
+
+          <label for="instructorAccountId">Instructor</label>
+          <select id="instructorAccountId" name="instructorAccountId" class="{{instructor_input_class}}">
+            {{instructor_options_html}}
+          </select>
+          {{instructor_error_html}}
+
+          <label for="capacity">Capacity</label>
+          <input id="capacity" name="capacity" type="number" class="{{capacity_input_class}}" value="{{capacity_value}}">
+          {{capacity_error_html}}
+
+          <label for="meetingDays">Meeting days</label>
+          <input id="meetingDays" name="meetingDays" class="{{meeting_days_input_class}}" value="{{meeting_days_value}}">
+          {{meeting_days_error_html}}
+
+          <label for="scheduleStartTime">Start time</label>
+          <input id="scheduleStartTime" name="scheduleStartTime" placeholder="09:00" class="{{schedule_start_input_class}}" value="{{schedule_start_value}}">
+          {{schedule_start_error_html}}
+
+          <label for="scheduleEndTime">End time</label>
+          <input id="scheduleEndTime" name="scheduleEndTime" placeholder="10:00" class="{{schedule_end_input_class}}" value="{{schedule_end_value}}">
+          {{schedule_end_error_html}}
+
+          <div class="action-row">
+            <button type="submit">Add Offering</button>
+            <button type="submit" name="action" value="cancel">Cancel</button>
+            <a class="login-button-link secondary-link" href="{{return_path}}">Back</a>
+          </div>
+        </form>
+        {{pending_audit_html}}
+        <section class="profile-section">
+          <h2>Existing Offerings</h2>
+          <ul class="course-list">{{offerings_html}}</ul>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

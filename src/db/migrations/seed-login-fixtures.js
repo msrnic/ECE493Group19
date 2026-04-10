@@ -561,6 +561,14 @@ function seedLoginFixtures(dbPath, options = {}) {
     DELETE FROM planning_terms;
     DELETE FROM dashboard_section_states;
     DELETE FROM dashboard_load_events;
+    DELETE FROM drop_deadline_rules;
+    DELETE FROM drop_records;
+    DELETE FROM withdrawal_records;
+    DELETE FROM roster_view_audit;
+    DELETE FROM student_program_profiles;
+    DELETE FROM offering_instructors;
+    DELETE FROM waitlist_attempts;
+    DELETE FROM waitlist_entries;
     DELETE FROM enrollment_attempts;
     DELETE FROM class_enrollments;
     DELETE FROM registration_holds;
@@ -885,11 +893,15 @@ function seedLoginFixtures(dbPath, options = {}) {
       course_code,
       title,
       term_code,
+      section_code,
       meeting_days,
       start_minute,
       end_minute,
       capacity,
       seats_remaining,
+      version,
+      waitlist_enabled,
+      waitlist_uses_position,
       prerequisite_course_code,
       fee_change_cents,
       created_at,
@@ -899,15 +911,34 @@ function seedLoginFixtures(dbPath, options = {}) {
       @course_code,
       @title,
       @term_code,
+      @section_code,
       @meeting_days,
       @start_minute,
       @end_minute,
       @capacity,
       @seats_remaining,
+      @version,
+      @waitlist_enabled,
+      @waitlist_uses_position,
       @prerequisite_course_code,
       @fee_change_cents,
       @created_at,
       @updated_at
+    )
+  `);
+  const insertWaitlistEntry = db.prepare(`
+    INSERT INTO waitlist_entries (
+      account_id,
+      offering_id,
+      waitlist_status,
+      waitlist_position,
+      created_at
+    ) VALUES (
+      @account_id,
+      @offering_id,
+      @waitlist_status,
+      @waitlist_position,
+      @created_at
     )
   `);
   const insertCompletedCourse = db.prepare(`
@@ -921,6 +952,29 @@ function seedLoginFixtures(dbPath, options = {}) {
   const insertClassEnrollment = db.prepare(`
     INSERT INTO class_enrollments (account_id, offering_id, created_at)
     VALUES (@account_id, @offering_id, @created_at)
+  `);
+  const insertOfferingInstructor = db.prepare(`
+    INSERT INTO offering_instructors (offering_id, account_id, assigned_at)
+    VALUES (@offering_id, @account_id, @assigned_at)
+  `);
+  const insertStudentProgramProfile = db.prepare(`
+    INSERT INTO student_program_profiles (account_id, program_name, updated_at)
+    VALUES (@account_id, @program_name, @updated_at)
+  `);
+  const insertDropDeadlineRule = db.prepare(`
+    INSERT INTO drop_deadline_rules (
+      term_code,
+      deadline_at,
+      timezone_name,
+      created_at,
+      updated_at
+    ) VALUES (
+      @term_code,
+      @deadline_at,
+      @timezone_name,
+      @created_at,
+      @updated_at
+    )
   `);
   const timestamp = isoNow(now);
   const passwordHash = bcrypt.hashSync('CorrectPass!234', 10);
@@ -1597,10 +1651,14 @@ function seedLoginFixtures(dbPath, options = {}) {
       meeting_days: 'Mon,Wed',
       offering_code: 'O_OPEN',
       prerequisite_course_code: 'CMPUT301',
+      section_code: 'A1',
       seats_remaining: 12,
+      version: 1,
       start_minute: 600,
       term_code: '2026FALL',
       title: 'Technical Communication',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
       updated_at: timestamp
     },
     {
@@ -1612,10 +1670,109 @@ function seedLoginFixtures(dbPath, options = {}) {
       meeting_days: 'Tue,Thu',
       offering_code: 'O_FULL',
       prerequisite_course_code: null,
+      section_code: 'B1',
       seats_remaining: 0,
+      version: 1,
       start_minute: 840,
       term_code: '2026FALL',
       title: 'Applied Statistics',
+      waitlist_enabled: 1,
+      waitlist_uses_position: 1,
+      updated_at: timestamp
+    },
+    {
+      capacity: 25,
+      course_code: 'STAT252',
+      created_at: timestamp,
+      end_minute: 1020,
+      fee_change_cents: 37500,
+      meeting_days: 'Fri',
+      offering_code: 'O_NOWL',
+      prerequisite_course_code: null,
+      section_code: 'C1',
+      seats_remaining: 0,
+      version: 1,
+      start_minute: 960,
+      term_code: '2026FALL',
+      title: 'Applied Statistics',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
+      updated_at: timestamp
+    },
+    {
+      capacity: 25,
+      course_code: 'STAT252',
+      created_at: timestamp,
+      end_minute: 780,
+      fee_change_cents: 37500,
+      meeting_days: 'Mon',
+      offering_code: 'O_ALT_OPEN',
+      prerequisite_course_code: null,
+      section_code: 'C2',
+      seats_remaining: 8,
+      version: 1,
+      start_minute: 720,
+      term_code: '2026FALL',
+      title: 'Applied Statistics',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
+      updated_at: timestamp
+    },
+    {
+      capacity: 30,
+      course_code: 'ECE493',
+      created_at: timestamp,
+      end_minute: 900,
+      fee_change_cents: 0,
+      meeting_days: 'Tue,Thu',
+      offering_code: 'O_ROSTER',
+      prerequisite_course_code: null,
+      section_code: 'D1',
+      seats_remaining: 28,
+      version: 1,
+      start_minute: 840,
+      term_code: '2026FALL',
+      title: 'Software Engineering',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
+      updated_at: timestamp
+    },
+    {
+      capacity: 30,
+      course_code: 'ECE493',
+      created_at: timestamp,
+      end_minute: 1020,
+      fee_change_cents: 0,
+      meeting_days: 'Fri',
+      offering_code: 'O_EMPTY',
+      prerequisite_course_code: null,
+      section_code: 'E1',
+      seats_remaining: 30,
+      version: 1,
+      start_minute: 960,
+      term_code: '2026FALL',
+      title: 'Software Engineering',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
+      updated_at: timestamp
+    },
+    {
+      capacity: 25,
+      course_code: 'MATH201',
+      created_at: timestamp,
+      end_minute: 840,
+      fee_change_cents: 0,
+      meeting_days: 'Mon,Wed',
+      offering_code: 'O_HYBRID',
+      prerequisite_course_code: null,
+      section_code: 'F1',
+      seats_remaining: 24,
+      version: 1,
+      start_minute: 780,
+      term_code: '2026FALL',
+      title: 'Discrete Mathematics',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
       updated_at: timestamp
     },
     {
@@ -1627,10 +1784,14 @@ function seedLoginFixtures(dbPath, options = {}) {
       meeting_days: 'Mon,Wed',
       offering_code: 'O_CONFLICT',
       prerequisite_course_code: null,
+      section_code: 'G1',
       seats_remaining: 6,
+      version: 1,
       start_minute: 600,
       term_code: '2026FALL',
       title: 'Embedded Systems',
+      waitlist_enabled: 0,
+      waitlist_uses_position: 1,
       updated_at: timestamp
     },
     {
@@ -1642,15 +1803,27 @@ function seedLoginFixtures(dbPath, options = {}) {
       meeting_days: 'Tue,Thu',
       offering_code: 'O_ERROR',
       prerequisite_course_code: 'CMPUT301',
+      section_code: 'H1',
       seats_remaining: 7,
+      version: 1,
       start_minute: 720,
       term_code: '2026FALL',
       title: 'Control Systems',
+      waitlist_enabled: 1,
+      waitlist_uses_position: 0,
       updated_at: timestamp
     }
   ]) {
     offeringIds[offering.offering_code] = Number(insertClassOffering.run(offering).lastInsertRowid);
   }
+
+  insertDropDeadlineRule.run({
+    created_at: timestamp,
+    deadline_at: '2026-09-15T23:59:59.000Z',
+    term_code: '2026FALL',
+    timezone_name: 'America/Edmonton',
+    updated_at: timestamp
+  });
 
   for (const completedCourse of [
     {
@@ -1695,6 +1868,56 @@ function seedLoginFixtures(dbPath, options = {}) {
     created_at: timestamp,
     offering_id: offeringIds.O_CONFLICT
   });
+  insertClassEnrollment.run({
+    account_id: accountIds['userA@example.com'],
+    created_at: timestamp,
+    offering_id: offeringIds.O_ROSTER
+  });
+  insertClassEnrollment.run({
+    account_id: accountIds['hold.student@example.com'],
+    created_at: timestamp,
+    offering_id: offeringIds.O_ROSTER
+  });
+
+  insertWaitlistEntry.run({
+    account_id: accountIds['conflict.student@example.com'],
+    created_at: timestamp,
+    offering_id: offeringIds.O_FULL,
+    waitlist_position: 1,
+    waitlist_status: 'waitlisted'
+  });
+
+  insertOfferingInstructor.run({
+    account_id: accountIds['professor@example.com'],
+    assigned_at: timestamp,
+    offering_id: offeringIds.O_ROSTER
+  });
+  insertOfferingInstructor.run({
+    account_id: accountIds['professor@example.com'],
+    assigned_at: timestamp,
+    offering_id: offeringIds.O_EMPTY
+  });
+  insertOfferingInstructor.run({
+    account_id: accountIds['hybrid.staff@example.com'],
+    assigned_at: timestamp,
+    offering_id: offeringIds.O_HYBRID
+  });
+
+  for (const [email, programName] of [
+    ['userA@example.com', 'Software Engineering'],
+    ['outage.user@example.com', 'Software Engineering'],
+    ['prereq.student@example.com', 'Computer Engineering'],
+    ['hold.student@example.com', 'Software Engineering'],
+    ['conflict.student@example.com', 'Computer Engineering'],
+    ['restricted.inbox@example.com', 'Data Science'],
+    ['nomodule.student@example.com', 'Electrical Engineering']
+  ]) {
+    insertStudentProgramProfile.run({
+      account_id: accountIds[email],
+      program_name: programName,
+      updated_at: timestamp
+    });
+  }
 
   insertResetToken.run({
     account_id: accountIds['userA@example.com'],

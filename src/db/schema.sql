@@ -261,11 +261,16 @@ CREATE TABLE IF NOT EXISTS class_offerings (
   course_code TEXT NOT NULL,
   title TEXT NOT NULL,
   term_code TEXT NOT NULL,
+  section_code TEXT NOT NULL DEFAULT 'A1',
+  offering_status TEXT NOT NULL DEFAULT 'open' CHECK (offering_status IN ('open', 'closed', 'archived')),
   meeting_days TEXT NOT NULL,
   start_minute INTEGER NOT NULL CHECK (start_minute >= 0),
   end_minute INTEGER NOT NULL CHECK (end_minute > start_minute),
   capacity INTEGER NOT NULL CHECK (capacity >= 0),
   seats_remaining INTEGER NOT NULL CHECK (seats_remaining >= 0),
+  version INTEGER NOT NULL DEFAULT 1 CHECK (version >= 1),
+  waitlist_enabled INTEGER NOT NULL DEFAULT 0 CHECK (waitlist_enabled IN (0, 1)),
+  waitlist_uses_position INTEGER NOT NULL DEFAULT 1 CHECK (waitlist_uses_position IN (0, 1)),
   prerequisite_course_code TEXT,
   fee_change_cents INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL,
@@ -301,6 +306,32 @@ CREATE TABLE IF NOT EXISTS class_enrollments (
   UNIQUE(account_id, offering_id)
 );
 
+CREATE TABLE IF NOT EXISTS offering_instructors (
+  offering_id INTEGER NOT NULL,
+  account_id INTEGER NOT NULL,
+  assigned_at TEXT NOT NULL,
+  PRIMARY KEY (offering_id, account_id),
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS student_program_profiles (
+  account_id INTEGER PRIMARY KEY,
+  program_name TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS roster_view_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  actor_account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  outcome TEXT NOT NULL CHECK (outcome IN ('success', 'empty', 'forbidden', 'error')),
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (actor_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS enrollment_attempts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   account_id INTEGER NOT NULL,
@@ -310,6 +341,195 @@ CREATE TABLE IF NOT EXISTS enrollment_attempts (
   created_at TEXT NOT NULL,
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
   FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS waitlist_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  waitlist_status TEXT NOT NULL DEFAULT 'waitlisted' CHECK (waitlist_status IN ('waitlisted')),
+  waitlist_position INTEGER,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE,
+  UNIQUE(account_id, offering_id)
+);
+
+CREATE TABLE IF NOT EXISTS waitlist_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  outcome TEXT NOT NULL CHECK (outcome IN ('waitlisted', 'blocked', 'error')),
+  reason_summary TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS withdrawal_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  transcript_impact TEXT NOT NULL,
+  fee_impact_summary TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS drop_deadline_rules (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  term_code TEXT NOT NULL UNIQUE,
+  deadline_at TEXT NOT NULL,
+  timezone_name TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS drop_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  fee_impact_summary TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS force_enroll_requests (
+  request_id TEXT PRIMARY KEY,
+  initiated_by_account_id INTEGER NOT NULL,
+  student_account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  reason TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('pending_confirmation', 'completed', 'rejected')),
+  requires_over_capacity_confirmation INTEGER NOT NULL DEFAULT 0 CHECK (
+    requires_over_capacity_confirmation IN (0, 1)
+  ),
+  over_capacity_confirmation_by_account_id INTEGER,
+  created_at TEXT NOT NULL,
+  resolved_at TEXT,
+  rejection_reason TEXT,
+  FOREIGN KEY (initiated_by_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE,
+  FOREIGN KEY (over_capacity_confirmation_by_account_id) REFERENCES accounts(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS force_enroll_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  request_id TEXT NOT NULL UNIQUE,
+  admin_account_id INTEGER NOT NULL,
+  student_account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  reason TEXT NOT NULL,
+  prerequisite_override INTEGER NOT NULL DEFAULT 1 CHECK (prerequisite_override IN (0, 1)),
+  over_capacity_override INTEGER NOT NULL DEFAULT 0 CHECK (over_capacity_override IN (0, 1)),
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (request_id) REFERENCES force_enroll_requests(request_id) ON DELETE CASCADE,
+  FOREIGN KEY (admin_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS force_withdrawal_actions (
+  action_id TEXT PRIMARY KEY,
+  initiated_by_account_id INTEGER NOT NULL,
+  student_account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  reason TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (
+    status IN ('completed', 'rejected_not_enrolled', 'failed', 'pending_audit', 'canceled')
+  ),
+  created_at TEXT NOT NULL,
+  completed_at TEXT,
+  failure_reason TEXT,
+  FOREIGN KEY (initiated_by_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS force_withdrawal_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  action_id TEXT NOT NULL UNIQUE,
+  admin_account_id INTEGER NOT NULL,
+  student_account_id INTEGER NOT NULL,
+  offering_id INTEGER NOT NULL,
+  reason TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (action_id) REFERENCES force_withdrawal_actions(action_id) ON DELETE CASCADE,
+  FOREIGN KEY (admin_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS force_withdrawal_pending_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  action_id TEXT NOT NULL UNIQUE,
+  next_retry_at TEXT NOT NULL,
+  retry_count INTEGER NOT NULL DEFAULT 0 CHECK (retry_count >= 0),
+  last_error TEXT,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'retrying', 'resolved')),
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (action_id) REFERENCES force_withdrawal_actions(action_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS offering_change_logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  offering_id INTEGER,
+  offering_code TEXT NOT NULL,
+  action_type TEXT NOT NULL CHECK (action_type IN ('add', 'delete')),
+  actor_account_id INTEGER NOT NULL,
+  outcome TEXT NOT NULL CHECK (outcome IN ('success', 'failure', 'blocked', 'conflict')),
+  override_used INTEGER NOT NULL DEFAULT 0 CHECK (override_used IN (0, 1)),
+  override_reason TEXT,
+  failure_reason TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE SET NULL,
+  FOREIGN KEY (actor_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS offering_change_audit_retry (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  log_payload_json TEXT NOT NULL,
+  attempt_count INTEGER NOT NULL DEFAULT 0 CHECK (attempt_count >= 0),
+  next_attempt_at TEXT NOT NULL,
+  last_error TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS capacity_update_requests (
+  request_id TEXT PRIMARY KEY,
+  offering_id INTEGER NOT NULL,
+  submitted_by_account_id INTEGER NOT NULL,
+  submitted_capacity INTEGER NOT NULL CHECK (submitted_capacity > 0),
+  submitted_version INTEGER NOT NULL CHECK (submitted_version > 0),
+  override_request_id TEXT,
+  status TEXT NOT NULL CHECK (status IN ('pending', 'applied', 'rejected', 'failed', 'stale', 'noop')),
+  status_message TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  resolved_at TEXT,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE,
+  FOREIGN KEY (submitted_by_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS capacity_override_authorizations (
+  override_request_id TEXT PRIMARY KEY,
+  request_id TEXT NOT NULL,
+  offering_id INTEGER NOT NULL,
+  requested_by_account_id INTEGER NOT NULL,
+  approved_by_account_id INTEGER,
+  decision TEXT NOT NULL CHECK (decision IN ('requested', 'approved', 'denied')),
+  reason TEXT NOT NULL,
+  allow_self_approval INTEGER NOT NULL DEFAULT 1 CHECK (allow_self_approval IN (0, 1)),
+  approved_at TEXT,
+  retention_until TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (request_id) REFERENCES capacity_update_requests(request_id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE,
+  FOREIGN KEY (requested_by_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (approved_by_account_id) REFERENCES accounts(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS personal_details (
@@ -565,6 +785,18 @@ CREATE INDEX IF NOT EXISTS idx_completed_courses_account ON completed_courses(ac
 CREATE INDEX IF NOT EXISTS idx_registration_holds_account ON registration_holds(account_id, is_active);
 CREATE INDEX IF NOT EXISTS idx_class_enrollments_account ON class_enrollments(account_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_enrollment_attempts_account ON enrollment_attempts(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_withdrawal_records_account ON withdrawal_records(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_drop_deadline_rules_term ON drop_deadline_rules(term_code);
+CREATE INDEX IF NOT EXISTS idx_drop_records_account ON drop_records(account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_force_enroll_requests_actor ON force_enroll_requests(initiated_by_account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_force_enroll_requests_student ON force_enroll_requests(student_account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_force_enroll_audit_actor ON force_enroll_audit(admin_account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_force_withdrawal_actions_actor ON force_withdrawal_actions(initiated_by_account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_force_withdrawal_actions_student ON force_withdrawal_actions(student_account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_force_withdrawal_pending_audit_status ON force_withdrawal_pending_audit(status, next_retry_at);
+CREATE INDEX IF NOT EXISTS idx_offering_change_logs_actor ON offering_change_logs(actor_account_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_capacity_update_requests_offering ON capacity_update_requests(offering_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_capacity_override_authorizations_offering ON capacity_override_authorizations(offering_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_login_attempts_account_time ON login_attempts(account_id, attempted_at);
 CREATE INDEX IF NOT EXISTS idx_user_sessions_account ON user_sessions(account_id, expires_at);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_account ON password_reset_tokens(account_id, expires_at);

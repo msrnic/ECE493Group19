@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Force Enroll</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/admin-account.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card admin-account-card" aria-labelledby="force-enroll-confirm-title">
+        <p class="eyebrow">Admin Operations</p>
+        <h1 id="force-enroll-confirm-title">{{course_heading}}</h1>
+        {{message_html}}
+        <p class="help-text">Student: {{student_label}}</p>
+        <p class="help-text">Offering: {{offering_code}}</p>
+        <p class="help-text">Reason: {{reason}}</p>
+        {{details_html}}
+        <form method="post" action="/admin/force-enroll/{{request_id}}/confirm">
+          <div class="action-row">
+            <button type="submit" name="action" value="confirm">Confirm Over-Capacity Override</button>
+            <button type="submit" name="action" value="cancel">Cancel</button>
+          </div>
+        </form>
+        <p class="help-text"><a class="login-button-link secondary-link" href="/admin/force-enroll">Start another force enroll</a></p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Course Offerings</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card profile-card profile-card--wide">
+        <p class="eyebrow">Teaching Workload</p>
+        <h1>My Course Offerings</h1>
+        <p class="status-chip dashboard-status">{{status_message}}</p>
+        <p class="help-text">Signed in as {{signed_in_as}}.</p>
+        <section class="dashboard-section-card">
+          <h2>Assigned Offerings</h2>
+          <ul class="course-list">
+            {{offering_links_html}}
+          </ul>
+        </section>
+        {{body_html}}
+        <div class="action-row profile-actions">
+          <a class="login-button-link secondary-link" href="/dashboard#teaching-workload">Back to dashboard</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
