@@ -45,7 +45,7 @@ test('GET /dashboard renders authenticated account data, available navigation, a
   assert.equal(response.text.includes('Payment status: Pending confirmation'), true);
   assert.equal(response.text.includes('Security Center'), false);
   assert.equal(response.text.includes('Make a payment'), false);
-  assert.equal(response.text.includes('Change password'), true);
+  assert.equal(response.text.includes('Change Password'), true);
   assert.equal(response.text.includes('Log out'), true);
   assert.equal(response.text.includes('Admin Operations'), false);
   assert.equal(response.text.indexOf('Inbox') < response.text.indexOf('Personal Profile'), true);

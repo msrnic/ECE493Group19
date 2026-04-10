@@ -32,7 +32,7 @@ test('dashboard renders role-scoped navigation for student, professor, admin, an
     {
       excluded: ['Academic Records', 'Schedule Builder', 'Enrollment Hub', 'Financial Summary', 'Current Courses', 'Teaching Workload'],
       identifier: 'admin@example.com',
-      includes: ['Inbox', 'Personal Profile', 'Admin Operations', 'Security Center', 'Change password', 'Reset userA password'],
+      includes: ['Inbox', 'Personal Profile', 'Admin Operations', 'Security Center', 'Change Password', 'Reset userA password'],
       password: ADMIN_PASSWORD
     },
     {

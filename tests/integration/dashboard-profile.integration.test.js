@@ -33,7 +33,7 @@ test('student dashboard displays personal and contact information with both upda
   assert.match(response.text, /Emergency Contact Relation: Parent/);
   assert.match(response.text, /Update Personal Information/);
   assert.match(response.text, /Update Contact Information/);
-  assert.match(response.text, /Change password/);
+  assert.match(response.text, /Change Password/);
 
   context.cleanup();
 });

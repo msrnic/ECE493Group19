@@ -143,8 +143,10 @@ test('AT-UC03-04 admin dashboard shows inbox, personal profile, admin operations
     'Security Center'
   ]);
 
-  await expect(page.locator('#personal-profile').getByRole('link', { name: 'Change password' })).toBeVisible();
-  await expect(page.locator('#security-center').getByRole('link', { name: 'Reset userA password' })).toBeVisible();
+  await expect(page.locator('#personal-profile').getByRole('link', { name: 'Change Password' })).toBeVisible();
+  await expect(page.locator('#security-center').getByLabel('Choose a user')).toBeVisible();
+  await expect(page.locator('#security-center').getByRole('option', { name: 'Reset userA password' })).toBeVisible();
+  await expect(page.locator('#security-center').getByRole('button', { name: 'Open' })).toBeVisible();
 
   await page.getByRole('link', { name: 'Personal Profile' }).click();
   await expect(page.url()).toContain('/dashboard#personal-profile');

@@ -34,6 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
       .join('')}</ul>`;
   }
 
+  function renderSecurityCenterLinks(links) {
+    if (!links.length) {
+      return '';
+    }
+
+    const optionsHtml = links
+      .map(
+        (link, index) => `<option value="${escapeHtml(link.href)}"${index === 0 ? ' selected' : ''}>${escapeHtml(link.label)}</option>`
+      )
+      .join('');
+
+    return `<form class="dashboard-select-action" data-dashboard-select-action>
+      <label class="dashboard-select-action__label" for="security-center-user-action">Choose a user</label>
+      <div class="dashboard-select-action__controls">
+        <select id="security-center-user-action" class="dashboard-select-action__select" name="securityAction">
+          ${optionsHtml}
+        </select>
+        <button class="secondary-button" type="submit">Open</button>
+      </div>
+    </form>`;
+  }
+
   function renderSectionContent(section) {
     if (section.availabilityStatus === 'unavailable') {
       const itemsHtml = (section.content?.items || [])
@@ -57,7 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
       )
       .join('');
 
-    return `${section.content?.summary ? `<p class="help-text">${escapeHtml(section.content.summary)}</p>` : ''}${itemsHtml ? `<ul class="course-list">${itemsHtml}</ul>` : ''}${linksHtml ? `<div class="action-row">${linksHtml}</div>` : ''}`;
+    const securityCenterActions = section.sectionKey === 'security-center'
+      ? renderSecurityCenterLinks(section.content?.links || [])
+      : '';
+
+    return `${section.content?.summary ? `<p class="help-text">${escapeHtml(section.content.summary)}</p>` : ''}${itemsHtml ? `<ul class="course-list">${itemsHtml}</ul>` : ''}${securityCenterActions || (linksHtml ? `<div class="action-row">${linksHtml}</div>` : '')}`;
   }
 
   function renderSections(payload) {
@@ -134,5 +160,20 @@ document.addEventListener('DOMContentLoaded', () => {
         statusNode.textContent = 'Retry failed.';
       });
     }
+  });
+
+  sectionsNode.addEventListener('submit', (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.hasAttribute('data-dashboard-select-action')) {
+      return;
+    }
+
+    event.preventDefault();
+    const select = form.querySelector('select');
+    if (!(select instanceof HTMLSelectElement) || !select.value) {
+      return;
+    }
+
+    window.location.assign(select.value);
   });
 });

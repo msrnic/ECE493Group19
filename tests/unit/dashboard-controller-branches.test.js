@@ -185,7 +185,7 @@ test('dashboard controller renders mixed section states, admin actions, and esca
   assert.match(response.capture.body, /Grade submission summary is ready/);
   assert.match(response.capture.body, /3 managed account\(s\) are available./);
   assert.match(response.capture.body, /Personal Profile/);
-  assert.match(response.capture.body, /Change password/);
+  assert.match(response.capture.body, /Change Password/);
   assert.equal(response.capture.body.includes('Research Sandbox'), true);
   assert.match(response.capture.body, /Financial Summary <span class=['"]dashboard-pill['"]>Unavailable/);
   assert.match(response.capture.body, /Retry unavailable sections/);
@@ -1248,7 +1248,7 @@ test('dashboard controller preserves admin security labeling when string roles i
   assert.match(response.capture.body, /Current Courses/);
   assert.match(response.capture.body, /Admin Operations/);
   assert.match(response.capture.body, /Security Center/);
-  assert.match(response.capture.body, /Change password/);
+  assert.match(response.capture.body, /Change Password/);
   assert.match(response.capture.body, /Reset userA password/);
 });
 

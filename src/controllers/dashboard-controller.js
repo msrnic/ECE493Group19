@@ -705,13 +705,30 @@ function createDashboardController(services) {
     const itemsHtml = (section.content?.items || [])
       .map((item) => `<li>${escapeHtml(item)}</li>`)
       .join('');
+    const securityCenterActions = section.sectionKey === 'security-center'
+      ? renderSecurityCenterLinks(section.content?.links || [])
+      : '';
     const linksHtml = (section.content?.links || [])
       .map(
         (link) => `<a class='login-button-link secondary-link' href='${escapeHtml(link.href)}'>${escapeHtml(link.label)}</a>`
       )
       .join('');
 
-    return `${section.content?.summary ? `<p class='help-text'>${escapeHtml(section.content.summary)}</p>` : ''}${itemsHtml ? `<ul class='course-list'>${itemsHtml}</ul>` : ''}${linksHtml ? `<div class='action-row'>${linksHtml}</div>` : ''}`;
+    return `${section.content?.summary ? `<p class='help-text'>${escapeHtml(section.content.summary)}</p>` : ''}${itemsHtml ? `<ul class='course-list'>${itemsHtml}</ul>` : ''}${securityCenterActions || (linksHtml ? `<div class='action-row'>${linksHtml}</div>` : '')}`;
+  }
+
+  function renderSecurityCenterLinks(links) {
+    if (!links.length) {
+      return '';
+    }
+
+    const optionsHtml = links
+      .map(
+        (link, index) => `<option value='${escapeHtml(link.href)}'${index === 0 ? ' selected' : ''}>${escapeHtml(link.label)}</option>`
+      )
+      .join('');
+
+    return `<form class='dashboard-select-action' data-dashboard-select-action><label class='dashboard-select-action__label' for='security-center-user-action'>Choose a user</label><div class='dashboard-select-action__controls'><select id='security-center-user-action' class='dashboard-select-action__select' name='securityAction'>${optionsHtml}</select><button class='secondary-button' type='submit'>Open</button></div></form>`;
   }
 
   function renderSections(payload) {

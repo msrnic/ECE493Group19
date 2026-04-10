@@ -139,7 +139,7 @@ test('dashboard controller renders profile summaries, update buttons, and missin
   assert.match(response.body, /Emergency Contact Relation: Not provided/);
   assert.match(response.body, /Update Personal Information/);
   assert.match(response.body, /Update Contact Information/);
-  assert.match(response.body, /Change password/);
+  assert.match(response.body, /Change Password/);
   assert.match(response.body, /Reset userA password/);
 });
 
