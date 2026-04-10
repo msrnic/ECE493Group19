@@ -77,6 +77,78 @@ async function setInboxFixtures(request, state) {
   }
 }
 
+async function setEnrollmentFixtures(request, state) {
+  const response = await request.post('/__enrollment-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure enrollment fixtures: ' + response.status());
+  }
+}
+
+async function setClassSearchFixtures(request, state) {
+  const response = await request.post('/__class-search-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure class-search fixtures: ' + response.status());
+  }
+}
+
+async function setCourseRosterFixtures(request, state) {
+  const response = await request.post('/__course-roster-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure course-roster fixtures: ' + response.status());
+  }
+}
+
+async function setDeadlineFixtures(request, state) {
+  const response = await request.post('/__deadline-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure deadline fixtures: ' + response.status());
+  }
+}
+
+async function setForceEnrollFixtures(request, state) {
+  const response = await request.post('/__force-enroll-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure force-enroll fixtures: ' + response.status());
+  }
+}
+
+async function setForceWithdrawalFixtures(request, state) {
+  const response = await request.post('/__force-withdrawal-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure force-withdrawal fixtures: ' + response.status());
+  }
+}
+
+async function setOfferingAdminFixtures(request, state) {
+  const response = await request.post('/__offering-admin-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure offering-admin fixtures: ' + response.status());
+  }
+}
+
+async function setCourseCapacityFixtures(request, state) {
+  const response = await request.post('/__course-capacity-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure course-capacity fixtures: ' + response.status());
+  }
+}
+
 async function setAdminNotificationFixtures(request, state) {
   const response = await request.post('/__admin-notification-fixtures', {
     data: state
@@ -108,6 +180,14 @@ module.exports = {
   setAdminNotificationFixtures,
   setCourseHistoryFixtures,
   setGradebookFixtures,
+  setClassSearchFixtures,
+  setCourseCapacityFixtures,
+  setCourseRosterFixtures,
+  setDeadlineFixtures,
+  setEnrollmentFixtures,
+  setForceEnrollFixtures,
+  setForceWithdrawalFixtures,
+  setOfferingAdminFixtures,
   setInboxFixtures,
   resetFixtures,
   setAccountCreationFixtures,

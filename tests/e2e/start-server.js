@@ -42,6 +42,40 @@ const gradebookTestState = {
   saveFailureIdentifiers: [],
   summaryFailureIdentifiers: []
 };
+const enrollmentTestState = {
+  capacityUnavailableIdentifiers: [],
+  failureIdentifiers: [],
+  removalFailureIdentifiers: [],
+  remainingSeatsUnavailableIdentifiers: [],
+  waitlistClosedTermIdentifiers: [],
+  waitlistFailureIdentifiers: [],
+  withdrawalFailureIdentifiers: []
+};
+const classSearchTestState = {
+  failureIdentifiers: []
+};
+const courseRosterTestState = {
+  failureIdentifiers: []
+};
+const forceEnrollTestState = {
+  failureIdentifiers: []
+};
+const forceWithdrawalTestState = {
+  auditFailureIdentifiers: [],
+  failureIdentifiers: []
+};
+const offeringAdminTestState = {
+  auditFailureIdentifiers: [],
+  capacityFailureIdentifiers: [],
+  createFailureIdentifiers: [],
+  deleteFailureIdentifiers: []
+};
+const courseCapacityTestState = {
+  failureIdentifiers: []
+};
+const deadlineTestState = {
+  failureIdentifiers: []
+};
 const inboxTestState = {
   deliveryFailureIdentifiers: ['outage.user@example.com']
 };
@@ -385,6 +419,101 @@ function applyGradebookState(nextState) {
   ];
 }
 
+function applyForceEnrollState(nextState) {
+  const requestedState = nextState || {};
+  forceEnrollTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyForceWithdrawalState(nextState) {
+  const requestedState = nextState || {};
+  forceWithdrawalTestState.auditFailureIdentifiers = [
+    ...((requestedState.auditFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  forceWithdrawalTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyOfferingAdminState(nextState) {
+  const requestedState = nextState || {};
+  offeringAdminTestState.auditFailureIdentifiers = [
+    ...((requestedState.auditFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  offeringAdminTestState.capacityFailureIdentifiers = [
+    ...((requestedState.capacityFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  offeringAdminTestState.createFailureIdentifiers = [
+    ...((requestedState.createFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  offeringAdminTestState.deleteFailureIdentifiers = [
+    ...((requestedState.deleteFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyCourseCapacityState(nextState) {
+  const requestedState = nextState || {};
+  courseCapacityTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyEnrollmentState(nextState) {
+  const requestedState = nextState || {};
+  enrollmentTestState.capacityUnavailableIdentifiers = [
+    ...((requestedState.capacityUnavailableIdentifiers || []).map(normalizeIdentifier))
+  ];
+  enrollmentTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  enrollmentTestState.removalFailureIdentifiers = [
+    ...((requestedState.removalFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  enrollmentTestState.remainingSeatsUnavailableIdentifiers = [
+    ...((requestedState.remainingSeatsUnavailableIdentifiers || []).map(normalizeIdentifier))
+  ];
+  enrollmentTestState.waitlistClosedTermIdentifiers = [
+    ...((requestedState.waitlistClosedTermIdentifiers || []).map(normalizeIdentifier))
+  ];
+  enrollmentTestState.waitlistFailureIdentifiers = [
+    ...((requestedState.waitlistFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  enrollmentTestState.withdrawalFailureIdentifiers = [
+    ...((requestedState.withdrawalFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyClassSearchState(nextState) {
+  const requestedState = nextState || {};
+  classSearchTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyCourseRosterState(nextState) {
+  const requestedState = nextState || {};
+  courseRosterTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyDeadlineState(nextState) {
+  const requestedState = nextState || {};
+  deadlineTestState.failureIdentifiers = [
+    ...((requestedState.failureIdentifiers || []).map(normalizeIdentifier))
+  ];
+
+  const updateDeadlineRule = db.prepare(`
+    UPDATE drop_deadline_rules
+    SET deadline_at = ?, timezone_name = ?
+    WHERE term_code = ?
+  `);
+
+  for (const [termCode, deadlineAt] of Object.entries(requestedState.deadlineAtByTerm || {})) {
+    updateDeadlineRule.run(deadlineAt, requestedState.timezoneName || 'America/Edmonton', termCode);
+  }
+}
 function applyInboxState(nextState) {
   const requestedState = nextState || {};
   inboxTestState.deliveryFailureIdentifiers = [
@@ -504,6 +633,14 @@ function resetFixtures() {
   applyTransactionHistoryState();
   applyCourseHistoryState();
   applyGradebookState();
+  applyEnrollmentState();
+  applyForceEnrollState();
+  applyForceWithdrawalState();
+  applyOfferingAdminState();
+  applyCourseCapacityState();
+  applyClassSearchState();
+  applyCourseRosterState();
+  applyDeadlineState();
   applyInboxState();
   applyAdminNotificationState();
   applyStudentRecordState();
@@ -520,6 +657,14 @@ const app = createApp({
   now: () => fixedNow,
   courseHistoryTestState,
   gradebookTestState,
+  classSearchTestState,
+  courseRosterTestState,
+  deadlineTestState,
+  enrollmentTestState,
+  forceEnrollTestState,
+  forceWithdrawalTestState,
+  offeringAdminTestState,
+  courseCapacityTestState,
   profileTestState,
   resetFixtures,
   scheduleBuilderTestState,
@@ -582,9 +727,81 @@ app.post('/__course-history-fixtures', (req, res, next) => {
   }
 });
 
+app.post('/__enrollment-fixtures', (req, res, next) => {
+  try {
+    applyEnrollmentState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 app.post('/__gradebook-fixtures', (req, res, next) => {
   try {
     applyGradebookState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__force-enroll-fixtures', (req, res, next) => {
+  try {
+    applyForceEnrollState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__force-withdrawal-fixtures', (req, res, next) => {
+  try {
+    applyForceWithdrawalState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__offering-admin-fixtures', (req, res, next) => {
+  try {
+    applyOfferingAdminState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__course-capacity-fixtures', (req, res, next) => {
+  try {
+    applyCourseCapacityState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__class-search-fixtures', (req, res, next) => {
+  try {
+    applyClassSearchState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__course-roster-fixtures', (req, res, next) => {
+  try {
+    applyCourseRosterState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__deadline-fixtures', (req, res, next) => {
+  try {
+    applyDeadlineState(req.body || {});
     return res.status(204).end();
   } catch (error) {
     return next(error);

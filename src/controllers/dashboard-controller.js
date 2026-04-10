@@ -400,8 +400,12 @@ function createDashboardController(services) {
             'Browse eligible courses and manage your registration choices.',
             'Enrollment notices and seat updates appear here when available.'
           ],
-          links: [{ href: '/enrollment', label: 'Open Enrollment Hub' }],
-          summary: 'Handle add, drop, and waitlist activity from your dashboard.'
+          links: [
+            { href: '/deadlines/drop', label: 'View Add/Drop Deadlines' },
+            { href: '/classes/search', label: 'Search for available classes' },
+            { href: '/enrollment', label: 'Open Enrollment Hub' }
+          ],
+          summary: 'Handle add, withdraw, drop, and waitlist activity from your dashboard.'
         };
       case 'financial-summary':
         return createFinancialSummaryContent(account);
@@ -420,6 +424,9 @@ function createDashboardController(services) {
               )
             : ['Teaching assignments will appear here once courses are assigned.'],
           links: [
+            ...(teachingCourses.length
+              ? [{ href: '/teaching/rosters', label: 'Open Course Rosters' }]
+              : []),
             ...gradebookOfferings.map((offering) => ({
               href: `/grades/offerings/${offering.id}`,
               label: `Enter final grades for ${offering.courseCode}`
@@ -452,6 +459,9 @@ function createDashboardController(services) {
             'New accounts require a password change at first sign-in.'
           ],
           links: [
+            { href: '/admin/force-enroll', label: 'Force Enroll Students' },
+            { href: '/admin/force-withdrawals', label: 'Force Withdraw Students' },
+            { href: '/admin/offerings', label: 'Manage Course Offerings' },
             { href: '/admin/users/new', label: 'Create New User' },
             { href: '/admin/notifications', label: 'Send Inbox Notifications' }
           ],

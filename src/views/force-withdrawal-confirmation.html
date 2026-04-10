@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Force Withdrawal</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/admin-account.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card admin-account-card" aria-labelledby="force-withdraw-confirm-title">
+        <p class="eyebrow">Admin Operations</p>
+        <h1 id="force-withdraw-confirm-title">{{course_heading}}</h1>
+        {{message_html}}
+        <p class="help-text">Student: {{student_identifier}}</p>
+        <p class="help-text">Offering: {{offering_code}}</p>
+        <p class="help-text">Transcript impact: {{transcript_impact}}</p>
+        <p class="help-text">Fee impact: {{fee_impact}}</p>
+        <form method="post" action="/admin/force-withdrawals">
+          <input type="hidden" name="studentIdentifier" value="{{student_identifier}}">
+          <input type="hidden" name="offeringId" value="{{offering_id}}">
+          <label for="reason">Required reason</label>
+          <textarea id="reason" name="reason" rows="4" required>{{reason}}</textarea>
+          <div class="action-row">
+            <button type="submit">Confirm Force Withdraw</button>
+            <button type="submit" name="action" value="cancel">Cancel</button>
+          </div>
+        </form>
+        <p class="help-text"><a class="login-button-link secondary-link" href="/admin/force-withdrawals">Back to force withdrawal</a></p>
+      </section>
+    </main>
+  </body>
+</html>

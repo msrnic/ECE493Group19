@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course Capacity</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/admin-account.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card admin-account-card" aria-labelledby="course-capacity-title">
+        <p class="eyebrow">Admin Operations</p>
+        <h1 id="course-capacity-title">Edit Course Capacity</h1>
+        <p><strong>{{offering_heading}}</strong></p>
+        <p class="help-text">{{term_section_label}}</p>
+        {{message_html}}
+        <div class="error-banner" role="alert">{{error_message}}</div>
+        <section class="profile-section">
+          <h2>Current Enrollment Snapshot</h2>
+          <p>Current capacity: {{current_capacity}}</p>
+          <p>Current enrollment: {{current_enrollment}}</p>
+          <p>Remaining seats: {{remaining_seats}}</p>
+          <p>Version: {{current_version}}</p>
+        </section>
+        <form method="post" action="/admin/course-offerings/{{offering_id}}/capacity" novalidate>
+          <input type="hidden" name="submittedVersion" value="{{submitted_version}}">
+
+          <label for="proposedCapacity">New capacity</label>
+          <input id="proposedCapacity" name="proposedCapacity" type="number" class="{{capacity_input_class}}" value="{{proposed_capacity}}">
+          {{capacity_error_html}}
+
+          <label for="overrideDecision">Below-enrollment override decision</label>
+          <select id="overrideDecision" name="overrideDecision">
+            <option value="">No override</option>
+            <option value="approved" {{selected_approved}}>Approve override</option>
+            <option value="denied" {{selected_denied}}>Deny override</option>
+          </select>
+          {{override_decision_error_html}}
+
+          <label for="overrideReason">Override reason</label>
+          <textarea id="overrideReason" name="overrideReason" rows="4">{{override_reason_value}}</textarea>
+          {{override_reason_error_html}}
+
+          <div class="action-row">
+            <button type="submit">Save Capacity</button>
+            <a class="login-button-link secondary-link" href="{{return_path}}">Back</a>
+          </div>
+        </form>
+        <section class="profile-section">
+          <h2>Latest Result</h2>
+          {{result_details_html}}
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

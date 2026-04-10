@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Enroll Student</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/admin-account.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card admin-account-card" aria-labelledby="force-enroll-title">
+        <p class="eyebrow">Admin Operations</p>
+        <h1 id="force-enroll-title">Force Enroll Student</h1>
+        <p class="help-text">Bypass prerequisite checks for exceptional cases while still enforcing hard constraints and creating an audit record.</p>
+        {{status_banner_html}}
+        <div class="error-banner" role="alert">{{error_message}}</div>
+        <form method="post" action="/admin/force-enroll" novalidate>
+          <label for="studentIdentifier">Student ID or email</label>
+          <input
+            id="studentIdentifier"
+            name="studentIdentifier"
+            type="text"
+            class="{{student_input_class}}"
+            value="{{student_identifier}}"
+            required
+          >
+          {{student_error_html}}
+
+          <label for="offeringId">Course offering</label>
+          <select id="offeringId" name="offeringId" class="{{offering_input_class}}" required>
+            {{offering_options_html}}
+          </select>
+          {{offering_error_html}}
+
+          <label for="reason">Required reason</label>
+          <textarea
+            id="reason"
+            name="reason"
+            rows="5"
+            minlength="10"
+            maxlength="500"
+            class="{{reason_input_class}}"
+            required
+          >{{reason_value}}</textarea>
+          {{reason_error_html}}
+
+          <div class="action-row">
+            <button type="submit">Force Enroll</button>
+            <a class="login-button-link secondary-link" href="{{return_path}}">Cancel</a>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

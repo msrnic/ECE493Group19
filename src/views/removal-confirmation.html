@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Confirm Class Removal</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card profile-card--wide'>
+        <p class='eyebrow'>Enrollment Hub</p>
+        <h1>Confirm Class Removal</h1>
+        <p class='help-text'>The system will automatically apply the correct policy outcome for this class based on the published add/drop deadline.</p>
+        {{result_banner_html}}
+        <section class='profile-section'>
+          <h2>{{course_heading}}</h2>
+          <ul class='course-list'>
+            <li>Classification: {{classification}}</li>
+            <li>Term deadline: {{deadline_label}}</li>
+            <li>Timezone: {{timezone_name}}</li>
+            <li>{{fee_impact}}</li>
+          </ul>
+          {{details_html}}
+        </section>
+        <form method='post' action='/enrollment/remove/{{offering_id}}' class='profile-section'>
+          <div class='action-row profile-actions'>
+            <button type='submit' name='action' value='confirm'>Confirm removal</button>
+            <button type='submit' name='action' value='cancel'>Cancel</button>
+            <a class='login-button-link secondary-link' href='/enrollment'>Back to schedule</a>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

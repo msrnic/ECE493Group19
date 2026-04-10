@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Available Classes</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/class-search.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card profile-card profile-card--wide">
+        <p class="eyebrow">Class Search</p>
+        <h1>Search for available classes</h1>
+        <p class="status-chip dashboard-status">{{status_message}}</p>
+        <form class="profile-section class-search-form" method="get" action="/classes/search">
+          <label for="query">Keyword</label>
+          <input id="query" name="q" type="text" value="{{query_value}}" placeholder="Course title or code">
+          <label for="term">Term</label>
+          <select id="term" name="term">{{term_options_html}}</select>
+          <label for="subject">Subject</label>
+          <input id="subject" name="subject" type="text" value="{{subject_value}}" placeholder="ENGL">
+          <label for="courseNumber">Course number</label>
+          <input id="courseNumber" name="courseNumber" type="text" value="{{course_number_value}}" placeholder="210">
+          <div class="action-row profile-actions">
+            <button type="submit">Search</button>
+            <a class="login-button-link secondary-link" href="/dashboard#enrollment-hub">Back to dashboard</a>
+          </div>
+        </form>
+        {{result_state_html}}
+        <section class="class-search-results">{{results_html}}</section>
+      </section>
+    </main>
+    <script src="/js/class-search.js"></script>
+  </body>
+</html>

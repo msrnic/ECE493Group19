@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Add/Drop Deadlines</title>
+    <link rel='stylesheet' href='/css/login.css'>
+    <link rel='stylesheet' href='/css/security.css'>
+    <link rel='stylesheet' href='/css/profile-editor.css'>
+  </head>
+  <body>
+    <main class='login-shell'>
+      <section class='login-card profile-card profile-card--wide'>
+        <p class='eyebrow'>Enrollment Hub</p>
+        <h1>Add/Drop Deadlines</h1>
+        <p class='help-text'>Review the published drop deadline for your current term before attempting a class drop.</p>
+        <section class='profile-section'>
+          <h2>{{status_label}}</h2>
+          {{status_banner_html}}
+          {{deadline_html}}
+          {{attempt_message_html}}
+        </section>
+        {{action_html}}
+      </section>
+    </main>
+  </body>
+</html>
