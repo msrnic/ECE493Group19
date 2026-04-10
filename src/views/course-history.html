@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course History</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/profile-editor.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card profile-card profile-card--wide">
+        <p class="eyebrow">Academic Records</p>
+        <h1>Course History</h1>
+        <p class="help-text">Signed in as {{signed_in_as}}.</p>
+        <p class="status-chip dashboard-status" data-status="{{state_class}}">{{state_message}}</p>
+        <div class="action-row profile-actions">
+          <a class="login-button-link secondary-link" href="/dashboard#student-academics">Back to dashboard</a>
+          <a class="login-button-link secondary-link" href="/academic/course-history">Refresh course history</a>
+        </div>
+        <p class="help-text">{{summary_text}}</p>
+        {{content_html}}
+      </section>
+    </main>
+  </body>
+</html>

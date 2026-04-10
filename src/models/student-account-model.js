@@ -38,6 +38,12 @@ function createStudentAccountModel(db) {
       AND a.role = 'student'
     ORDER BY a.username ASC
   `);
+  const selectStudentRecordAccessState = db.prepare(`
+    SELECT course_history_access, transcript_access, updated_at
+    FROM student_record_access_states
+    WHERE account_id = ?
+    LIMIT 1
+  `);
 
   return {
     findByStudentId(studentId) {
@@ -68,6 +74,30 @@ function createStudentAccountModel(db) {
       }
 
       return selectStudentsByCourseCode.all(courseCode).map(mapStudentAccount);
+    },
+    getStudentRecordAccess(accountId) {
+      if (!accountId) {
+        return {
+          courseHistoryAccess: 'enabled',
+          transcriptAccess: 'enabled',
+          updatedAt: null
+        };
+      }
+
+      const row = selectStudentRecordAccessState.get(accountId);
+      if (!row) {
+        return {
+          courseHistoryAccess: 'enabled',
+          transcriptAccess: 'enabled',
+          updatedAt: null
+        };
+      }
+
+      return {
+        courseHistoryAccess: row.course_history_access,
+        transcriptAccess: row.transcript_access,
+        updatedAt: row.updated_at
+      };
     }
   };
 }

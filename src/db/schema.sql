@@ -281,6 +281,56 @@ CREATE TABLE IF NOT EXISTS completed_courses (
   UNIQUE(account_id, course_code)
 );
 
+CREATE TABLE IF NOT EXISTS student_record_access_states (
+  account_id INTEGER PRIMARY KEY,
+  course_history_access TEXT NOT NULL DEFAULT 'enabled' CHECK (course_history_access IN ('enabled', 'denied')),
+  transcript_access TEXT NOT NULL DEFAULT 'enabled' CHECK (transcript_access IN ('enabled', 'denied')),
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS course_history_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  academic_term TEXT NOT NULL,
+  course_code TEXT NOT NULL,
+  course_title TEXT NOT NULL,
+  credits REAL,
+  final_result TEXT,
+  availability_status TEXT NOT NULL DEFAULT 'available' CHECK (availability_status IN ('available', 'partial')),
+  missing_details_note TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS transcript_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  academic_term TEXT NOT NULL,
+  course_code TEXT NOT NULL,
+  course_title TEXT NOT NULL,
+  credits REAL,
+  final_result TEXT,
+  availability_status TEXT NOT NULL DEFAULT 'available' CHECK (availability_status IN ('available', 'partial')),
+  missing_details_note TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS student_record_access_audits (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  feature_key TEXT NOT NULL CHECK (feature_key IN ('course_history', 'transcript')),
+  requesting_account_id INTEGER NOT NULL,
+  attempted_target_account_id INTEGER,
+  denial_reason TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  degraded_logging INTEGER NOT NULL DEFAULT 0 CHECK (degraded_logging IN (0, 1)),
+  FOREIGN KEY (requesting_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (attempted_target_account_id) REFERENCES accounts(id) ON DELETE SET NULL
+);
+
 CREATE TABLE IF NOT EXISTS registration_holds (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   account_id INTEGER NOT NULL,
@@ -310,6 +360,42 @@ CREATE TABLE IF NOT EXISTS enrollment_attempts (
   created_at TEXT NOT NULL,
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
   FOREIGN KEY (offering_id) REFERENCES class_offerings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS gradebook_offerings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  course_code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  term_code TEXT NOT NULL,
+  instructor_account_id INTEGER NOT NULL,
+  submission_deadline_at TEXT NOT NULL,
+  submission_status TEXT NOT NULL DEFAULT 'draft' CHECK (submission_status IN ('draft', 'submitted')),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (instructor_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS gradebook_roster_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  offering_id INTEGER NOT NULL,
+  student_account_id INTEGER NOT NULL,
+  final_grade TEXT,
+  updated_at TEXT NOT NULL,
+  UNIQUE(offering_id, student_account_id),
+  FOREIGN KEY (offering_id) REFERENCES gradebook_offerings(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS gradebook_access_audits (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  feature_key TEXT NOT NULL CHECK (feature_key IN ('grade_entry', 'grade_summary', 'grade_export')),
+  requesting_account_id INTEGER NOT NULL,
+  offering_id INTEGER,
+  denial_reason TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  degraded_logging INTEGER NOT NULL DEFAULT 0 CHECK (degraded_logging IN (0, 1)),
+  FOREIGN KEY (requesting_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (offering_id) REFERENCES gradebook_offerings(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS personal_details (
@@ -562,6 +648,12 @@ CREATE INDEX IF NOT EXISTS idx_inbox_notifications_send_request ON inbox_notific
 CREATE INDEX IF NOT EXISTS idx_inbox_delivery_attempts_notification ON inbox_delivery_attempts(inbox_notification_id, attempt_sequence);
 CREATE INDEX IF NOT EXISTS idx_class_offerings_term ON class_offerings(term_code, course_code);
 CREATE INDEX IF NOT EXISTS idx_completed_courses_account ON completed_courses(account_id, course_code);
+CREATE INDEX IF NOT EXISTS idx_gradebook_offerings_instructor ON gradebook_offerings(instructor_account_id, term_code);
+CREATE INDEX IF NOT EXISTS idx_gradebook_roster_offering ON gradebook_roster_entries(offering_id, student_account_id);
+CREATE INDEX IF NOT EXISTS idx_gradebook_access_audits_feature ON gradebook_access_audits(feature_key, created_at);
+CREATE INDEX IF NOT EXISTS idx_student_record_access_audits_feature ON student_record_access_audits(feature_key, created_at);
+CREATE INDEX IF NOT EXISTS idx_course_history_entries_account ON course_history_entries(account_id, academic_term, id);
+CREATE INDEX IF NOT EXISTS idx_transcript_entries_account ON transcript_entries(account_id, academic_term, id);
 CREATE INDEX IF NOT EXISTS idx_registration_holds_account ON registration_holds(account_id, is_active);
 CREATE INDEX IF NOT EXISTS idx_class_enrollments_account ON class_enrollments(account_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_enrollment_attempts_account ON enrollment_attempts(account_id, created_at);

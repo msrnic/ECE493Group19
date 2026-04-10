@@ -150,9 +150,9 @@ function createDashboardController(services) {
     const snapshot = services.financialSummaryModel?.getLatestSnapshotByAccountId(account.id);
     const isStale = options.forceStale || snapshot?.sourceState === 'stale';
     const links = [
-      { href: '/transactions/history', label: 'Records of past financial transactions' },
-      { href: '/account/payment-methods', label: 'Store banking information' },
-      { href: '/account/payment-methods/credit-cards/new', label: 'Store credit card information' }
+      { href: '/transactions/history', label: 'Records of Past Financial Transactions' },
+      { href: '/account/payment-methods', label: 'Store Banking Information' },
+      { href: '/account/payment-methods/credit-cards/new', label: 'Store Credit Card Information' }
     ];
 
     if (!snapshot) {
@@ -186,7 +186,7 @@ function createDashboardController(services) {
       { href: '/account/personal-information', label: 'Update Personal Information' },
       { href: '/account/contact-information', label: 'Update Contact Information' }
     ];
-    links.push({ href: '/account/security/password-change', label: 'Change password' });
+    links.push({ href: '/account/security/password-change', label: 'Change Password' });
 
     if (!details) {
       return {
@@ -375,7 +375,10 @@ function createDashboardController(services) {
                 (course) => `${course.course_code} ${course.title} (${course.role})`
               )
             : ['Your academic record details will appear here once courses are assigned.'],
-          links: [],
+          links: [
+            { href: '/academic/course-history', label: 'View Course History' },
+            { href: '/academic/transcript', label: 'View Transcript' }
+          ],
           summary: account.courses.length
             ? `${account.courses.length} course record(s) are available for this term.`
             : 'No course records are currently assigned to this account.'
@@ -406,13 +409,25 @@ function createDashboardController(services) {
         const teachingCourses = account.courses.filter(
           (course) => course.role === 'instructor' || course.role === 'ta'
         );
+        const gradebookOfferings =
+          typeof services.gradebookService?.getProfessorOfferings === 'function'
+            ? services.gradebookService.getProfessorOfferings(account.id)
+            : [];
         return {
           items: teachingCourses.length
             ? teachingCourses.map(
                 (course) => `${course.course_code} ${course.title} (${course.role})`
               )
             : ['Teaching assignments will appear here once courses are assigned.'],
-          links: [],
+          links: [
+            ...gradebookOfferings.map((offering) => ({
+              href: `/grades/offerings/${offering.id}`,
+              label: `Enter final grades for ${offering.courseCode}`
+            })),
+            ...(gradebookOfferings[0]
+              ? [{ href: `/grades/summary?offeringId=${gradebookOfferings[0].id}`, label: 'View grade submission summary' }]
+              : [])
+          ],
           summary: teachingCourses.length
             ? `${teachingCourses.length} teaching assignment(s) are ready for review.`
             : 'No teaching assignments are currently linked to this account.'
@@ -471,7 +486,7 @@ function createDashboardController(services) {
         return {
           items: ['Session protection and password recovery tools remain available.'],
           links: [
-            { href: '/account/security/password-change', label: 'Change password' }
+            { href: '/account/security/password-change', label: 'Change Password' }
           ],
           summary: 'Protect your account and active sessions from one place.'
         };

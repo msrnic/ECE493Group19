@@ -53,6 +53,20 @@ function createEnrollmentTestState(initialState = {}) {
   };
 }
 
+function createCourseHistoryTestState(initialState = {}) {
+  return {
+    retrievalFailureIdentifiers: [...(initialState.retrievalFailureIdentifiers || [])]
+  };
+}
+
+function createGradebookTestState(initialState = {}) {
+  return {
+    auditFailureIdentifiersByFeature: { ...(initialState.auditFailureIdentifiersByFeature || {}) },
+    saveFailureIdentifiers: [...(initialState.saveFailureIdentifiers || [])],
+    summaryFailureIdentifiers: [...(initialState.summaryFailureIdentifiers || [])]
+  };
+}
+
 function createInboxTestState(initialState = {}) {
   return {
     deliveryFailureIdentifiers: [...(initialState.deliveryFailureIdentifiers || ['outage.user@example.com'])]
@@ -62,6 +76,20 @@ function createInboxTestState(initialState = {}) {
 function createAdminNotificationTestState(initialState = {}) {
   return {
     loggingFailureSubjects: [...(initialState.loggingFailureSubjects || [])]
+  };
+}
+
+function createStudentRecordTestState(initialState = {}) {
+  return {
+    auditFailureIdentifiersByFeature: {
+      ...(initialState.auditFailureIdentifiersByFeature || {})
+    }
+  };
+}
+
+function createTranscriptTestState(initialState = {}) {
+  return {
+    retrievalFailureIdentifiers: [...(initialState.retrievalFailureIdentifiers || [])]
   };
 }
 
@@ -77,8 +105,12 @@ function createTestContext(options = {}) {
   const scheduleBuilderTestState = createScheduleBuilderTestState(options.scheduleBuilderTestState);
   const transactionHistoryTestState = createTransactionHistoryTestState(options.transactionHistoryTestState);
   const enrollmentTestState = createEnrollmentTestState(options.enrollmentTestState);
+  const courseHistoryTestState = createCourseHistoryTestState(options.courseHistoryTestState);
+  const gradebookTestState = createGradebookTestState(options.gradebookTestState);
   const inboxTestState = createInboxTestState(options.inboxTestState);
   const adminNotificationTestState = createAdminNotificationTestState(options.adminNotificationTestState);
+  const studentRecordTestState = createStudentRecordTestState(options.studentRecordTestState);
+  const transcriptTestState = createTranscriptTestState(options.transcriptTestState);
 
   applySchema(dbPath);
   seedLoginFixtures(dbPath, { now: nowState.value });
@@ -88,6 +120,8 @@ function createTestContext(options = {}) {
     db: getDb(dbPath),
     dashboardTestState,
     now: () => nowState.value,
+    courseHistoryTestState,
+    gradebookTestState,
     enrollmentTestState,
     inboxTestState,
     adminNotificationTestState,
@@ -95,6 +129,8 @@ function createTestContext(options = {}) {
     scheduleBuilderTestState,
     sessionSecret: 'test-session-secret',
     simulatedPasswordChangeFailureIdentifiers: options.simulatedPasswordChangeFailureIdentifiers || [],
+    studentRecordTestState,
+    transcriptTestState,
     transactionHistoryTestState,
     unavailableIdentifiers: options.unavailableIdentifiers || []
   });
@@ -116,11 +152,15 @@ function createTestContext(options = {}) {
     now() {
       return nowState.value;
     },
+    courseHistoryTestState,
+    gradebookTestState,
     enrollmentTestState,
     inboxTestState,
     adminNotificationTestState,
     profileTestState,
     scheduleBuilderTestState,
+    studentRecordTestState,
+    transcriptTestState,
     transactionHistoryTestState,
     resetAccountCreationTestState() {
       accountCreationTestState.createFailureIdentifiers = [];
@@ -147,11 +187,25 @@ function createTestContext(options = {}) {
     resetEnrollmentTestState() {
       enrollmentTestState.failureIdentifiers = [];
     },
+    resetCourseHistoryTestState() {
+      courseHistoryTestState.retrievalFailureIdentifiers = [];
+    },
+    resetGradebookTestState() {
+      gradebookTestState.auditFailureIdentifiersByFeature = {};
+      gradebookTestState.saveFailureIdentifiers = [];
+      gradebookTestState.summaryFailureIdentifiers = [];
+    },
     resetInboxTestState() {
       inboxTestState.deliveryFailureIdentifiers = ['outage.user@example.com'];
     },
     resetAdminNotificationTestState() {
       adminNotificationTestState.loggingFailureSubjects = [];
+    },
+    resetStudentRecordTestState() {
+      studentRecordTestState.auditFailureIdentifiersByFeature = {};
+    },
+    resetTranscriptTestState() {
+      transcriptTestState.retrievalFailureIdentifiers = [];
     },
     resetTransactionHistoryTestState() {
       transactionHistoryTestState.retrievalFailureIdentifiers = [];

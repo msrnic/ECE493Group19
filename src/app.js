@@ -11,9 +11,12 @@ const { createCourseModel } = require('./models/course-model');
 const { createDashboardLoadModel } = require('./models/dashboard-load-model');
 const { createDashboardSectionModel } = require('./models/dashboard-section-model');
 const { createDashboardSectionStateModel } = require('./models/dashboard-section-state-model');
+const { createCourseHistoryModel } = require('./models/course-history-model');
 const { createEnrollmentModel } = require('./models/enrollment-model');
 const { createFinancialTransactionModel } = require('./models/financial-transaction-model');
 const { createFinancialSummaryModel } = require('./models/financial-summary-model');
+const { createGradebookAuditModel } = require('./models/gradebook-audit-model');
+const { createGradebookModel } = require('./models/gradebook-model');
 const { createInboxModel } = require('./models/inbox-model');
 const { createContactInfoModel } = require('./models/contact-info-model');
 const { createLoginAttemptModel } = require('./models/login-attempt-model');
@@ -28,6 +31,8 @@ const { createRoleModel } = require('./models/role-model');
 const { createScheduleBuilderModel } = require('./models/schedule-builder-model');
 const { createSessionModel } = require('./models/session-model');
 const { createStudentAccountModel } = require('./models/student-account-model');
+const { createStudentRecordAuditModel } = require('./models/student-record-audit-model');
+const { createTranscriptModel } = require('./models/transcript-model');
 const { createUserAccountModel } = require('./models/user-account-model');
 const { createVerificationCooldownModel } = require('./models/verification-cooldown-model');
 const { createAccountCreationService } = require('./services/account-creation-service');
@@ -44,14 +49,20 @@ const { createPaymentTokenizationService } = require('./services/payment-tokeniz
 const { createPaymentStatusService } = require('./services/payment-status-service');
 const { createPasswordChangeService } = require('./services/password-change-service');
 const { createPasswordPolicyService } = require('./services/password-policy-service');
+const { createGradebookAuditService } = require('./services/gradebook-audit-service');
+const { createGradebookService } = require('./services/gradebook-service');
 const { createScheduleBuilderService } = require('./services/schedule-builder-service');
 const { createSessionSecurityService } = require('./services/session-security-service');
+const { createStudentRecordAuditService } = require('./services/student-record-audit-service');
+const { createCourseHistoryRoutes } = require('./routes/course-history-routes');
 const { createProfileRoutes } = require('./routes/profile-routes');
 const { createEnrollmentRoutes } = require('./routes/enrollment-routes');
 const { createInboxRoutes } = require('./routes/inbox-routes');
 const { createPaymentMethodsRoutes } = require('./routes/payment-methods-routes');
+const { createGradebookRoutes } = require('./routes/gradebook-routes');
 const { createTransactionHistoryRoutes } = require('./routes/transaction-history-routes');
 const { createAdminNotificationsRoutes } = require('./routes/admin-notifications-routes');
+const { createTranscriptRoutes } = require('./routes/transcript-routes');
 
 function createApp(options = {}) {
   const {
@@ -74,8 +85,16 @@ function createApp(options = {}) {
       timeoutBeforeResultsIdentifiers: []
     },
     enrollmentTestState = { failureIdentifiers: [] },
+    courseHistoryTestState = { retrievalFailureIdentifiers: [] },
+    gradebookTestState = {
+      auditFailureIdentifiersByFeature: {},
+      saveFailureIdentifiers: [],
+      summaryFailureIdentifiers: []
+    },
     inboxTestState = { deliveryFailureIdentifiers: ['outage.user@example.com'] },
     adminNotificationTestState = { loggingFailureSubjects: [] },
+    studentRecordTestState = { auditFailureIdentifiersByFeature: {} },
+    transcriptTestState = { retrievalFailureIdentifiers: [] },
     transactionHistoryTestState = { retrievalFailureIdentifiers: [] },
     sessionSecret = process.env.SESSION_SECRET || 'development-session-secret',
     simulatedPasswordChangeFailureIdentifiers = [],
@@ -90,12 +109,15 @@ function createApp(options = {}) {
   const accountModel = createAccountModel(db);
   const contactInfoModel = createContactInfoModel(db);
   const courseModel = createCourseModel(db);
+  const courseHistoryModel = createCourseHistoryModel(db);
   const dashboardLoadModel = createDashboardLoadModel(db);
   const dashboardSectionModel = createDashboardSectionModel(db);
   const dashboardSectionStateModel = createDashboardSectionStateModel(db);
   const enrollmentModel = createEnrollmentModel(db);
   const financialTransactionModel = createFinancialTransactionModel(db);
   const financialSummaryModel = createFinancialSummaryModel(db);
+  const gradebookAuditModel = createGradebookAuditModel(db);
+  const gradebookModel = createGradebookModel(db);
   const inboxModel = createInboxModel(db);
   const loginAttemptModel = createLoginAttemptModel(db);
   const moduleModel = createModuleModel(db);
@@ -109,6 +131,8 @@ function createApp(options = {}) {
   const scheduleBuilderModel = createScheduleBuilderModel(db);
   const sessionModel = createSessionModel(db);
   const studentAccountModel = createStudentAccountModel(db);
+  const studentRecordAuditModel = createStudentRecordAuditModel(db);
+  const transcriptModel = createTranscriptModel(db);
   const userAccountModel = createUserAccountModel(db);
   const verificationCooldownModel = createVerificationCooldownModel(db);
   const authAuditService = createAuthAuditService(loginAttemptModel, now);
@@ -141,6 +165,23 @@ function createApp(options = {}) {
     inboxService,
     now,
     studentAccountModel
+  });
+  const studentRecordAuditService = createStudentRecordAuditService({
+    now,
+    studentRecordAuditModel,
+    studentRecordTestState
+  });
+  const gradebookAuditService = createGradebookAuditService({
+    gradebookAuditModel,
+    gradebookTestState,
+    now
+  });
+  const gradebookService = createGradebookService({
+    accountModel,
+    gradebookAuditService,
+    gradebookModel,
+    gradebookTestState,
+    now
   });
   const paymentTokenizationService = createPaymentTokenizationService();
   const paymentStatusService = createPaymentStatusService({
@@ -202,6 +243,8 @@ function createApp(options = {}) {
     contactInfoModel,
     cooldownService,
     courseModel,
+    courseHistoryModel,
+    courseHistoryTestState,
     dashboardLoadModel,
     dashboardSectionModel,
     dashboardSectionStateModel,
@@ -211,6 +254,11 @@ function createApp(options = {}) {
     enrollmentTestState,
     financialTransactionModel,
     financialSummaryModel,
+    gradebookAuditModel,
+    gradebookAuditService,
+    gradebookModel,
+    gradebookService,
+    gradebookTestState,
     adminNotificationService,
     adminNotificationTestState,
     inboxModel,
@@ -239,6 +287,11 @@ function createApp(options = {}) {
     sessionModel,
     sessionSecurityService,
     studentAccountModel,
+    studentRecordAuditModel,
+    studentRecordAuditService,
+    studentRecordTestState,
+    transcriptModel,
+    transcriptTestState,
     transactionHistoryTestState,
     userAccountModel,
     verificationCooldownModel
@@ -247,13 +300,16 @@ function createApp(options = {}) {
   app.use(createAuthRoutes(app.locals.services));
   app.use(createAdminAccountRoutes(app.locals.services));
   app.use(createAdminNotificationsRoutes(app.locals.services));
+  app.use(createCourseHistoryRoutes(app.locals.services));
   app.use(createDashboardRoutes(app.locals.services));
   app.use(createEnrollmentRoutes(app.locals.services));
+  app.use(createGradebookRoutes(app.locals.services));
   app.use(createInboxRoutes(app.locals.services));
   app.use(createPaymentMethodsRoutes(app.locals.services));
   app.use(createProfileRoutes(app.locals.services));
   app.use(createScheduleBuilderRoutes(app.locals.services));
   app.use(createTransactionHistoryRoutes(app.locals.services));
+  app.use(createTranscriptRoutes(app.locals.services));
 
   return app;
 }

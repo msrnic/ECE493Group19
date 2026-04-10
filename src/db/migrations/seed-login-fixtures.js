@@ -564,6 +564,13 @@ function seedLoginFixtures(dbPath, options = {}) {
     DELETE FROM enrollment_attempts;
     DELETE FROM class_enrollments;
     DELETE FROM registration_holds;
+    DELETE FROM gradebook_access_audits;
+    DELETE FROM gradebook_roster_entries;
+    DELETE FROM gradebook_offerings;
+    DELETE FROM student_record_access_audits;
+    DELETE FROM transcript_entries;
+    DELETE FROM course_history_entries;
+    DELETE FROM student_record_access_states;
     DELETE FROM completed_courses;
     DELETE FROM class_offerings;
     DELETE FROM financial_summary_snapshots;
@@ -914,6 +921,69 @@ function seedLoginFixtures(dbPath, options = {}) {
     INSERT INTO completed_courses (account_id, course_code, completed_at)
     VALUES (@account_id, @course_code, @completed_at)
   `);
+  const insertStudentRecordAccessState = db.prepare(`
+    INSERT INTO student_record_access_states (
+      account_id,
+      course_history_access,
+      transcript_access,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @course_history_access,
+      @transcript_access,
+      @updated_at
+    )
+  `);
+  const insertCourseHistoryEntry = db.prepare(`
+    INSERT INTO course_history_entries (
+      account_id,
+      academic_term,
+      course_code,
+      course_title,
+      credits,
+      final_result,
+      availability_status,
+      missing_details_note,
+      created_at,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @academic_term,
+      @course_code,
+      @course_title,
+      @credits,
+      @final_result,
+      @availability_status,
+      @missing_details_note,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertTranscriptEntry = db.prepare(`
+    INSERT INTO transcript_entries (
+      account_id,
+      academic_term,
+      course_code,
+      course_title,
+      credits,
+      final_result,
+      availability_status,
+      missing_details_note,
+      created_at,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @academic_term,
+      @course_code,
+      @course_title,
+      @credits,
+      @final_result,
+      @availability_status,
+      @missing_details_note,
+      @created_at,
+      @updated_at
+    )
+  `);
   const insertRegistrationHold = db.prepare(`
     INSERT INTO registration_holds (account_id, hold_code, reason, is_active, created_at)
     VALUES (@account_id, @hold_code, @reason, @is_active, @created_at)
@@ -921,6 +991,40 @@ function seedLoginFixtures(dbPath, options = {}) {
   const insertClassEnrollment = db.prepare(`
     INSERT INTO class_enrollments (account_id, offering_id, created_at)
     VALUES (@account_id, @offering_id, @created_at)
+  `);
+  const insertGradebookOffering = db.prepare(`
+    INSERT INTO gradebook_offerings (
+      course_code,
+      title,
+      term_code,
+      instructor_account_id,
+      submission_deadline_at,
+      submission_status,
+      created_at,
+      updated_at
+    ) VALUES (
+      @course_code,
+      @title,
+      @term_code,
+      @instructor_account_id,
+      @submission_deadline_at,
+      @submission_status,
+      @created_at,
+      @updated_at
+    )
+  `);
+  const insertGradebookRosterEntry = db.prepare(`
+    INSERT INTO gradebook_roster_entries (
+      offering_id,
+      student_account_id,
+      final_grade,
+      updated_at
+    ) VALUES (
+      @offering_id,
+      @student_account_id,
+      @final_grade,
+      @updated_at
+    )
   `);
   const timestamp = isoNow(now);
   const passwordHash = bcrypt.hashSync('CorrectPass!234', 10);
@@ -1696,6 +1800,67 @@ function seedLoginFixtures(dbPath, options = {}) {
     offering_id: offeringIds.O_CONFLICT
   });
 
+  const gradebookOfferingIds = {};
+  for (const offering of [
+    {
+      course_code: 'ECE493',
+      created_at: timestamp,
+      instructor_account_id: accountIds['professor@example.com'],
+      submission_deadline_at: '2026-03-31T23:59:59.000Z',
+      submission_status: 'draft',
+      term_code: '2026WINTER',
+      title: 'Software Engineering',
+      updated_at: timestamp
+    },
+    {
+      course_code: 'MATH201',
+      created_at: timestamp,
+      instructor_account_id: accountIds['hybrid.staff@example.com'],
+      submission_deadline_at: '2026-03-20T23:59:59.000Z',
+      submission_status: 'submitted',
+      term_code: '2026WINTER',
+      title: 'Discrete Mathematics',
+      updated_at: timestamp
+    }
+  ]) {
+    gradebookOfferingIds[offering.course_code] = Number(insertGradebookOffering.run(offering).lastInsertRowid);
+  }
+
+  for (const rosterEntry of [
+    {
+      final_grade: 'A-',
+      offering_id: gradebookOfferingIds.ECE493,
+      student_account_id: accountIds['userA@example.com'],
+      updated_at: timestamp
+    },
+    {
+      final_grade: null,
+      offering_id: gradebookOfferingIds.ECE493,
+      student_account_id: accountIds['prereq.student@example.com'],
+      updated_at: timestamp
+    },
+    {
+      final_grade: 'B+',
+      offering_id: gradebookOfferingIds.ECE493,
+      student_account_id: accountIds['hold.student@example.com'],
+      updated_at: timestamp
+    },
+    {
+      final_grade: 'B',
+      offering_id: gradebookOfferingIds.MATH201,
+      student_account_id: accountIds['conflict.student@example.com'],
+      updated_at: timestamp
+    },
+    {
+      final_grade: 'A',
+      offering_id: gradebookOfferingIds.MATH201,
+      student_account_id: accountIds['outage.user@example.com'],
+      updated_at: timestamp
+    }
+  ]) {
+    insertGradebookRosterEntry.run(rosterEntry);
+  }
+
   insertResetToken.run({
     account_id: accountIds['userA@example.com'],
     token_digest: digestToken(RESET_TOKENS.valid),
@@ -1854,6 +2019,201 @@ function seedLoginFixtures(dbPath, options = {}) {
       relationship: details.emergencyRelationship,
       updated_at: timestamp
     });
+  }
+
+  for (const accessState of [
+    {
+      account_id: accountIds['userA@example.com'],
+      course_history_access: 'enabled',
+      transcript_access: 'enabled',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['prereq.student@example.com'],
+      course_history_access: 'enabled',
+      transcript_access: 'enabled',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['hold.student@example.com'],
+      course_history_access: 'enabled',
+      transcript_access: 'enabled',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['nomodule.student@example.com'],
+      course_history_access: 'enabled',
+      transcript_access: 'enabled',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['outage.user@example.com'],
+      course_history_access: 'enabled',
+      transcript_access: 'enabled',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['restricted.inbox@example.com'],
+      course_history_access: 'denied',
+      transcript_access: 'denied',
+      updated_at: timestamp
+    }
+  ]) {
+    insertStudentRecordAccessState.run(accessState);
+  }
+
+  for (const entry of [
+    {
+      account_id: accountIds['userA@example.com'],
+      academic_term: 'Fall 2024',
+      availability_status: 'available',
+      course_code: 'CMPUT301',
+      course_title: 'Introduction to Software Engineering',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'A-',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'available',
+      course_code: 'MATH201',
+      course_title: 'Discrete Mathematics',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'B+',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'available',
+      course_code: 'ECE493',
+      course_title: 'Software Engineering',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'A',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['prereq.student@example.com'],
+      academic_term: 'Fall 2024',
+      availability_status: 'available',
+      course_code: 'CMPUT275',
+      course_title: 'Introduction to Tangible Computing',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'B',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['prereq.student@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'partial',
+      course_code: 'STAT235',
+      course_title: 'Probability',
+      created_at: timestamp,
+      credits: null,
+      final_result: null,
+      missing_details_note: 'Final grade is still being reconciled for this term.',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['outage.user@example.com'],
+      academic_term: 'Fall 2024',
+      availability_status: 'available',
+      course_code: 'CMPUT301',
+      course_title: 'Introduction to Software Engineering',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'B',
+      missing_details_note: null,
+      updated_at: timestamp
+    }
+  ]) {
+    insertCourseHistoryEntry.run(entry);
+  }
+
+  for (const entry of [
+    {
+      account_id: accountIds['userA@example.com'],
+      academic_term: 'Fall 2024',
+      availability_status: 'available',
+      course_code: 'CMPUT301',
+      course_title: 'Introduction to Software Engineering',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'A-',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'available',
+      course_code: 'MATH201',
+      course_title: 'Discrete Mathematics',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'B+',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['userA@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'available',
+      course_code: 'ECE493',
+      course_title: 'Software Engineering',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'A',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['hold.student@example.com'],
+      academic_term: 'Fall 2024',
+      availability_status: 'available',
+      course_code: 'CMPUT174',
+      course_title: 'Introduction to Computing',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'B-',
+      missing_details_note: null,
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['hold.student@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'partial',
+      course_code: 'STAT151',
+      course_title: 'Introduction to Applied Statistics',
+      created_at: timestamp,
+      credits: 3,
+      final_result: null,
+      missing_details_note: 'Some grades are unavailable for this term.',
+      updated_at: timestamp
+    },
+    {
+      account_id: accountIds['outage.user@example.com'],
+      academic_term: 'Winter 2025',
+      availability_status: 'available',
+      course_code: 'CMPUT301',
+      course_title: 'Introduction to Software Engineering',
+      created_at: timestamp,
+      credits: 3,
+      final_result: 'B',
+      missing_details_note: null,
+      updated_at: timestamp
+    }
+  ]) {
+    insertTranscriptEntry.run(entry);
   }
 
   return resolvedPath;

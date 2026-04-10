@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Submission Summary</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/security.css">
+    <link rel="stylesheet" href="/css/profile-editor.css">
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card profile-card profile-card--wide">
+        <p class="eyebrow">Current Courses</p>
+        <h1>{{offering_heading}}</h1>
+        <p class="help-text">Submission status: {{offering_status}}</p>
+        {{status_banner_html}}
+        {{incomplete_message_html}}
+        <section class="profile-section">
+          <h2>Grade Distribution</h2>
+          <ul class="course-list">{{distribution_items_html}}</ul>
+        </section>
+        <div class="action-row profile-actions">
+          <a class="login-button-link secondary-link" href="/dashboard#teaching-workload">Back to dashboard</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

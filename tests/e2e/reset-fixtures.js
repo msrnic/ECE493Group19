@@ -50,6 +50,24 @@ async function setTransactionHistoryFixtures(request, state) {
   }
 }
 
+async function setCourseHistoryFixtures(request, state) {
+  const response = await request.post('/__course-history-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure course-history fixtures: ' + response.status());
+  }
+}
+
+async function setGradebookFixtures(request, state) {
+  const response = await request.post('/__gradebook-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure gradebook fixtures: ' + response.status());
+  }
+}
+
 async function setInboxFixtures(request, state) {
   const response = await request.post('/__inbox-fixtures', {
     data: state
@@ -68,13 +86,35 @@ async function setAdminNotificationFixtures(request, state) {
   }
 }
 
+async function setStudentRecordFixtures(request, state) {
+  const response = await request.post('/__student-record-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure student-record fixtures: ' + response.status());
+  }
+}
+
+async function setTranscriptFixtures(request, state) {
+  const response = await request.post('/__transcript-fixtures', {
+    data: state
+  });
+  if (response.ok() === false) {
+    throw new Error('Failed to configure transcript fixtures: ' + response.status());
+  }
+}
+
 module.exports = {
   setAdminNotificationFixtures,
+  setCourseHistoryFixtures,
+  setGradebookFixtures,
   setInboxFixtures,
   resetFixtures,
   setAccountCreationFixtures,
   setScheduleBuilderFixtures,
+  setStudentRecordFixtures,
   setDashboardFixtures,
   setProfileFixtures,
+  setTranscriptFixtures,
   setTransactionHistoryFixtures
 };

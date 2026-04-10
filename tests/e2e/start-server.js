@@ -34,11 +34,25 @@ const scheduleBuilderTestState = {
 const transactionHistoryTestState = {
   retrievalFailureIdentifiers: []
 };
+const courseHistoryTestState = {
+  retrievalFailureIdentifiers: []
+};
+const gradebookTestState = {
+  auditFailureIdentifiersByFeature: {},
+  saveFailureIdentifiers: [],
+  summaryFailureIdentifiers: []
+};
 const inboxTestState = {
   deliveryFailureIdentifiers: ['outage.user@example.com']
 };
 const adminNotificationTestState = {
   loggingFailureSubjects: []
+};
+const studentRecordTestState = {
+  auditFailureIdentifiersByFeature: {}
+};
+const transcriptTestState = {
+  retrievalFailureIdentifiers: []
 };
 let db = null;
 
@@ -351,6 +365,26 @@ function applyTransactionHistoryState(nextState) {
   }
 }
 
+function applyCourseHistoryState(nextState) {
+  const requestedState = nextState || {};
+  courseHistoryTestState.retrievalFailureIdentifiers = [
+    ...((requestedState.retrievalFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
+function applyGradebookState(nextState) {
+  const requestedState = nextState || {};
+  gradebookTestState.auditFailureIdentifiersByFeature = {
+    ...(requestedState.auditFailureIdentifiersByFeature || {})
+  };
+  gradebookTestState.saveFailureIdentifiers = [
+    ...((requestedState.saveFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+  gradebookTestState.summaryFailureIdentifiers = [
+    ...((requestedState.summaryFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
 function applyInboxState(nextState) {
   const requestedState = nextState || {};
   inboxTestState.deliveryFailureIdentifiers = [
@@ -407,6 +441,58 @@ function applyAdminNotificationState(nextState) {
   ];
 }
 
+function applyStudentRecordState(nextState) {
+  const requestedState = nextState || {};
+  studentRecordTestState.auditFailureIdentifiersByFeature = {
+    ...(requestedState.auditFailureIdentifiersByFeature || {})
+  };
+
+  const selectAccount = db.prepare(`
+    SELECT id
+    FROM accounts
+    WHERE lower(email) = lower(?) OR lower(username) = lower(?)
+    LIMIT 1
+  `);
+  const upsertRecordAccess = db.prepare(`
+    INSERT INTO student_record_access_states (
+      account_id,
+      course_history_access,
+      transcript_access,
+      updated_at
+    ) VALUES (
+      @account_id,
+      @course_history_access,
+      @transcript_access,
+      @updated_at
+    )
+    ON CONFLICT(account_id) DO UPDATE SET
+      course_history_access = excluded.course_history_access,
+      transcript_access = excluded.transcript_access,
+      updated_at = excluded.updated_at
+  `);
+
+  for (const [identifier, accessState] of Object.entries(requestedState.accessStatesByIdentifier || {})) {
+    const account = selectAccount.get(identifier, identifier);
+    if (!account) {
+      throw new Error(`Unknown student-record fixture account: ${identifier}`);
+    }
+
+    upsertRecordAccess.run({
+      account_id: account.id,
+      course_history_access: accessState.courseHistoryAccess || 'enabled',
+      transcript_access: accessState.transcriptAccess || 'enabled',
+      updated_at: fixedNow.toISOString()
+    });
+  }
+}
+
+function applyTranscriptState(nextState) {
+  const requestedState = nextState || {};
+  transcriptTestState.retrievalFailureIdentifiers = [
+    ...((requestedState.retrievalFailureIdentifiers || []).map(normalizeIdentifier))
+  ];
+}
+
 function resetFixtures() {
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
   seedLoginFixtures(dbPath, { now: fixedNow });
@@ -416,8 +502,12 @@ function resetFixtures() {
   applyProfileState();
   applyScheduleBuilderState();
   applyTransactionHistoryState();
+  applyCourseHistoryState();
+  applyGradebookState();
   applyInboxState();
   applyAdminNotificationState();
+  applyStudentRecordState();
+  applyTranscriptState();
 }
 
 fs.rmSync(dbPath, { force: true });
@@ -428,12 +518,16 @@ const app = createApp({
   db,
   dashboardTestState,
   now: () => fixedNow,
+  courseHistoryTestState,
+  gradebookTestState,
   profileTestState,
   resetFixtures,
   scheduleBuilderTestState,
   sessionSecret: 'acceptance-session-secret',
   inboxTestState,
   adminNotificationTestState,
+  studentRecordTestState,
+  transcriptTestState,
   transactionHistoryTestState,
   unavailableIdentifiers: ['outage.user@example.com']
 });
@@ -479,6 +573,24 @@ app.post('/__transaction-history-fixtures', (req, res, next) => {
   }
 });
 
+app.post('/__course-history-fixtures', (req, res, next) => {
+  try {
+    applyCourseHistoryState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__gradebook-fixtures', (req, res, next) => {
+  try {
+    applyGradebookState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 app.post('/__inbox-fixtures', (req, res, next) => {
   try {
     applyInboxState(req.body || {});
@@ -491,6 +603,24 @@ app.post('/__inbox-fixtures', (req, res, next) => {
 app.post('/__admin-notification-fixtures', (req, res, next) => {
   try {
     applyAdminNotificationState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__student-record-fixtures', (req, res, next) => {
+  try {
+    applyStudentRecordState(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.post('/__transcript-fixtures', (req, res, next) => {
+  try {
+    applyTranscriptState(req.body || {});
     return res.status(204).end();
   } catch (error) {
     return next(error);
